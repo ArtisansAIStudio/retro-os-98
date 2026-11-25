@@ -1,8 +1,21 @@
 /* ===== Game Cabinet: play old arcade and console games from files the player owns =====
    Nothing is included or hosted. The player drops in a game file; it is kept in THEIR browser (IndexedDB) so they
-   can pick it from a shelf next time. Emulation is done by EmulatorJS, loaded from its CDN only when a game starts.
-   Switched off by default: set emulator:true in js/config.js to show it (see ADDING-GAMES.md). */
+   can pick it from a shelf next time. A third-party player library is loaded only when a game starts.
+   Set cabinet:false in js/config.js to hide it. */
 const CAB_SYS={nes:['nes','NES'],sfc:['snes','Super NES'],smc:['snes','Super NES'],gb:['gb','Game Boy'],gbc:['gb','Game Boy Color'],gba:['gba','Game Boy Advance'],md:['segaMD','Mega Drive'],gen:['segaMD','Mega Drive'],smd:['segaMD','Mega Drive'],sms:['segaMS','Master System'],gg:['segaGG','Game Gear'],pce:['pce','PC Engine'],n64:['n64','Nintendo 64'],z64:['n64','Nintendo 64'],v64:['n64','Nintendo 64'],a26:['atari2600','Atari 2600'],zip:['arcade','Arcade']};
+/* peek inside a .zip: returns its entries (name, method, sizes, offset) so a zipped console game is recognised and unpacked */
+async function cabZipList(blob){
+  const tail=new DataView(await blob.slice(Math.max(0,blob.size-70000)).arrayBuffer()); let e=-1;
+  for(let i=tail.byteLength-22;i>=0;i--) if(tail.getUint32(i,true)===0x06054b50){ e=i; break; } if(e<0) return [];
+  const n=tail.getUint16(e+10,true), off=tail.getUint32(e+16,true), cd=new DataView(await blob.slice(off,off+Math.min(blob.size-off,200000)).arrayBuffer()); const out=[]; let p=0;
+  for(let i=0;i<n&&p+46<=cd.byteLength;i++){ if(cd.getUint32(p,true)!==0x02014b50) break; const nl=cd.getUint16(p+28,true), el=cd.getUint16(p+30,true), cl=cd.getUint16(p+32,true);
+    out.push({name:new TextDecoder().decode(new Uint8Array(cd.buffer,p+46,nl)),method:cd.getUint16(p+10,true),csize:cd.getUint32(p+20,true),size:cd.getUint32(p+24,true),off:cd.getUint32(p+42,true)}); p+=46+nl+el+cl; }
+  return out; }
+async function cabUnzip(blob,ent){
+  const h=new DataView(await blob.slice(ent.off,ent.off+30).arrayBuffer()), start=ent.off+30+h.getUint16(26,true)+h.getUint16(28,true), raw=blob.slice(start,start+ent.csize);
+  const name=ent.name.split('/').pop(); if(ent.method===0) return new File([raw],name);
+  if(ent.method===8&&window.DecompressionStream) return new File([await new Response(raw.stream().pipeThrough(new DecompressionStream('deflate-raw'))).blob()],name);
+  throw new Error('unsupported zip'); }
 const cabDB=()=>new Promise((res,rej)=>{ const r=indexedDB.open('b98cab',1); r.onupgradeneeded=()=>r.result.createObjectStore('g',{keyPath:'id',autoIncrement:true}); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); });
 const cabTx=async(mode,fn)=>{ const db=await cabDB(); return new Promise((res,rej)=>{ const t=db.transaction('g',mode), s=t.objectStore('g'), r=fn(s); t.oncomplete=()=>res(r&&r.result); t.onerror=()=>rej(t.error); }); };
 function mountCabinet(w){
@@ -30,7 +43,9 @@ function mountCabinet(w){
   async function addFiles(files){
     const ok=files.filter(f=>CAB_SYS[(f.name.split('.').pop()||'').toLowerCase()]); if(!ok.length){ alertBox('That file type is not supported.\n\nSupported: '+Object.keys(CAB_SYS).join(', '),'warn','Game Cabinet'); return; }
     let last=null; const ac=($('#ac',w.body)||{}).value||'arcade';
-    for(const f of ok){ const ext=f.name.split('.').pop().toLowerCase(), [core,sysName]=CAB_SYS[ext]; const rec={title:f.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' '),file:f.name,core:core==='arcade'?ac:core,sysName:core==='arcade'?(ac==='mame2003'?'Arcade (MAME)':'Arcade (FBNeo)'):sysName,blob:f,added:Date.now()};
+    for(let f of ok){ let ext=f.name.split('.').pop().toLowerCase();
+      if(ext==='zip'){ try{ const inner=(await cabZipList(f)).find(z=>{ const x=z.name.split('.').pop().toLowerCase(); return x!=='zip'&&CAB_SYS[x]&&z.size>0; }); if(inner){ f=await cabUnzip(f,inner); ext=f.name.split('.').pop().toLowerCase(); } }catch(e){ /* keep it as an arcade zip */ } }
+      const [core,sysName]=CAB_SYS[ext]; const rec={title:f.name.replace(/\.[^.]+$/,'').replace(/[_]+/g,' '),file:f.name,core:core==='arcade'?ac:core,sysName:core==='arcade'?(ac==='mame2003'?'Arcade (MAME)':'Arcade (FBNeo)'):sysName,blob:f,added:Date.now()};
       try{ await cabTx('readwrite',s=>s.add(rec)); }catch(e){ /* storage full or private mode: still play it this time */ } last=rec; }
     if(ok.length===1&&last) play(last); else home();
   }
@@ -44,4 +59,4 @@ function mountCabinet(w){
   home();
   return ()=>{ dead=true; if(url) URL.revokeObjectURL(url); if(frame) frame.src='about:blank'; };
 }
-if(CFG.emulator) ARCADE.push({id:'cabinet',f:'CABINET.EXE',n:'Game Cabinet (bring your own games)',e:'🕹️',wh:[760,620],m:mountCabinet});
+if(CFG.cabinet) ARCADE.push({id:'cabinet',f:'CABINET.EXE',n:'Game Cabinet (bring your own games)',e:'🕹️',wh:[760,620],m:mountCabinet});

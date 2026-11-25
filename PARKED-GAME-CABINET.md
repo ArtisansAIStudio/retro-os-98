@@ -18,3 +18,8 @@ Not tested with a real game file yet.
    `js/consent.js` (it is an IndexedDB database named b98cab, so clearing needs indexedDB.deleteDatabase).
 6. `faq.html` / `terms.html`: add that the site includes no games and players must own what they load.
 7. Test with a legal homebrew game file, then push.
+
+## Update (2026-11-25)
+It was switched on briefly, then REMOVED from the live site at the owner's request (it was not working for them and
+risks the AdSense review). This branch has the latest code, including support for console games packed inside .zip files.
+When re-enabling, the flag is now `cabinet:true` in js/config.js (not `emulator`), and `if(CFG.cabinet)` in js/arcade7.js.
