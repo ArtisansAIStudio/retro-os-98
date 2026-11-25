@@ -11,7 +11,7 @@ function mountChomper(w){
   const reset=()=>{ grid=MAZE.map(r=>[...r]); dots=0; grid.forEach(r=>r.forEach(c=>{ if(c==='.'||c==='o') dots++; })); lives=3; score=0; state='play'; fright=0; rewarded=false; spawn(); };
   const spawn=()=>{ pl={x:9,y:9,dir:'l',px:9,py:9,prog:0,moving:false}; want='l';
     gh=[{x:9,y:3,dir:'l',col:'#ff4d4d',k:0},{x:1,y:1,dir:'r',col:'#ff9fd2',k:1},{x:17,y:11,dir:'l',col:'#4dd2ff',k:2}].map(e=>({...e,px:e.x,py:e.y,prog:0,home:[e.x,e.y],eaten:0})); };
-  reset();
+  reset(); w.ch={get pl(){return pl;},get gh(){return gh;},get fright(){return fright;},set fright(v){fright=v;}};
   const step=(e,spd,dt,choose)=>{ // tile-to-tile movement
     if(!e.moving){ const d=choose(e); if(d&&free(e.x+DIRS[d][0],e.y+DIRS[d][1])){ e.dir=d; e.moving=true; e.prog=0; e.nx=e.x+DIRS[d][0]; e.ny=e.y+DIRS[d][1]; } else return; }
     e.prog+=spd*dt; if(e.prog>=1){ e.x=e.nx; e.y=e.ny; e.prog=0; e.moving=false; e.px=e.x; e.py=e.y; const d=choose(e); if(d&&free(e.x+DIRS[d][0],e.y+DIRS[d][1])){ e.dir=d; e.moving=true; e.nx=e.x+DIRS[d][0]; e.ny=e.y+DIRS[d][1]; } }
@@ -26,7 +26,8 @@ function mountChomper(w){
       if(!pl.moving||pl.prog===0){ const c=grid[pl.y][pl.x]; if(c==='.'){ grid[pl.y][pl.x]=' '; dots--; score+=10; } else if(c==='o'){ grid[pl.y][pl.x]=' '; dots--; score+=50; fright=6.5; } }
       gh.forEach(e=>{ if(e.eaten>0){ e.eaten-=dt; return; }
         step(e,fright>0?2.6:3.9,dt,q=>{ const opts=Object.keys(DIRS).filter(d=>free(q.x+DIRS[d][0],q.y+DIRS[d][1])&&(d!==OPP[q.dir]||Object.keys(DIRS).filter(z=>free(q.x+DIRS[z][0],q.y+DIRS[z][1])).length===1)); if(!opts.length) return null;
-          if(fright>0||(q.k===2&&Math.random()<.45)) return pick(opts);
+          if(fright>0){ if(Math.random()<.12) return pick(opts); const far=d=>Math.hypot(q.x+DIRS[d][0]-pl.x,q.y+DIRS[d][1]-pl.y); return opts.sort((m,n)=>far(n)-far(m))[0]; }   // scared: run away from the player
+          if(q.k===2&&Math.random()<.45) return pick(opts);
           const tx=pl.x+(q.k===1?DIRS[pl.dir][0]*3:0), ty=pl.y+(q.k===1?DIRS[pl.dir][1]*3:0);
           return opts.sort((a,b)=>Math.hypot(q.x+DIRS[a][0]-tx,q.y+DIRS[a][1]-ty)-Math.hypot(q.x+DIRS[b][0]-tx,q.y+DIRS[b][1]-ty))[0]; });
         if(Math.hypot(e.px-pl.px,e.py-pl.py)<.6){ if(fright>0){ score+=200; e.eaten=3; e.x=e.px=e.home[0]; e.y=e.py=e.home[1]; e.moving=false; } else { lives--; if(lives<=0) state='over'; else spawn(); } } });

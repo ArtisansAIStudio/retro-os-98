@@ -204,3 +204,13 @@ textarea.np{flex:1;width:100%;border:0;resize:none;box-shadow:var(--sunk);font:1
 .arc{display:block;background:#000;width:100%;touch-action:none}
 .arcbar{display:flex;gap:10px;justify-content:space-between;padding:3px 6px;font-size:12px;flex-wrap:wrap}
 @media(max-width:700px){.dicon{width:70px}}
+
+/* ---- retro cartridge look for game windows ---- */
+.win.cart{box-shadow:0 0 0 2px #000,0 0 0 4px #c8c8c8,0 0 0 6px #000,4px 6px 0 6px rgba(0,0,0,.45)}
+.win.cart .tbar{background:repeating-linear-gradient(90deg,#1c1c24 0 6px,#2a2a36 6px 12px);color:#ffd23f;font:700 15px/16px var(--pix);letter-spacing:1px;text-transform:uppercase;height:20px}
+.win.cart .tbar .tt{text-shadow:1px 1px 0 #000}
+.win.cart .wbody{font-family:var(--pix);font-size:18px;background:#1b2160}
+.win.cart .wbody button{font-family:var(--pix);font-size:18px}
+.win.cart .arc{image-rendering:pixelated;filter:contrast(1.14) saturate(1.3)}
+.win.cart .arcbar{background:#000;color:#8fe3ff;font:16px/1.1 var(--pix);letter-spacing:.5px;padding:3px 8px;text-transform:uppercase}
+.win.cart .menubar{background:#1c1c24;color:#ffd23f;font-family:var(--pix);font-size:17px}

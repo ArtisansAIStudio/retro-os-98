@@ -15,7 +15,7 @@ function touchPad(w,K,btns){
 }
 function loop(w,fn){
   let raf,last=performance.now(),on=true;
-  const f=t=>{ if(!on) return; const dt=Math.min(.05,(t-last)/1000); last=t; fn(dt); raf=requestAnimationFrame(f); };
+  const f=t=>{ if(!on) return; const dt=Math.min(.05,(t-last)/1000); last=t; fn(dt); if(typeof Retro!=='undefined') Retro.post(w); raf=requestAnimationFrame(f); };
   raf=requestAnimationFrame(f); return ()=>{ on=false; cancelAnimationFrame(raf); };
 }
 
