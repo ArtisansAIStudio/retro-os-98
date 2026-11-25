@@ -39,11 +39,3 @@ grant  select (id, game, name, country, score, daily, created_at) on public.scor
 revoke insert, update, delete, truncate on public.scores from anon, authenticated;
 grant all on public.scores to service_role;
 grant usage, select on all sequences in schema public to service_role;
-
--- login required to post (Google sign-in via Supabase Auth). Old anonymous scores keep verified = false.
-alter table public.scores add column if not exists user_id  uuid references auth.users(id) on delete set null;
-alter table public.scores add column if not exists verified boolean not null default false;
-create index if not exists scores_user_idx on public.scores (user_id, created_at);
--- the public key may see "verified" but never the user id
-revoke select on public.scores from anon, authenticated;
-grant  select (id, game, name, country, score, daily, created_at, verified) on public.scores to anon, authenticated;
