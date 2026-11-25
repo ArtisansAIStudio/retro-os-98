@@ -19,7 +19,7 @@ const Consent={
     b.id='cookiebar'; b.style.cssText='position:fixed;right:8px;bottom:38px;width:min(360px,calc(100vw - 16px));z-index:8500';
     document.body.appendChild(b);
     const done=l=>{ this.set(l); b.remove(); };
-    $('#cb-all',b).onclick=()=>done('all'); $('#cb-ess',b).onclick=()=>done('essential'); $('#cb-pol',b).onclick=()=>window.open('privacy.html','_blank','noopener');
+    $('#cb-all',b).onclick=()=>done('all'); $('#cb-ess',b).onclick=()=>done('essential'); $('#cb-pol',b).onclick=()=>window.open('/nostalgia/privacy','_blank','noopener');
   }
 };
 async function clearMyData(){
@@ -37,6 +37,6 @@ APPS.privacy={icon:'🔒',fit:true,single:true,title:'Privacy & Cookies',mount(w
     <div class="dbtn" style="justify-content:flex-end;padding:10px 0 0"><button id="pv-ok" class="def">Close</button></div></div>`;
   $('#pv-all',w.body).onclick=()=>{ Consent.set('all'); const b=$('#cookiebar'); if(b) b.remove(); };
   $('#pv-ess',w.body).onclick=()=>{ Consent.set('essential'); const b=$('#cookiebar'); if(b) b.remove(); };
-  $('#pv-pol',w.body).onclick=()=>window.open('privacy.html','_blank','noopener');
+  $('#pv-pol',w.body).onclick=()=>window.open('/nostalgia/privacy','_blank','noopener');
   $('#pv-clr',w.body).onclick=clearMyData; $('#pv-ok',w.body).onclick=()=>w.close();
 }};
