@@ -6,12 +6,12 @@ function mountChomper(w){
   w.body.innerHTML=`<div class="arcbar"><span>Arrow keys or WASD · eat every dot · power pellets turn the tables</span><span id="st"></span></div><canvas class="arc" width="456" height="312"></canvas>`;
   const cv=$('canvas',w.body), g=cv.getContext('2d'), K=keyset(w), T=24, st=$('#st',w.body), st2=st;
   const DIRS={u:[0,-1],d:[0,1],l:[-1,0],r:[1,0]}, OPP={u:'d',d:'u',l:'r',r:'l'};
-  let grid,dots,pl,gh,lives,score,state,fright,rewarded,want,fx=[],freeze=0,combo=0;
+  let grid,dots,pl,gh,lives,score,state,fright,rewarded,want,fx=[],freeze=0,combo=0,die=0,popped=false;
   const free=(x,y)=>MAZE[y]&&MAZE[y][x]!==undefined&&grid[y][x]!=='#';
-  const reset=()=>{ grid=MAZE.map(r=>[...r]); dots=0; grid.forEach(r=>r.forEach(c=>{ if(c==='.'||c==='o') dots++; })); lives=3; score=0; state='play'; fright=0; rewarded=false; fx=[]; freeze=0; combo=0; spawn(); };
+  const reset=()=>{ grid=MAZE.map(r=>[...r]); dots=0; grid.forEach(r=>r.forEach(c=>{ if(c==='.'||c==='o') dots++; })); lives=3; score=0; state='play'; fright=0; rewarded=false; fx=[]; freeze=0; combo=0; die=0; popped=false; spawn(); };
   const spawn=()=>{ pl={x:9,y:9,dir:'l',px:9,py:9,prog:0,moving:false}; want='l';
     gh=[{x:9,y:3,dir:'l',col:'#ff4d4d',k:0},{x:1,y:1,dir:'r',col:'#ff9fd2',k:1},{x:17,y:11,dir:'l',col:'#4dd2ff',k:2}].map(e=>({...e,px:e.x,py:e.y,prog:0,home:[e.x,e.y],eaten:0})); };
-  reset(); w.ch={get pl(){return pl;},get gh(){return gh;},get fright(){return fright;},set fright(v){fright=v;}};
+  reset(); w.ch={get pl(){return pl;},get gh(){return gh;},get fright(){return fright;},set fright(v){fright=v;},get die(){return die;},get lives(){return lives;},get state(){return state;}};
   const step=(e,spd,dt,choose)=>{ // tile-to-tile movement
     if(!e.moving){ const d=choose(e); if(d&&free(e.x+DIRS[d][0],e.y+DIRS[d][1])){ e.dir=d; e.moving=true; e.prog=0; e.nx=e.x+DIRS[d][0]; e.ny=e.y+DIRS[d][1]; } else return; }
     e.prog+=spd*dt; if(e.prog>=1){ e.x=e.nx; e.y=e.ny; e.prog=0; e.moving=false; e.px=e.x; e.py=e.y; const d=choose(e); if(d&&free(e.x+DIRS[d][0],e.y+DIRS[d][1])){ e.dir=d; e.moving=true; e.nx=e.x+DIRS[d][0]; e.ny=e.y+DIRS[d][1]; } }
@@ -23,6 +23,7 @@ function mountChomper(w){
     if(k.has('arrowup')||k.has('w')) want='u'; else if(k.has('arrowdown')||k.has('s')) want='d'; else if(k.has('arrowleft')||k.has('a')) want='l'; else if(k.has('arrowright')||k.has('d')) want='r';
     if(state!=='play'){ if(k.has('enter')||k.has(' ')) reset(); }
     else {
+      if(die>0){ die-=dt; if(die<.3&&!popped){ popped=true; const cx=pl.px*T+12, cy=pl.py*T+12; burst(cx,cy,'#ffe000',22); burst(cx,cy,'#fff',8); fx.push({k:'r',x:cx,y:cy,t:.5,col:'#ffe000'}); } if(die<=0){ lives--; popped=false; fx=[]; if(lives<=0) state='over'; else spawn(); } } else {
       fright=Math.max(0,fright-dt);
       step(pl,4.6,dt,e=>free(e.x+DIRS[want][0],e.y+DIRS[want][1])?want:(free(e.x+DIRS[e.dir][0],e.y+DIRS[e.dir][1])?e.dir:null));
       if(!pl.moving||pl.prog===0){ const c=grid[pl.y][pl.x]; if(c==='.'){ grid[pl.y][pl.x]=' '; dots--; score+=10; } else if(c==='o'){ grid[pl.y][pl.x]=' '; dots--; score+=50; fright=6.5; combo=0; const cx=pl.px*T+12, cy=pl.py*T+12; fx.push({k:'r',x:cx,y:cy,t:.5,col:'#9ad0ff'}); fx.push({k:'t',x:cx,y:cy-14,t:1,txt:'POWER!',col:'#9ad0ff'}); burst(cx,cy,'#ffffff',10); } }
@@ -32,17 +33,18 @@ function mountChomper(w){
           if(q.k===2&&Math.random()<.45) return pick(opts);
           const tx=pl.x+(q.k===1?DIRS[pl.dir][0]*3:0), ty=pl.y+(q.k===1?DIRS[pl.dir][1]*3:0);
           return opts.sort((a,b)=>Math.hypot(q.x+DIRS[a][0]-tx,q.y+DIRS[a][1]-ty)-Math.hypot(q.x+DIRS[b][0]-tx,q.y+DIRS[b][1]-ty))[0]; });
-        if(Math.hypot(e.px-pl.px,e.py-pl.py)<.6){ if(fright>0){ combo++; const pts=Math.min(1600,100*Math.pow(2,combo)); score+=pts; const ex=e.px*T+12, ey=e.py*T+12; e.ex=e.px; e.ey=e.py; e.eaten=3; e.x=e.px=e.home[0]; e.y=e.py=e.home[1]; e.moving=false; freeze=.16; pl.pulse=.3; burst(ex,ey,e.col,18); burst(ex,ey,'#2a2adf',8); fx.push({k:'r',x:ex,y:ey,t:.4,col:'#ffd23f'}); fx.push({k:'t',x:ex,y:ey-6,t:1.1,txt:'+'+pts,col:'#ffd23f'}); } else { lives--; if(lives<=0) state='over'; else spawn(); } } });
+        if(Math.hypot(e.px-pl.px,e.py-pl.py)<.6){ if(fright>0){ combo++; const pts=Math.min(1600,100*Math.pow(2,combo)); score+=pts; const ex=e.px*T+12, ey=e.py*T+12; e.ex=e.px; e.ey=e.py; e.eaten=3; e.x=e.px=e.home[0]; e.y=e.py=e.home[1]; e.moving=false; freeze=.16; pl.pulse=.3; burst(ex,ey,e.col,18); burst(ex,ey,'#2a2adf',8); fx.push({k:'r',x:ex,y:ey,t:.4,col:'#ffd23f'}); fx.push({k:'t',x:ex,y:ey-6,t:1.1,txt:'+'+pts,col:'#ffd23f'}); } else if(die<=0){ die=1.7; popped=false; fright=0; } } });
       if(dots<=0){ state='win'; if(!rewarded){ rewarded=true; celebrate(); } }
+      }
     }
     g.fillStyle='#000'; g.fillRect(0,0,456,312);
     grid.forEach((r,y)=>r.forEach((c,x)=>{ if(c==='#'){ g.fillStyle='#1b2ad8'; g.fillRect(x*T+1,y*T+1,T-2,T-2); g.fillStyle='#000'; g.fillRect(x*T+5,y*T+5,T-10,T-10); } else if(c==='.'){ g.fillStyle='#ffd7a8'; g.fillRect(x*T+10,y*T+10,4,4); } else if(c==='o'){ g.fillStyle='#fff'; g.beginPath(); g.arc(x*T+12,y*T+12,Math.floor(performance.now()/250)%2?7:5,0,7); g.fill(); } }));
-    const mouth=.25+.25*Math.abs(Math.sin(performance.now()/90)), ang={r:0,d:Math.PI/2,l:Math.PI,u:-Math.PI/2}[pl.dir];
+    const dtm=die>0?1.7-die:0, mouth=die>0?(dtm<.4?.05:Math.min(Math.PI,.05+(dtm-.4)*3.4)):.25+.25*Math.abs(Math.sin(performance.now()/90)), ang=die>0?-Math.PI/2:{r:0,d:Math.PI/2,l:Math.PI,u:-Math.PI/2}[pl.dir];
     pl.pulse=Math.max(0,(pl.pulse||0)-rdt); const PR=10+pl.pulse*16, pcx=pl.px*T+12, pcy=pl.py*T+12;
     g.fillStyle=pl.pulse>0?'#fff27a':'#ffe000'; g.beginPath(); g.moveTo(pcx,pcy); g.arc(pcx,pcy,PR,ang+mouth,ang-mouth+Math.PI*2); g.fill();
-    g.fillStyle='#ff4d9a'; g.fillRect(pcx-1,pcy-PR-3,3,3); g.beginPath(); g.moveTo(pcx,pcy-PR-2); g.lineTo(pcx-6,pcy-PR-6); g.lineTo(pcx-6,pcy-PR+1); g.closePath(); g.fill(); g.beginPath(); g.moveTo(pcx,pcy-PR-2); g.lineTo(pcx+6,pcy-PR-6); g.lineTo(pcx+6,pcy-PR+1); g.closePath(); g.fill();   // her bow
+    if(die<=0||dtm<1.1){ g.fillStyle='#ff4d9a'; g.fillRect(pcx-1,pcy-PR-3,3,3); g.beginPath(); g.moveTo(pcx,pcy-PR-2); g.lineTo(pcx-6,pcy-PR-6); g.lineTo(pcx-6,pcy-PR+1); g.closePath(); g.fill(); g.beginPath(); g.moveTo(pcx,pcy-PR-2); g.lineTo(pcx+6,pcy-PR-6); g.lineTo(pcx+6,pcy-PR+1); g.closePath(); g.fill(); }   // her bow
     fx.forEach(f=>{ f.t-=rdt; if(f.k==='p'){ f.x+=f.vx*rdt; f.y+=f.vy*rdt; f.vx*=.94; f.vy*=.94; g.globalAlpha=Math.max(0,f.t/.55); g.fillStyle=f.col; g.fillRect(f.x-2,f.y-2,4,4); } else if(f.k==='r'){ const r=(1-f.t/.5)*34+6; g.globalAlpha=Math.max(0,f.t/.5); g.strokeStyle=f.col; g.lineWidth=3; g.beginPath(); g.arc(f.x,f.y,r,0,7); g.stroke(); } else { f.y-=26*rdt; g.globalAlpha=Math.min(1,f.t*2); g.font='bold 15px Arial'; g.textAlign='center'; g.lineWidth=3; g.strokeStyle='#000'; g.strokeText(f.txt,f.x,f.y); g.fillStyle=f.col; g.fillText(f.txt,f.x,f.y); g.textAlign='left'; } g.globalAlpha=1; }); fx=fx.filter(f=>f.t>0);
-    gh.forEach(e=>{ if(e.eaten>0){ const u=Math.min(1,1-(e.eaten-.4)/2.6), hx=((e.ex??e.home[0])+(e.home[0]-(e.ex??e.home[0]))*Math.max(0,u))*T+12, hy=((e.ey??e.home[1])+(e.home[1]-(e.ey??e.home[1]))*Math.max(0,u))*T+12; g.fillStyle='#fff'; g.fillRect(hx-7,hy-4,5,6); g.fillRect(hx+2,hy-4,5,6); g.fillStyle='#2a2adf'; g.fillRect(hx-5,hy-2,3,4); g.fillRect(hx+4,hy-2,3,4); return; } const x=e.px*T+12, y=e.py*T+12; g.fillStyle=fright>0?(fright<2&&Math.floor(performance.now()/150)%2?'#fff':'#2a2adf'):e.col; g.beginPath(); g.arc(x,y-1,10,Math.PI,0); g.lineTo(x+10,y+10); g.lineTo(x+5,y+6); g.lineTo(x,y+10); g.lineTo(x-5,y+6); g.lineTo(x-10,y+10); g.fill(); g.fillStyle='#fff'; g.fillRect(x-6,y-5,5,6); g.fillRect(x+1,y-5,5,6); g.fillStyle='#00f'; g.fillRect(x-4,y-3,3,3); g.fillRect(x+3,y-3,3,3); });
+    gh.forEach(e=>{ if(die>0&&1.7-die>.4) return; if(e.eaten>0){ const u=Math.min(1,1-(e.eaten-.4)/2.6), hx=((e.ex??e.home[0])+(e.home[0]-(e.ex??e.home[0]))*Math.max(0,u))*T+12, hy=((e.ey??e.home[1])+(e.home[1]-(e.ey??e.home[1]))*Math.max(0,u))*T+12; g.fillStyle='#fff'; g.fillRect(hx-7,hy-4,5,6); g.fillRect(hx+2,hy-4,5,6); g.fillStyle='#2a2adf'; g.fillRect(hx-5,hy-2,3,4); g.fillRect(hx+4,hy-2,3,4); return; } const x=e.px*T+12, y=e.py*T+12; g.fillStyle=fright>0?(fright<2&&Math.floor(performance.now()/150)%2?'#fff':'#2a2adf'):e.col; g.beginPath(); g.arc(x,y-1,10,Math.PI,0); g.lineTo(x+10,y+10); g.lineTo(x+5,y+6); g.lineTo(x,y+10); g.lineTo(x-5,y+6); g.lineTo(x-10,y+10); g.fill(); g.fillStyle='#fff'; g.fillRect(x-6,y-5,5,6); g.fillRect(x+1,y-5,5,6); g.fillStyle='#00f'; g.fillRect(x-4,y-3,3,3); g.fillRect(x+3,y-3,3,3); });
     st.textContent=`Score ${score}   Lives ${'♥'.repeat(Math.max(0,lives))}`;
     if(state!=='play'){ g.fillStyle='rgba(0,0,0,.65)'; g.fillRect(0,110,456,90); g.textAlign='center'; g.fillStyle=state==='win'?'#8f8':'#f66'; g.font='bold 28px Arial'; g.fillText(state==='win'?'BOARD CLEARED!':'GAME OVER',228,152); g.fillStyle='#fff'; g.font='15px Arial'; g.fillText('Press Enter to play again',228,178); g.textAlign='left'; }
   });
