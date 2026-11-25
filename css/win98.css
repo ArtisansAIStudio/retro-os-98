@@ -183,7 +183,7 @@ textarea.np{flex:1;width:100%;border:0;resize:none;box-shadow:var(--sunk);font:1
 .panel .fl{background:none;box-shadow:none;padding:0;justify-content:center;gap:8px;margin:14px 0;flex:none}
 .panel .fl div{width:46px;height:56px;display:grid;place-items:center;font:40px var(--pix);background:#fff;color:var(--navy);box-shadow:var(--raised)}
 .panel .fl div.gone{color:#b00000;text-decoration:line-through;opacity:.5;box-shadow:var(--sunk)}
-.panel .fl div.win{background:var(--navy);color:#fff;transform:scale(1.15)}
+.panel .fl div.win{background:var(--navy);color:#fff;transform:scale(1.15);min-width:0;min-height:0;padding:0;position:static;max-width:none}
 .res{font:54px/1 var(--pix);color:#b00000;margin:6px 0}
 .score{display:flex;gap:10px;justify-content:space-between;font-size:14px;flex-wrap:wrap}
 .bigNum{font:92px/1 var(--pix);color:var(--navy)}
