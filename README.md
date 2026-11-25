@@ -12,5 +12,7 @@ Inspired by the desktops of the late 90s. All code, icons and sounds are origina
 
 Live at **https://artisansmedia.com/nostalgia/** (served through a Cloudflare Worker, see `cloudflare-worker.js`).
 
+Privacy policy: [privacy.html](privacy.html). Set `contactEmail` in `js/config.js`. Any ad code must only load inside `if(Consent.allows('ads'))` (see `js/consent.js`).
+
 Run locally: serve the folder with any static server (`python3 -m http.server`) and open it.
 Worldwide leaderboard setup: see [SETUP-LEADERBOARD.md](SETUP-LEADERBOARD.md).

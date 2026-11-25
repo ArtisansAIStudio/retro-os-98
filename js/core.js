@@ -182,6 +182,7 @@ function startItems(){
     {label:'Documents',icon:IC.doc,sub:docs},
     {label:'Settings',icon:IC.control,sub:[
       {label:'Control Panel',icon:IC.control,run:()=>openApp('explorer',{path:'CONTROL'})},
+      {label:'Privacy & Cookies',icon:'🔒',run:()=>openApp('privacy')},
       {label:'Printers',icon:IC.printer,run:()=>alertBox('No printers are installed.\n\nYour cousin has the only printer in the building.','info','Printers')},
       {label:'Taskbar & Start Menu...',icon:IC.display,run:async()=>{ const r=await dialog({title:'Taskbar Properties',icon:'info',width:380,buttons:['Reset menu order','Close'],cancel:'Close',body:'The taskbar is staying at the bottom, where it belongs.<br><br><b>Tip:</b> drag items inside the Programs, Accessories and Games menus to put them in your own order.'}); if(r.btn==='Reset menu order'){ store.set('menuorder98','{}'); alertBox('Start menu order reset.','info','Taskbar Properties'); } }}]},
     {label:'Find',icon:IC.find,sub:[{label:'Files or Folders...',icon:IC.find,run:()=>alertBox('Find is not available right now.\n\nTry the last place you left it.','info','Find: All Files')}]},

@@ -1,18 +1,18 @@
 // Reward system + classic games
 /* ---------------- TUCK SHOP (rewards) ---------------- */
 const CANDIES=[
-  {n:'Melody',s:'wrap',a:'#a9561a',b:'#f2c14e'},
-  {n:'Eclairs',s:'wrap',a:'#5a2e12',b:'#d9a066'},
-  {n:'Kismi',s:'wrap',a:'#ff8a00',b:'#ffd36b'},
-  {n:'Mango Bite',s:'wrap',a:'#ffc400',b:'#ff9f1c'},
-  {n:'Alpenliebe',s:'wrap',a:'#e63946',b:'#ffffff'},
-  {n:'Pulse',s:'round',a:'#6fd04a',b:'#2e9e5b'},
-  {n:'Boomer',s:'round',a:'#ff6fb5',b:'#ff2d95'},
-  {n:'Rola Cola',s:'round',a:'#3b1f0e',b:'#9b5a2a'},
+  {n:'Choco Toffee',s:'wrap',a:'#a9561a',b:'#f2c14e'},
+  {n:'Choco Eclair',s:'wrap',a:'#5a2e12',b:'#d9a066'},
+  {n:'Milk Toffee',s:'wrap',a:'#ff8a00',b:'#ffd36b'},
+  {n:'Mango Toffee',s:'wrap',a:'#ffc400',b:'#ff9f1c'},
+  {n:'Cream Candy',s:'wrap',a:'#e63946',b:'#ffffff'},
+  {n:'Raw Mango Candy',s:'round',a:'#6fd04a',b:'#2e9e5b'},
+  {n:'Bubble Gum',s:'round',a:'#ff6fb5',b:'#ff2d95'},
+  {n:'Cola Candy',s:'round',a:'#3b1f0e',b:'#9b5a2a'},
   {n:'Orange Candy',s:'round',a:'#ff9b21',b:'#ffd08a'},
-  {n:'Gems',s:'gems',a:'#e63946',b:'#ffd400'},
-  {n:'Five Star',s:'bar',a:'#6b3a1e',b:'#c0392b'},
-  {n:'Perk',s:'bar',a:'#7b4a2a',b:'#f4b400'},
+  {n:'Choco Buttons',s:'gems',a:'#e63946',b:'#ffd400'},
+  {n:'Caramel Bar',s:'bar',a:'#6b3a1e',b:'#c0392b'},
+  {n:'Wafer Bar',s:'bar',a:'#7b4a2a',b:'#f4b400'},
   {n:'Lollipop',s:'lolly',a:'#e63946',b:'#ffffff'},
   {n:'Golden Wrapper',s:'wrap',a:'#d4af37',b:'#fff3b0',secret:true},
 ];
@@ -25,7 +25,8 @@ function candySVG(c){
   else g=`<path d="M34 25L58 38" stroke="#ddd" stroke-width="4" stroke-linecap="round"/><circle cx="24" cy="18" r="16" fill="${a}"/><circle cx="24" cy="18" r="10" fill="none" stroke="${b}" stroke-width="3"/><circle cx="24" cy="18" r="4" fill="none" stroke="${b}" stroke-width="3"/>`;
   return `<svg viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg">${g}</svg>`;
 }
-const jar=()=>{ try{ return JSON.parse(store.get('candies')||'{}'); }catch(e){ return {}; } };
+const OLD_SWEETS={'Melody':'Choco Toffee','Eclairs':'Choco Eclair','Kismi':'Milk Toffee','Mango Bite':'Mango Toffee','Alpenliebe':'Cream Candy','Pulse':'Raw Mango Candy','Boomer':'Bubble Gum','Rola Cola':'Cola Candy','Gems':'Choco Buttons','Five Star':'Caramel Bar','Perk':'Wafer Bar'};
+const jar=()=>{ try{ const j=JSON.parse(store.get('candies')||'{}'); let ch=false; for(const [o,n] of Object.entries(OLD_SWEETS)) if(j[o]){ j[n]=(j[n]||0)+j[o]; delete j[o]; ch=true; } if(ch) store.set('candies',JSON.stringify(j)); return j; }catch(e){ return {}; } };
 function renderTuck(){
   const j=jar(), have=CANDIES.filter(c=>j[c.n]).length;
   $$('.shelf').forEach(sh=>{ sh.innerHTML=CANDIES.map(c=>`<div class="sw ${j[c.n]?'':'lock'}">${j[c.n]?`<b>${j[c.n]}</b>`:''}${candySVG(c)}${j[c.n]?c.n:'???'}</div>`).join(''); });
@@ -248,7 +249,7 @@ function mountTTT(root){
 }
 
 /* ---------------- HANGMAN ---------------- */
-const HWORDS=['WALKMAN','TAMAGOTCHI','DOORDARSHAN','SHAKTIMAN','GAMEBOY','POKEMON','CARTOON NETWORK','CASSETTE','PAGER','FLOPPY DISK','JOYSTICK','DEXTERS LABORATORY','POWER RANGERS','MOGLI','SCOOBY DOO','TELETUBBIES','SPACE JAM','JURASSIC PARK','TITANIC','BACKSTREET BOYS','SPICE GIRLS','HOTMAIL','NOKIA','ARCADE','COMPLAN','PARLE G','CHOCOLATE','TAZOS','BLACK CAT'];
+const HWORDS=['CASSETTE','PAGER','FLOPPY DISK','ARCADE','JOYSTICK','WALKIE TALKIE','ROTARY PHONE','VIDEO RENTAL','CABLE TV','MIXTAPE','DIAL UP MODEM','SCREEN SAVER','PEN FRIEND','AUTOGRAPH BOOK','COMIC BOOK','MARBLES','CRICKET CARDS','SUNDAY MORNING','TUCK SHOP','SCHOOL BELL','ROUGH COPY','PEN FIGHT','FRIENDSHIP BAND','SLAM BOOK','ANTAKSHARI','GULLY CRICKET','CARROM','LUDO','BLACK AND WHITE TV','ROOF ANTENNA','ROLLER SKATES','CHOCOLATE','KITE FLYING','PHONE BOOTH','POSTCARD','TAPE RECORDER','TRANSISTOR RADIO','CAMERA ROLL','BICYCLE BELL','HOLIDAY HOMEWORK'];
 function mountHangman(root){
   let word, hit, miss, over;
   root.innerHTML=`<div class="panel center">
@@ -410,7 +411,7 @@ function mountDots(root){
 const GAMES=[
   {id:'flames',wh:[500,470],f:'FLAMES.EXE',e:'🔥',n:'FLAMES',d:'Names + math = your destiny. The OG.',m:mountFlames},
   {id:'book-cricket',wh:[460,430],f:'BOOKCKT.EXE',e:'🏏',n:'Book Cricket',d:'Flip pages, score runs. Last bench special.',m:mountBookCricket},
-  {id:'snake',wh:[400,600],f:'SNAKE.EXE',e:'🐍',n:'Snake',d:'Nokia 3310 vibes. Do not hit the wall.',m:mountSnake},
+  {id:'snake',wh:[400,600],f:'SNAKE.EXE',e:'🐍',n:'Snake',d:'Old-phone vibes. Do not hit the wall.',m:mountSnake},
   {id:'xo',wh:[400,490],f:'XO.EXE',e:'❌',n:'Tic-Tac-Toe (XO)',d:'Noughts & crosses. Friend or computer.',m:mountTTT},
   {id:'npat',wh:[430,560],f:'NPAT.EXE',e:'✏️',n:'Name Place Animal Thing',d:'Random letter, 60 seconds. STOP!',m:mountNPAT},
   {id:'hangman',wh:[440,560],f:'HANGMAN.EXE',e:'🪢',n:'Hangman',d:'Guess the 90s word before you hang.',m:mountHangman},

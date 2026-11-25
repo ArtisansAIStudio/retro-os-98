@@ -5,14 +5,14 @@ const DEF={'C:':{
     'Love Letter.txt':'Dear Rani,\r\n\r\nI have calculated our FLAMES 47 times.\r\nIt says F every time.\r\nI am choosing to ignore that.\r\n\r\n- Raj',
     'Mixtape Tracklist.txt':'SIDE A\r\n1. Chaiyya Chaiyya\r\n2. Pehla Nasha\r\n3. Wannabe\r\n4. I Want It That Way\r\n\r\nSIDE B\r\n1. Macarena (do NOT tell anyone)\r\n2. Mmmbop\r\n3. Baby One More Time\r\n4. Tujhe Dekha Toh\r\n\r\n(recorded off the radio, the first 4 seconds of every song are missing)',
     'Homework (DO NOT OPEN).txt':'Maths: ex 4.3 Q1-10\r\nScience: draw the human heart (labelled)\r\nHindi: nibandh - Meri Pehli Railyatra\r\n\r\nStatus: copied from Rohan in the bus.',
-    'Pocket Money.txt':'Mon  Rs 5   Eclairs x2, Melody x1\r\nTue  Rs 2   Orange candy\r\nWed  Rs 0   (spent on Tuesday)\r\nThu  Rs 10  cricket cards\r\nFri  Rs 5   Parle-G, the good kind',
+    'Pocket Money.txt':'Mon  Rs 5   Choco eclairs x2, toffee x1\r\nTue  Rs 2   Orange candy\r\nWed  Rs 0   (spent on Tuesday)\r\nThu  Rs 10  cricket cards\r\nFri  Rs 5   Glucose biscuits, the good kind',
     'Private':{'Secret Crush List.txt':'MY SECRET CRUSH LIST (1998)\r\n\r\n1. [REDACTED]\r\n2. [REDACTED]\r\n3. The girl from tuition. [REDACTED]\r\n4. Whoever is on the cover of this month\'s cricket magazine\r\n\r\nNote to self: do NOT leave this on the family computer.','Time Capsule.txt':'TIME CAPSULE\r\nWritten: 14 March 1999\r\nTo be opened: {{year}}\r\n\r\nDear me from {{year}},\r\n\r\nI hope there are flying cars. I hope you still play cricket in the lane.\r\nI hope you remember Sunday mornings and the sound of the shutters.\r\nI hope you did not become boring.\r\n\r\nIt is {{date}} where you are.\r\nIf you are reading this, you still have time to call your old friends.\r\n\r\n- You, aged 12','secret_mixtape.wav':'#exe:secretmix','PARTY.EXE':'#exe:party'},
-    'To Do.txt':'1. Return Rohan\'s cassette\r\n2. Finish Mario level 8\r\n3. Be home before the streetlights come on'},
+    'To Do.txt':'1. Return Rohan\'s cassette\r\n2. Finish level 8 (the hard one)\r\n3. Be home before the streetlights come on'},
   'Program Files':{'NetSurfer':{'netsurf.exe':'#exe:ie'},'Accessories':{'paint.exe':'#exe:paint','textpad.exe':'#exe:notepad'}},
   'Games':{},
   'Recycled':{'Ex Number.txt':'Deleted.\r\nUn-deleted.\r\nDeleted again.\r\n\r\n(I know it by heart anyway.)','Myspace Password.txt':'password123\r\n\r\nTom is still my friend, if you were wondering.','Resignation Letter v14.txt':'Dear Sir,\r\n\r\nI would like to quit.\r\n\r\nSorry, draft 14. Never sent. Do not send.','Copy of Copy of Homework.doc':'x','Floppy Disk 1 of 47.zip':'x'},
-  'autoexec.bat':'@echo off\r\nPATH C:\\RETROOS;C:\\RETROOS\\COMMAND\r\nSET BLASTER=A220 I5 D1 T4\r\nLH C:\\RETROOS\\COMMAND\\MSCDEX.EXE /D:MSCD001',
-  'config.sys':'DEVICE=C:\\RETROOS\\HIMEM.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
+  'autoexec.bat':'@echo off\r\nPATH C:\\RETROOS;C:\\RETROOS\\COMMAND\r\nSET SOUND=A220 I5 D1 T4\r\nLH C:\\RETROOS\\COMMAND\\CDROM.EXE /D:CD001',
+  'config.sys':'DEVICE=C:\\RETROOS\\MEMORY.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
   'command.com':'#exe:dos',
   'README.TXT':'RETRO OS 98 - THE FAN-MADE ONE\r\n=============================\r\n\r\nThis is a tribute built from scratch in JavaScript,\r\ninspired by the desktops of the late 90s.\r\nAll code, icons and sounds are original.\r\nNot affiliated with any company.\r\n\r\nThe games in C:\\GAMES are original lookalikes of the\r\nclassics we all played. Win some, collect the sweets.\r\n\r\nSome things on this disk are hidden. Explorer: View > Show Hidden Files. DOS: DIR /A.\r\nCurious people find things.\r\n\r\nEverything runs in your browser. Close the tab and it\'s gone.\r\nExcept your Notepad files and sweets, those stay on this\r\ncomputer (localStorage).'
  },'A:':null,'D:':null};
@@ -322,7 +322,7 @@ const IE_HOME=`<h1>🌍 Welcome to Rohan's Homepage!!</h1>
 <div class="mq"><span>Welcome, visitor! Sign my guestbook! Cricket scores updated whenever I remember! Best viewed in NetSurfer 4.0 at 800x600!</span></div>
 <p style="text-align:center">You are visitor number <b style="font-family:'Courier New';background:#000;color:#0f0;padding:1px 6px">004217</b></p><hr>
 <ul>
- <li><a data-u="http://homepages.example.com/~rohan/cricket.html">My Cricket Page (Sachin photos!!)</a></li>
+ <li><a data-u="http://homepages.example.com/~rohan/cricket.html">My Cricket Page (Cricket legend photos!!)</a></li>
  <li><a data-u="http://homepages.example.com/~rohan/links.html">My Favourite Links</a></li>
  <li><a data-u="http://homepages.example.com/~rohan/guestbook.html">Sign my Guestbook!!</a></li>
  <li><a data-u="http://homepages.example.com/~rohan/mp3.html">Download MP3s (28 min per song)</a></li>
