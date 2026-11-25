@@ -38,8 +38,8 @@ function openDaily(game){
 // legacy anon keys are JWTs (send as Bearer too); new sb_publishable_ keys go in the apikey header only
 const keyHeaders=()=>CFG.anonKey.startsWith('eyJ')?{apikey:CFG.anonKey,Authorization:'Bearer '+CFG.anonKey}:{apikey:CFG.anonKey};
 /* verified runs: the server signs a token when a game starts and checks it when a score arrives */
-async function fnCall(name,body){
-  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/functions/v1/'+name,{method:'POST',headers:{...keyHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
+async function fnCall(name,body,extra={}){
+  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/functions/v1/'+name,{method:'POST',headers:{...keyHeaders(),'Content-Type':'application/json',...extra},body:JSON.stringify(body)});
   let j={}; try{ j=await r.json(); }catch(e){}
   if(!r.ok){ const e=new Error(j.error||('HTTP '+r.status)); e.status=r.status; throw e; }
   return j;
@@ -60,7 +60,8 @@ const LB={
     if(REMOTE()){
       if(run) await run.ready;
       if(!run||!run.token) throw Object.assign(new Error('could not start a verified run'),{status:0});
-      score=(await fnCall('submit-score',{token:run.token,game:e.game,name:e.name,country:e.country,score:e.score,daily:e.daily||null,log})).score;
+      const ut=await Auth.token(); if(!ut) throw Object.assign(new Error('please log in to post your score'),{status:401});
+      score=(await fnCall('submit-score',{token:run.token,game:e.game,name:e.name,country:e.country,score:e.score,daily:e.daily||null,log},{'x-user-token':ut})).score;
     }
     const L=this.local(); L.push({game:e.game,name:e.name,country:e.country,score,daily:e.daily||null,at:new Date().toISOString()}); store.set('lb98',JSON.stringify(L.slice(-300)));
     return score;
@@ -68,7 +69,7 @@ const LB={
   async top(game,{scope='world',country,limit=20}={}){
     const low=GAME_META[game].low;
     if(REMOTE()){
-      let q=`scores?select=name,country,score,created_at&game=eq.${game}&order=score.${low?'asc':'desc'},created_at.asc&limit=80`;
+      let q=`scores?select=name,country,score,created_at,verified&game=eq.${game}&order=score.${low?'asc':'desc'},created_at.asc&limit=80`;
       if(scope==='country') q+=`&country=eq.${country}`; if(scope==='daily') q+=`&daily=eq.${today()}`;
       return dedupe((await (await sb(q)).json()).map(r=>({...r,at:r.created_at}))).slice(0,limit);
     }
@@ -84,7 +85,7 @@ const LB={
     return this.local().filter(r=>r.game===game&&(!daily||r.daily===today())&&(low?r.score<score:r.score>score)).length+1;
   },
   async feed(){
-    if(REMOTE()) return (await (await sb('scores?select=name,country,game,score,created_at&order=created_at.desc&limit=25')).json()).map(r=>({...r,at:r.created_at}));
+    if(REMOTE()) return (await (await sb('scores?select=name,country,game,score,created_at,verified&order=created_at.desc&limit=25')).json()).map(r=>({...r,at:r.created_at}));
     return this.local().slice(-25).reverse();
   }
 };
@@ -94,6 +95,10 @@ async function postScore(game,score,opt={}){
   const m=GAME_META[game], done=()=>{ if(opt.reward) celebrate(); };
   if(!m||!(score>0)){ done(); return; }
   await sleep(900);
+  if(REMOTE()&&!(await Auth.token())){
+    const lr=await dialog({title:'Log in to post',icon:'info',buttons:['Log in with Google','No thanks'],cancel:'No thanks',width:390,body:`<b>${m.e} ${m.n}</b><br>Your score: <b>${m.fmt(score)}</b><br><br>Log in with Google to put your score on the worldwide leaderboard. We only use your login to know who posted a score, and we never show your email.`});
+    if(lr.btn!=='Log in with Google'||!(await Auth.login())){ done(); return; }
+  }
   const pf=profile.get()||{name:'',country:guessCountry()};
   const r=await dialog({title:'New Score!',buttons:['Submit','No thanks'],cancel:'No thanks',width:390,
     body:`<b>${m.e} ${m.n}</b><br>Your score: <b>${m.fmt(score)}</b>${opt.daily?'<br>📅 Daily Challenge':''}<br><br>Initials (arcade tag):<br><input type="text" id="lbn" maxlength="12" value="${esc(pf.name)}" placeholder="e.g. ROH" autocomplete="off"><br><br>Country:<br><select id="lbc">${countryOpts(pf.country)}</select><br><br><small>${REMOTE()?'Your score goes on the worldwide leaderboard.':'The worldwide board is not connected yet, so this score is saved on this computer only.'}</small>`});
@@ -102,7 +107,7 @@ async function postScore(game,score,opt={}){
   profile.set({name,country});
   let rank=null, final=score;
   try{ final=await LB.submit({game,name,country,score,daily:opt.daily?today():null},opt.run,opt.log); rank=await LB.rank(game,final,opt.daily).catch(()=>null); }
-  catch(e){ await alertBox(e.status>=400&&e.status<500?`Score rejected by the referee: ${e.message}.\n\nOnly real, verified runs make the leaderboard.`:'Could not reach the worldwide leaderboard right now.\n\nTry again in a moment.','warn','Leaderboard'); done(); return; }
+  catch(e){ await alertBox(e.status===401?'Please log in again to post your score.\n\nYour login may have expired.':e.status>=400&&e.status<500?`Score rejected by the referee: ${e.message}.\n\nOnly real, verified runs make the leaderboard.`:'Could not reach the worldwide leaderboard right now.\n\nTry again in a moment.','warn','Leaderboard'); done(); return; }
   await shareDialog({game,score:final,name,country,rank,daily:opt.daily});
   done();
 }
@@ -138,7 +143,7 @@ async function editProfile(){
 
 /* Hall of Fame window */
 APPS.halloffame={icon:'🏆',wh:[580,500],single:true,col:true,status:true,title:'Hall of Fame',
-  menu:w=>[{label:'File',items:[['My Profile...',editProfile],['Refresh',()=>w.hof&&w.hof.render()],'-',['Close',()=>w.close()]]},
+  menu:w=>[{label:'File',items:[['My Profile...',editProfile],...(REMOTE()?[Auth.user()?['Log out'+(Auth.user().email?' ('+Auth.user().email+')':''),()=>{ Auth.logout(); w.hof&&w.hof.paintMe(); }]:['Log in with Google...',async()=>{ await Auth.login(); w.hof&&w.hof.paintMe(); }]]:[]),['Refresh',()=>w.hof&&w.hof.render()],'-',['Close',()=>w.close()]]},
     {label:'Help',items:[['About the leaderboard',()=>alertBox(REMOTE()?'Scores are shared worldwide. One best score per player tag and country is shown.\n\nThe Daily Challenge gives everyone on Earth the same seeded game, reset at midnight UTC.':'This copy is running in local mode: scores are kept on this computer only.\n\nThe site owner can switch on the worldwide board (see SETUP-LEADERBOARD.md).','info','Hall of Fame')]]}],
   mount(w,a){
     const g0=a.game&&GAME_META[a.game]?a.game:'snake';
@@ -160,12 +165,12 @@ APPS.halloffame={icon:'🏆',wh:[580,500],single:true,col:true,status:true,title
         const rows=await LB.top(game,{scope:sc.value,country:pf().country});
         if(!rows.length){ tbl.innerHTML='<div class="center" style="padding:24px">No scores here yet.<br>Be the first!</div>'; return; }
         const me=pf();
-        tbl.innerHTML=`<table class="lbt"><tr><th>#</th><th>Player</th><th>Country</th><th>${m.low?'Time':'Score'}</th><th>When</th></tr>${rows.map((r,i)=>`<tr class="${r.name===me.name&&r.country===me.country?'me':''}"><td>${i+1}${i===0?' 🥇':i===1?' 🥈':i===2?' 🥉':''}</td><td>${esc(r.name)}</td><td>${flag(r.country)} ${esc(r.country)}</td><td><b>${m.fmt(r.score)}</b></td><td>${ago(r.at)}</td></tr>`).join('')}</table>`;
+        tbl.innerHTML=`<table class="lbt"><tr><th>#</th><th>Player</th><th>Country</th><th>${m.low?'Time':'Score'}</th><th>When</th></tr>${rows.map((r,i)=>`<tr class="${r.name===me.name&&r.country===me.country?'me':''}"><td>${i+1}${i===0?' 🥇':i===1?' 🥈':i===2?' 🥉':''}</td><td>${esc(r.name)}${r.verified?' <span title="Logged-in player">✓</span>':' <small style="color:#888" title="Posted before login was required">guest</small>'}</td><td>${flag(r.country)} ${esc(r.country)}</td><td><b>${m.fmt(r.score)}</b></td><td>${ago(r.at)}</td></tr>`).join('')}</table>`;
       }catch(e){ tbl.innerHTML='<div class="center bad" style="padding:24px">Could not reach the leaderboard.<br>Check your connection and press Refresh.</div>'; }
     }
     async function live(){
       lp.textContent='Loading...';
-      try{ const rows=await LB.feed(); lp.innerHTML=rows.length?rows.map(r=>`<div style="padding:3px 0;border-bottom:1px dotted #aaa">${flag(r.country)} <b>${esc(r.name)}</b> scored <b>${GAME_META[r.game]?GAME_META[r.game].fmt(r.score):r.score}</b> in ${GAME_META[r.game]?GAME_META[r.game].e+' '+GAME_META[r.game].n:esc(r.game)} <span style="color:#666">· ${ago(r.at)}</span></div>`).join(''):'<div class="center" style="padding:24px">Nothing yet. Go play something!</div>'; }
+      try{ const rows=await LB.feed(); lp.innerHTML=rows.length?rows.map(r=>`<div style="padding:3px 0;border-bottom:1px dotted #aaa">${flag(r.country)} <b>${esc(r.name)}</b>${r.verified?' ✓':''} scored <b>${GAME_META[r.game]?GAME_META[r.game].fmt(r.score):r.score}</b> in ${GAME_META[r.game]?GAME_META[r.game].e+' '+GAME_META[r.game].n:esc(r.game)} <span style="color:#666">· ${ago(r.at)}</span></div>`).join(''):'<div class="center" style="padding:24px">Nothing yet. Go play something!</div>'; }
       catch(e){ lp.innerHTML='<div class="center bad" style="padding:24px">Could not reach the leaderboard.</div>'; }
     }
     const setTab=t=>{ tab=t; $$('.tabs span',w.body).forEach(s=>s.classList.toggle('on',s.dataset.t===t)); bp.style.display=t==='b'?'flex':'none'; lp.style.display=t==='l'?'block':'none'; clearInterval(timer); if(t==='l') timer=setInterval(live,20000); render(); };
@@ -173,8 +178,8 @@ APPS.halloffame={icon:'🏆',wh:[580,500],single:true,col:true,status:true,title
     gm.onchange=()=>{ opts(); render(); }; sc.onchange=render;
     $('#pl',w.body).onclick=()=>{ const game=gm.value; if(game.startsWith('mines-')) store.set('mine-lv',game.slice(6)); const ex=wins.find(x=>x.id===GAME_APP[game]); if(ex) ex.close(); openApp(GAME_APP[game]); };
     $('#dl',w.body).onclick=()=>openDaily(gm.value);
-    const meEl=$('#me',w.body), paintMe=()=>{ meEl.textContent=pf().name?`Playing as ${flag(pf().country)} ${pf().name} (change)`:'Set your arcade tag'; };
+    const meEl=$('#me',w.body), paintMe=()=>{ meEl.textContent=(pf().name?`Playing as ${flag(pf().country)} ${pf().name} (change)`:'Set your arcade tag')+(REMOTE()?(Auth.user()?' · logged in ✓':' · not logged in'):''); };
     meEl.style.cssText='cursor:pointer;text-decoration:underline'; meEl.title='Choose the name and country shown on the leaderboard'; meEl.onclick=async()=>{ await editProfile(); paintMe(); render(); }; paintMe();
-    w.hof={render}; opts(); render();
+    w.hof={render,paintMe}; opts(); render();
     return ()=>clearInterval(timer);
   }};

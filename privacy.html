@@ -62,10 +62,12 @@
     <p>None of this is sent to us. You can erase all of it any time with <b>Start &gt; Settings &gt; Privacy &amp; Cookies &gt; Clear my data on this device</b>, or by clearing site data in your browser.</p>
 
     <h2>3. The leaderboard</h2>
+    <p>You can play every game without an account. To <b>post a score</b> you must log in with Google. We use the login only to know who posted a score. Your Google name and picture are not shown on the leaderboard, and we never post anything to your Google account. Scores posted before login was required are shown as "guest".</p>
     <p>Posting a score is your choice. When you do, we store in our database (hosted by Supabase):</p>
     <ul>
       <li>the game, your score and the date and time;</li>
       <li>the arcade tag you typed (up to 12 characters) and the country you picked;</li>
+      <li>an internal <b>user ID</b> from your Google login, so we know who posted a score and can limit abuse. It is never shown publicly, and we do not display your email or Google name;
       <li>a <b>hashed</b> version of your IP address. We use it only to limit abuse (for example, someone submitting hundreds of scores a minute). We never store the raw address next to your score, and the hash is not shown publicly.</li>
     </ul>
     <p>The game, score, tag, country and date are <b>public</b>, anyone can see them on the Hall of Fame. Please don't use your real name, phone number or anything personal as your tag. We keep scores until we delete them. You can ask us to remove an entry (see section 9).</p>
@@ -78,6 +80,7 @@
       <tr><td>GitHub Pages</td><td>Hosts the site's files.</td></tr>
       <tr><td>Cloudflare</td><td>Routes and caches traffic for artisansmedia.com, and provides security. Also serves some code libraries (cdnjs) when you open the 3D sandbox.</td></tr>
       <tr><td>Cloudflare Web Analytics</td><td>Counts page views and visits, and shows which pages, countries and referring sites they come from, so we can see whether the site works. It uses no cookies and does not track individual visitors or build profiles across sites.</td></tr>
+      <tr><td>Google Sign-In (via Supabase Auth)</td><td>Lets you log in to post a score. Google tells us your email address and name, and Supabase keeps your login record. Google's own privacy policy applies to your Google account.</td></tr>
       <tr><td>Supabase</td><td>Stores leaderboard scores and checks that scores are genuine.</td></tr>
       <tr><td>Google Fonts</td><td>Delivers the pixel font. Google receives your IP address when the font loads.</td></tr>
     </table>

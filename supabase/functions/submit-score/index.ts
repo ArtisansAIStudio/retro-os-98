@@ -95,7 +95,7 @@
 const enc = new TextEncoder();
 const corsHeaders = {
   'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type, x-user-token',
   'Access-Control-Allow-Methods': 'POST, OPTIONS',
 };
 const json = (body: unknown, status = 200) =>
@@ -130,8 +130,8 @@ async function sha256Hex(s: string): Promise<string> {
   return [...new Uint8Array(d)].map((x) => x.toString(16).padStart(2, '0')).join('');
 }
 
-// POST { token, game, name, country, score, daily?, log? } -> { ok, score }.
-// Verifies the signed run token, replays/validates the run, rate-limits per IP, then inserts
+// POST { token, game, name, country, score, daily?, log? } -> { ok, score }. Needs header x-user-token (a Supabase login).
+// Verifies the login, the signed run token, replays/validates the run, rate-limits per IP, then inserts
 // with the service role (the browser itself has NO insert permission on the table).
 
 
@@ -147,6 +147,14 @@ Deno.serve(async (req) => {
   if (req.method !== 'POST') return json({ error: 'POST only' }, 405);
   let body: any;
   try { body = await req.json(); } catch { return json({ error: 'bad json' }, 400); }
+
+  // login required: the player's Supabase access token, checked against Supabase Auth
+  const ut = req.headers.get('x-user-token') || '';
+  if (!ut) return json({ error: 'login required' }, 401);
+  const ur = await fetch(`${URL_}/auth/v1/user`, { headers: { apikey: KEY, Authorization: `Bearer ${ut}` } });
+  if (!ur.ok) return json({ error: 'login expired, please log in again' }, 401);
+  const userId = (await ur.json())?.id;
+  if (!userId || !/^[0-9a-f-]{36}$/.test(userId)) return json({ error: 'login required' }, 401);
 
   const tok = await verifyToken(body?.token);
   if (!tok) return json({ error: 'invalid run token' }, 400);
@@ -168,10 +176,15 @@ Deno.serve(async (req) => {
     return parseInt((r.headers.get('content-range') || '').split('/')[1] || '0', 10) || 0;
   };
   if ((await count(60e3)) >= 8 || (await count(86400e3)) >= 150) return json({ error: 'too many scores, slow down' }, 429);
+  const ucount = async (sinceMs: number) => {
+    const r = await rest(`scores?select=id&user_id=eq.${userId}&created_at=gt.${new Date(now - sinceMs).toISOString()}`, { headers: { Prefer: 'count=exact', Range: '0-0' } });
+    return parseInt((r.headers.get('content-range') || '').split('/')[1] || '0', 10) || 0;
+  };
+  if ((await ucount(60e3)) >= 8 || (await ucount(86400e3)) >= 150) return json({ error: 'too many scores, slow down' }, 429);
 
   const ins = await rest('scores', {
     method: 'POST', headers: { Prefer: 'return=minimal' },
-    body: JSON.stringify({ game: body.game, name, country, score: v.score, daily: v.daily, run_id: tok.n, ip_hash: ipHash }),
+    body: JSON.stringify({ game: body.game, name, country, score: v.score, daily: v.daily, run_id: tok.n, ip_hash: ipHash, user_id: userId, verified: true }),
   });
   if (ins.status === 409) return json({ error: 'this run was already submitted' }, 409);
   if (!ins.ok) return json({ error: 'could not save score' }, 500);
