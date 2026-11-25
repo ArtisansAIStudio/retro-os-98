@@ -1,14 +1,14 @@
 // ===== Dirt Dash: an original side-view motocross game with an 8-bit pixel look =====
 function mountDirt(w){
-  w.body.innerHTML=`<div class="arcbar"><span>Space gas · X turbo · ↑↓ change lane · ←→ tilt in the air</span><span id="st"></span></div><canvas class="arc" width="256" height="160" style="image-rendering:pixelated"></canvas>`;
+  w.body.innerHTML=`<div class="arcbar"><span>Bike drives itself · Space / X turbo · ↑↓ lane · ←→ tilt in the air</span><span id="st"></span></div><canvas class="arc" width="256" height="160" style="image-rendering:pixelated"></canvas>`;
   const cv=$('canvas',w.body), g=cv.getContext('2d'), K=keyset(w), st=$('#st',w.body), W=256, H=160, TLEN=4200;
-  if(coarse) touchPad(w,K,[['w','▲'],['s','▼'],[' ','⛽ Gas'],['x','🔥 Turbo'],['a','⟲'],['d','⟳']]);
+  if(coarse) touchPad(w,K,[['w','▲'],['s','▼'],[' ','🔥 Turbo'],['a','⟲'],['d','⟳']]);
   g.imageSmoothingEnabled=false;
   const LY=[86,103,121,140], JERSEY=['#e63946','#ffd23f','#3ec5ff','#7bd88f'];
   // 16x12 pixel bike facing right. k tyre, w hub, j jersey, h helmet, s skin, m frame, g fork/pipe
   const BIKE=['......hhh.......','......hhhs......','....jjjjj.......','...jjjjjjj.g....','..jjjjjjj.gg....','..mmmmmmmmg.....','.mmmmmmmmmmm....','.kkk..mm..kkk...','kkwkk.mm.kkwkk..','kwwwk....kwwwk..','kkwkk....kkwkk..','.kkk......kkk...'];
   const pix=(rows,x,y,pal)=>{ for(let r=0;r<rows.length;r++) for(let c=0;c<rows[r].length;c++){ const p=rows[r][c]; if(p!=='.'){ g.fillStyle=pal[p]; g.fillRect(x+c,y+r,1,1); } } };
-  let me, cpus, obs, dust, state, count, el, msg, msgT, rewarded, rank, best=parseFloat(store.get('dirt-best')||'0')||0, laneCd, newBest, doneT;
+  let me, cpus, obs, dust, state, count, el, msg, msgT, rewarded, rank, best=parseFloat(store.get('dirt-best')||'0')||0, laneCd, newBest, doneT, run;
   const mkBike=(lane,col,cpu)=>({x:20,lane,ly:lane,v:0,z:0,vz:0,pitch:0,down:0,temp:0,air:0,ramp:null,col,cpu,cd:0,hit:new Set()});
   const reset=()=>{
     me=mkBike(2,JERSEY[0],false); cpus=[0,1,3].map((l,i)=>{ const b=mkBike(l,JERSEY[i+1],true); b.top=130+Math.random()*28; return b; });
@@ -17,14 +17,14 @@ function mountDirt(w){
       else if(r<.6) obs.push({t:'mud',x,lane,w:42,h:0});
       else if(r<.84) obs.push({t:'bump',x,lane,w:8,h:0});
       else for(let l=0;l<4;l++) obs.push({t:'ramp',x,lane:l,w:44,h:22}); }
-    dust=[]; state='count'; count=3.4; el=0; msg=''; msgT=0; rewarded=false; rank=0; laneCd=0; newBest=false; doneT=0; };
+    dust=[]; state='count'; count=3.4; el=0; msg=''; msgT=0; rewarded=false; rank=0; laneCd=0; newBest=false; doneT=0; run=Run.begin('dirt'); };
   reset(); w.dd={get me(){return me;},get cpus(){return cpus;},get obs(){return obs;},get state(){return state;},get el(){return el;},get rank(){return rank;}};
   const say=t=>{ msg=t; msgT=1.2; };
   const rampAt=b=>obs.find(o=>o.t==='ramp'&&o.lane===Math.round(b.ly)&&b.x>=o.x&&b.x<o.x+o.w);
   const crash=(b,t)=>{ b.down=1.1; b.v=0; b.z=0; b.pitch=0; b.vz=0; b.air=0; b.ramp=null; if(!b.cpu) say(t||'CRASH!'); };
   const stop=loop(w,dt=>{
     const k=K.k; if(active!==w) k.clear(); msgT-=dt;
-    const gas=k.has(' ')||k.has('z'), turbo=k.has('x')||k.has('shift'), up=k.has('arrowup')||k.has('w'), dn=k.has('arrowdown')||k.has('s'), tl=k.has('arrowleft')||k.has('a'), tr=k.has('arrowright')||k.has('d');
+    const gas=true, turbo=k.has('x')||k.has('shift')||k.has(' ')||k.has('z'), up=k.has('arrowup')||k.has('w'), dn=k.has('arrowdown')||k.has('s'), tl=k.has('arrowleft')||k.has('a'), tr=k.has('arrowright')||k.has('d');
     if(state==='count'){ count-=dt; if(count<=0) state='race'; }
     else {
       const racing=state==='race'; if(racing) el+=dt;
@@ -40,7 +40,7 @@ function mountDirt(w){
           if(b.temp>=100){ b.temp=45; crash(b,'OVERHEATED!'); }
           const bump=obs.find(m=>m.t==='bump'&&m.lane===Math.round(b.ly)&&Math.abs(b.x-m.x)<4&&!b.hit.has(m));
           if(bump){ b.hit.add(bump); b.v*=.5; b.z=0; say('BUMP!'); }
-          if(o){ b.ramp=o; b.z=(b.x-o.x)/o.w*o.h; b.pitch+=(Math.atan2(o.h,o.w)-b.pitch)*Math.min(1,dt*10); }
+          if(o){ b.ramp=o; b.z=(b.x-o.x)/o.w*o.h; b.pitch+=(Math.min(.35,Math.atan2(o.h,o.w))-b.pitch)*Math.min(1,dt*10); }
           else if(b.ramp){ const o2=b.ramp; b.ramp=null; b.air=0.001; b.vz=b.v*(o2.h/o2.w)*1.1+25; b.z=o2.h; }
           else b.pitch*=Math.max(0,1-dt*8);
         } else {
@@ -52,7 +52,7 @@ function mountDirt(w){
         b.ly+=(b.lane-b.ly)*Math.min(1,dt*14);
         if(b.v>40&&!b.air&&Math.random()<dt*40) dust.push({x:b.x-6,y:LY[Math.round(b.ly)]+6,vx:-b.v*.3,vy:-12-Math.random()*14,l:.5});
         if(turbo&&gas&&b.v>150&&Math.random()<dt*30) dust.push({x:b.x-8,y:LY[Math.round(b.ly)]-8-b.z,vx:-90,vy:-5+Math.random()*10,l:.25,f:1});
-        if(b.x>=TLEN){ state='done'; rank=1+cpus.filter(c=>c.x>b.x).length; if(el<best||!best){ best=el; store.set('dirt-best',String(el)); newBest=true; } if(rank===1&&!rewarded){ rewarded=true; celebrate(); } }
+        if(b.x>=TLEN){ state='done'; rank=1+cpus.filter(c=>c.x>b.x).length; if(el<best||!best){ best=el; store.set('dirt-best',String(el)); newBest=true; } if(!rewarded){ rewarded=true; postScore('dirt',Math.round(el*1000),{reward:rank===1,run}); } }
       }
       cpus.forEach(c=>{
         if(c.down>0){ c.down-=dt; c.v=0; } else if(racing||state==='done'){ c.v+=((c.top||120)*(racing?1:.4)>c.v?60:-40)*dt; if(obs.some(m=>m.t==='mud'&&m.lane===c.lane&&c.x>=m.x&&c.x<m.x+m.w)) c.v*=1-dt*1.2; }

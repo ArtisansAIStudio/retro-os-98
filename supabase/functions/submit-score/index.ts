@@ -5,7 +5,7 @@
 (function(G){
   const mulberry32=a=>()=>{ a|=0; a=a+0x6D2B79F5|0; let t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return((t^t>>>14)>>>0)/4294967296; };
   const seedFrom=s=>{ let h=2166136261; for(const c of String(s)){ h^=c.charCodeAt(0); h=Math.imul(h,16777619); } return h>>>0; };
-  const GAMES=['snake','drop','turbo','maze3d','mines-b','mines-i','mines-e','cricket'];
+  const GAMES=['snake','drop','turbo','maze3d','mines-b','mines-i','mines-e','cricket','dirt'];
   const DAILY_GAMES=['snake','drop','mines-i'];
   const LV={b:[9,9,10],i:[16,16,40],e:[30,16,99]};   // [cols, rows, mines]
   const SNAKE_N=15, SNAKE_TICK_MS=115;
@@ -80,6 +80,8 @@
       if(!Number.isInteger(sc)||sc<1) return bad('bad score'); const es=age/1000; if(es<3||sc>250*es) return bad('implausible score'); score=sc;
     } else if(game==='turbo'){
       if(!Number.isInteger(sc)||sc<49000) return bad('implausible time'); if(sc>age+2000) return bad('faster than real time'); score=sc;
+    } else if(game==='dirt'){
+      if(!Number.isInteger(sc)||sc<20000) return bad('implausible time'); if(sc>age+2000) return bad('faster than real time'); score=sc;
     } else if(game==='maze3d'){
       if(!Number.isInteger(sc)||sc<15) return bad('implausible time'); if(sc>age/1000+2) return bad('faster than real time'); score=sc;
     } else if(game==='cricket'){

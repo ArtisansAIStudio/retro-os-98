@@ -8,8 +8,9 @@ const GAME_META={
   'mines-b':{n:'Minesweeper - Beginner',e:'💣',low:true,fmt:s=>s+'s'},
   'mines-i':{n:'Minesweeper - Intermediate',e:'💣',low:true,fmt:s=>s+'s'},
   'mines-e':{n:'Minesweeper - Expert',e:'💣',low:true,fmt:s=>s+'s'},
-  cricket:{n:'Book Cricket',e:'🏏',low:false,fmt:s=>s+' runs'}};
-const GAME_APP={snake:'snake',drop:'drop',turbo:'turbo',maze3d:'maze3d','mines-b':'mines','mines-i':'mines','mines-e':'mines',cricket:'book-cricket'};
+  cricket:{n:'Book Cricket',e:'🏏',low:false,fmt:s=>s+' runs'},
+  dirt:{n:'Dirt Dash (finish time)',e:'🏍️',low:true,fmt:fmtMs}};
+const GAME_APP={snake:'snake',drop:'drop',turbo:'turbo',maze3d:'maze3d','mines-b':'mines','mines-i':'mines','mines-e':'mines',cricket:'book-cricket',dirt:'dirt'};
 const DAILY_GAMES=['snake','drop','mines-i'];
 const COUNTRIES=[['AR','Argentina'],['AU','Australia'],['BD','Bangladesh'],['BR','Brazil'],['CA','Canada'],['CL','Chile'],['CN','China'],['CO','Colombia'],['EG','Egypt'],['FR','France'],['DE','Germany'],['GH','Ghana'],['HK','Hong Kong'],['IN','India'],['ID','Indonesia'],['IE','Ireland'],['IL','Israel'],['IT','Italy'],['JP','Japan'],['KE','Kenya'],['KR','South Korea'],['MY','Malaysia'],['MX','Mexico'],['NP','Nepal'],['NL','Netherlands'],['NZ','New Zealand'],['NG','Nigeria'],['PK','Pakistan'],['PE','Peru'],['PH','Philippines'],['PL','Poland'],['PT','Portugal'],['RU','Russia'],['SA','Saudi Arabia'],['SG','Singapore'],['ZA','South Africa'],['ES','Spain'],['LK','Sri Lanka'],['SE','Sweden'],['CH','Switzerland'],['TH','Thailand'],['TR','Turkey'],['UA','Ukraine'],['AE','United Arab Emirates'],['GB','United Kingdom'],['US','United States'],['VN','Vietnam']];
 const flag=cc=>/^[A-Z]{2}$/.test(cc||'')?String.fromCodePoint(...[...cc].map(c=>127397+c.charCodeAt(0))):'🌍';
