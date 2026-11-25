@@ -77,6 +77,7 @@ function fixedIcons(){ return [
   {n:'Paint',i:IC.paint,run:()=>openApp('paint')},
   {n:'Minesweeper',i:IC.mines,run:()=>openApp('mines')},
   {n:'Solitaire',i:IC.sol,run:()=>openApp('sol')},
+  {n:'FLAMES',i:'🔥',run:()=>openApp('flames')},
   ...ARCADE.map(g=>({n:g.n,i:g.e,run:()=>openApp(g.id)})),
   {n:'Classic Games',i:IC.folder,run:()=>openApp('explorer',{path:'C:\\Games'})}]; }
 const coarse=matchMedia('(pointer:coarse)').matches;
