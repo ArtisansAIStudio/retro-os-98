@@ -317,19 +317,23 @@ function dosMount(el,opt={}){
 APPS.dos={icon:IC.dos,wh:[580,380],title:'DOS Prompt',mount(w){ w.body.classList.add('dos'); dosMount(w.body,{close:()=>w.close()}); }};
 
 /* ---------- NetSurfer ---------- */
-const IE_HOME=`<h1>🌍 Welcome to Rohan's Homepage!!</h1>
-<p class="blink">★ ★ UNDER CONSTRUCTION ★ ★</p>
-<div class="mq"><span>Welcome, visitor! Sign my guestbook! Cricket scores updated whenever I remember! Best viewed in NetSurfer 4.0 at 800x600!</span></div>
-<p style="text-align:center">You are visitor number <b style="font-family:'Courier New';background:#000;color:#0f0;padding:1px 6px">004217</b></p><hr>
+const IE_HOME=`<h1>🌍 Welcome to the Homepage of Alex "Pixel" Rivera!!</h1>
+<p style="text-align:center;font-size:20px;margin:0"><b>Greatest Gamer in the World</b> <small>(self-certified)</small></p>
+<p class="blink">★ ★ WORLD CHAMPION (ACCORDING TO ME) ★ ★</p>
+<div class="mq"><span>Welcome, visitor from anywhere on Earth! My high score in everything is number 1! Cheat codes inside! Think you can beat me? Prove it in the Hall of Fame! Best viewed in NetSurfer 4.0 at 800x600!</span></div>
+<p style="text-align:center">You are visitor number <b style="font-family:'Courier New';background:#000;color:#0f0;padding:1px 6px">004217</b> from <b>195 countries</b></p><hr>
 <ul>
- <li><a data-u="http://homepages.example.com/~rohan/cricket.html">My Cricket Page (Cricket legend photos!!)</a></li>
- <li><a data-u="http://homepages.example.com/~rohan/links.html">My Favourite Links</a></li>
- <li><a data-u="http://homepages.example.com/~rohan/guestbook.html">Sign my Guestbook!!</a></li>
- <li><a data-u="http://homepages.example.com/~rohan/mp3.html">Download MP3s (28 min per song)</a></li>
+ <li><a data-app="halloffame">🏆 Beat my scores in the Hall of Fame!!</a> (you can't)</li>
+ <li><a data-app="snake">🐍 My Snake record: unbeatable. Try it.</a></li>
+ <li><a data-app="turbo">🏎️ Race me in Turbo Rush, loser buys the pizza</a></li>
+ <li><a data-app="mines">💣 Watch me clear Minesweeper with my eyes closed</a></li>
+ <li><a data-u="http://homepages.example.com/~pixel/cheats.html">Cheat Codes (do not tell Mum)</a></li>
+ <li><a data-u="http://homepages.example.com/~pixel/guestbook.html">Sign my Guestbook!!</a></li>
+ <li><a data-u="http://homepages.example.com/~pixel/mp3.html">Download my Victory Anthem (28 min per song)</a></li>
 </ul>
-<p>Email me: <a data-u="mailto:rohan_cool_98@example.com">rohan_cool_98@example.com</a></p>
-<p style="text-align:center;font-size:13px">[ <a data-u="http://www.webring.example/prev">&lt;&lt; Prev</a> | Cricket Fans WebRing | <a data-u="http://www.webring.example/next">Next &gt;&gt;</a> ]</p>
-<p style="text-align:center;font-size:12px;color:#666">This page is © 1998. Do not steal my graphics.</p>`;
+<p>Email me your challenges: <a data-u="mailto:pixel_master_98@example.com">pixel_master_98@example.com</a></p>
+<p style="text-align:center;font-size:13px">[ <a data-u="http://www.webring.example/prev">&lt;&lt; Prev</a> | International Gamers WebRing | <a data-u="http://www.webring.example/next">Next &gt;&gt;</a> ]</p>
+<p style="text-align:center;font-size:12px;color:#666">This page is © 1998 Alex "Pixel" Rivera. Do not steal my high scores.</p>`;
 async function dialUp(url){
   const d=dialog({title:'Dial-up Connection',icon:'info',buttons:['Cancel'],width:360,body:'<b>Connecting...</b><div class="pb"><i></i></div><div class="st">Dialing...</div>'});
   let off=false; d.then(()=>{ off=true; });
@@ -339,13 +343,13 @@ async function dialUp(url){
   if(off) return; d.close();
   alertBox(`NetSurfer cannot open the Internet site ${url}.\n\nA connection with the server could not be established.`,'err','NetSurfer');
 }
-APPS.ie={icon:IC.ie,wh:[640,440],col:true,status:true,single:true,title:'Rohan\'s Homepage - NetSurfer',
+APPS.ie={icon:IC.ie,wh:[640,440],col:true,status:true,single:true,title:'Pixel\'s Homepage - NetSurfer',
   menu:w=>[{label:'File',items:[['Close',()=>w.close()]]},{label:'Favorites',items:[['Classic Games',()=>openApp('explorer',{path:'C:\\Games'})]]},{label:'Help',items:[['About NetSurfer',()=>alertBox('NetSurfer\nBrowsing the 1998 web at 28.8 kbps.','info','About')]]}],
   mount(w){
-    w.body.innerHTML=`<div class="iebar"><button data-a="x">⬅ Back</button><button data-a="x">➡ Forward</button><button data-a="x">⛔ Stop</button><button data-a="r">🔄 Refresh</button><button data-a="h">🏠 Home</button></div><div class="eaddr"><span>Address</span><input type="text" value="http://homepages.example.com/~rohan/" spellcheck="false"><button style="min-width:0">Go</button></div><div class="ie-page">${IE_HOME}</div>`;
+    w.body.innerHTML=`<div class="iebar"><button data-a="x">⬅ Back</button><button data-a="x">➡ Forward</button><button data-a="x">⛔ Stop</button><button data-a="r">🔄 Refresh</button><button data-a="h">🏠 Home</button></div><div class="eaddr"><span>Address</span><input type="text" value="http://homepages.example.com/~pixel/" spellcheck="false"><button style="min-width:0">Go</button></div><div class="ie-page">${IE_HOME}</div>`;
     w.setStatus('Done'); w.setStatus('🌐 Internet zone',1);
     const go=u=>{ w.setStatus('Opening page '+u+'...'); dialUp(u).then(()=>w.setStatus('Done')); };
-    $('.ie-page',w.body).onclick=e=>{ const a=e.target.closest('a'); if(a) go(a.dataset.u); };
+    $('.ie-page',w.body).onclick=e=>{ const a=e.target.closest('a'); if(!a) return; if(a.dataset.app){ openApp(a.dataset.app); w.setStatus('Done'); } else go(a.dataset.u); };
     $('.iebar',w.body).onclick=e=>{ const a=e.target.dataset.a; if(a==='h'||a==='r'){ $('.ie-page',w.body).innerHTML=IE_HOME; w.setStatus('Done'); } else if(a==='x') w.setStatus('Done'); };
     const inp=$('.eaddr input',w.body); $('.eaddr button',w.body).onclick=()=>go(inp.value.trim()||'about:blank');
     inp.onkeydown=e=>{ if(e.key==='Enter') go(inp.value.trim()||'about:blank'); };
