@@ -40,13 +40,15 @@ function mountTurbo(w){
     const lim=Math.abs(c.x)>1.05?MAXS*.4:MAXS; if(c.speed>lim) c.speed-=90*dt; c.speed=Math.max(0,c.speed);
     const sp=c.speed/MAXS, st=(I.right?1:0)-(I.left?1:0);
     c.x+=st*dt*1.8*(.2+.8*sp); c.x-=curveAt(c.pos+10)*dt*.6*sp; c.x=Math.max(-1.6,Math.min(1.6,c.x));
-    c.pos+=c.speed*dt; c.sv=st; c.head+=curveAt(c.pos)*c.speed*dt*.0004;
+    c.pos+=c.speed*dt; c.sv=st; c.head+=curveAt(c.pos)*c.speed*dt*.0011; c.cam=(c.cam||0)+(curveAt(c.pos+25)-(c.cam||0))*Math.min(1,dt*3.5);
   };
   const car=(x,y,wd,col)=>{ const h=wd*.5; g.fillStyle='#111'; g.fillRect(x-wd*.55,y-h*.45,wd*.2,h*.45); g.fillRect(x+wd*.35,y-h*.45,wd*.2,h*.45);
     g.fillStyle=col; g.fillRect(x-wd/2,y-h,wd,h*.75); g.fillStyle='rgba(0,0,0,.35)'; g.fillRect(x-wd*.34,y-h*1.28,wd*.68,h*.4); g.fillStyle=col; g.fillRect(x-wd*.38,y-h*1.3,wd*.76,h*.14);
     g.fillStyle='#ff3030'; g.fillRect(x-wd*.46,y-h*.8,wd*.16,h*.18); g.fillRect(x+wd*.3,y-h*.8,wd*.16,h*.18); };
   const view=(ox,oy,W,H,me,ot)=>{
     g.save(); g.beginPath(); g.rect(ox,oy,W,H); g.clip();
+    /* the camera banks into the corner: the whole scene tilts, the far road recentres and the hills pan */
+    g.save(); g.translate(ox+W/2,oy+H*.8); g.rotate(-(me.cam||0)*.04*Math.min(1,me.speed/MAXS)); g.scale(1.08,1.08); g.translate(-(ox+W/2),-(oy+H*.8));
     const hor=oy+H*.42, lines=Math.floor(oy+H-hor);
     const sky=g.createLinearGradient(0,oy,0,hor); sky.addColorStop(0,'#3a7bd5'); sky.addColorStop(1,'#cfeaff'); g.fillStyle=sky; g.fillRect(ox,oy,W,hor-oy+1);
     g.fillStyle='#fff3a0'; g.beginPath(); g.arc(ox+W*.78,hor-H*.15,H*.05,0,7); g.fill();
@@ -54,6 +56,7 @@ function mountTurbo(w){
     for(let xx=0;xx<=W;xx+=8) g.lineTo(ox+xx,hor-H*.05-H*.04*Math.sin((xx+off)*.018)-H*.025*Math.sin((xx+off)*.05)); g.lineTo(ox+W,hor); g.fill();
     const xs=new Array(lines); let x=0,dx=0;
     for(let i=lines-1;i>=0;i--){ const t=(i+1)/lines, d=Math.min(400,24*(1/t-1)); dx+=curveAt(me.pos+d)*.02*(W/640); x+=dx; xs[i]=x; }
+    { const X0=xs[0]; for(let i=0;i<lines;i++) xs[i]-=X0*.55*(1-(i+1)/lines); }
     for(let i=0;i<lines;i++){
       const t=(i+1)/lines, d=Math.min(2000,24*(1/t-1)), y=hor+i, rh=W*(.03+.42*t), cx=ox+W/2+xs[i]-me.x*rh, band=Math.floor((me.pos+d)/10)%2;
       g.fillStyle=band?'#2f9e3f':'#37b04a'; g.fillRect(ox,y,W,1);
@@ -64,6 +67,7 @@ function mountTurbo(w){
     const dz=ot.pos-me.pos;
     if(dz>-3&&dz<260){ const t=Math.min(1.2,1/(1+Math.max(0,dz)/24)), i=Math.max(0,Math.min(lines-1,Math.floor(t*lines)-1)), rh=W*(.03+.42*t), sx=ox+W/2+xs[i]+(ot.x-me.x)*rh, wd=Math.max(4,rh*.5); car(sx,hor+t*lines,wd,ot.col); }
     car(ox+W/2+me.sv*5,oy+H-6+(Math.abs(me.x)>1.05?Math.sin(performance.now()*.05)*2:0),W*.2,me.col);
+    g.restore();
     g.fillStyle='#000a'; g.fillRect(ox+4,oy+4,150,48);
     g.font='bold 15px Arial'; g.fillStyle='#fff'; g.fillText(`${me.n}  ${Math.round(me.speed*2.2)} km/h`,ox+10,oy+22);
     const lap=Math.min(3,Math.floor(me.pos/TL)+1); g.fillText(`LAP ${lap}/3   ${me.pos>=ot.pos?'1ST':'2ND'}`,ox+10,oy+42);
