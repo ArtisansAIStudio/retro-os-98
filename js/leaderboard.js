@@ -173,7 +173,8 @@ APPS.halloffame={icon:'🏆',wh:[580,500],single:true,col:true,status:true,title
     gm.onchange=()=>{ opts(); render(); }; sc.onchange=render;
     $('#pl',w.body).onclick=()=>{ const game=gm.value; if(game.startsWith('mines-')) store.set('mine-lv',game.slice(6)); const ex=wins.find(x=>x.id===GAME_APP[game]); if(ex) ex.close(); openApp(GAME_APP[game]); };
     $('#dl',w.body).onclick=()=>openDaily(gm.value);
-    $('#me',w.body).textContent=pf().name?`You: ${flag(pf().country)} ${pf().name}`:'';
+    const meEl=$('#me',w.body), paintMe=()=>{ meEl.textContent=pf().name?`Playing as ${flag(pf().country)} ${pf().name} (change)`:'Set your arcade tag'; };
+    meEl.style.cssText='cursor:pointer;text-decoration:underline'; meEl.title='Choose the name and country shown on the leaderboard'; meEl.onclick=async()=>{ await editProfile(); paintMe(); render(); }; paintMe();
     w.hof={render}; opts(); render();
     return ()=>clearInterval(timer);
   }};
