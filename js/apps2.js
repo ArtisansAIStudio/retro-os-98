@@ -82,12 +82,12 @@ APPS.paint={icon:IC.paint,wh:[620,480],single:false,title:'untitled - Paint',
 
 /* ---------- Minesweeper ---------- */
 const MLV={b:[9,9,10],i:[16,16,40],e:[30,16,99]};
-APPS.mines={icon:IC.mines,fit:true,single:true,title:'Minesweeper',
+APPS.mines={icon:IC.mines,wh:[230,330],single:true,title:'Minesweeper',
   menu:w=>[{label:'Game',items:[['New',()=>w.mw.reset(),{key:'F2'}],'-',['Beginner',()=>w.mw.lvl('b'),{check:w.mw&&w.mw.l==='b'}],['Intermediate',()=>w.mw.lvl('i'),{check:w.mw&&w.mw.l==='i'}],['Expert',()=>w.mw.lvl('e'),{check:w.mw&&w.mw.l==='e'}],'-',['Exit',()=>w.close()]]},
     aboutMenu('Minesweeper','Minesweeper\nLeft-click to dig. Right-click (or long-press, or Shift-click) to flag. Click a number to chord.\n\nNo actual mines were harmed.')],
   mount(w){
     const {daily,dseed}=takeDaily('mines-i'); let dailyOn=daily, run=null, log=[], ready=false; const mw=w.mw={l:daily?'i':(store.get('mine-lv')||'b')}; let C,R,M,cells,over,started,flags,secs,timer,opened;
-    const cs=coarse?24:16;
+    let cs=coarse?24:16;
     w.body.innerHTML=`<div class="mw"><div class="mhd"><div class="led" id="ml">010</div><button class="face" id="fc">🙂</button><div class="led" id="mt">000</div></div><div class="mg" id="mg" style="--cs:${cs}px"></div></div>`;
     const g=$('#mg',w.body), face=$('#fc',w.body), ml=$('#ml',w.body), mt=$('#mt',w.body);
     const pad=n=>String(Math.max(-99,Math.min(999,n))).padStart(3,'0').replace(/^-0/,'-0');
@@ -96,7 +96,11 @@ APPS.mines={icon:IC.mines,fit:true,single:true,title:'Minesweeper',
       clearInterval(timer); ready=false; log=[]; const rn=run=Run.begin('mines-'+mw.l); rn.ready.then(()=>{ if(run===rn) ready=true; }); [C,R,M]=MLV[mw.l]; cells=Array.from({length:R*C},()=>({m:0,o:0,f:0,n:0})); over=false; started=false; flags=0; secs=0; opened=0;
       g.style.setProperty('--c',C); g.innerHTML=cells.map((_,i)=>`<div class="cl" data-i="${i}"></div>`).join(''); face.textContent='🙂'; ml.textContent=pad(M); mt.textContent='000';
     };
-    mw.lvl=l=>{ dailyOn=false; mw.l=l; store.set('mine-lv',l); mw.reset(); };
+    /* the window can be dragged bigger or maximised: tiles scale to fill it */
+    const fitCells=()=>{ const bw=w.body.clientWidth-24, bh=w.body.clientHeight-64; if(bw<60||bh<60||!C) return; cs=Math.max(14,Math.min(80,Math.floor(Math.min(bw/C,bh/R)))); g.style.setProperty('--cs',cs+'px'); };
+    const sizeWin=()=>{ const base=coarse?24:16; cs=base; g.style.setProperty('--cs',base+'px'); const b=w.body, dx=w.el.offsetWidth-b.clientWidth, dy=w.el.offsetHeight-b.clientHeight; w.el.style.width=Math.min(innerWidth-6,C*base+6+24+dx)+'px'; w.el.style.height=Math.min(innerHeight-40,R*base+6+64+dy)+'px'; };
+    const ro=window.ResizeObserver?new ResizeObserver(fitCells):null; if(ro) ro.observe(w.body);
+    mw.lvl=l=>{ dailyOn=false; mw.l=l; store.set('mine-lv',l); mw.reset(); sizeWin(); };
     const paint=i=>{ const c=cells[i], el=g.children[i]; el.className='cl'; el.textContent='';
       if(c.o){ el.classList.add('op'); if(c.m){ el.textContent='💣'; } else if(c.n){ el.textContent=c.n; el.classList.add('n'+c.n); } }
       else if(c.f) el.textContent='🚩'; };
@@ -127,7 +131,7 @@ APPS.mines={icon:IC.mines,fit:true,single:true,title:'Minesweeper',
     face.onclick=mw.reset;
     const onKey=e=>{ if(active===w&&e.key==='F2'){ e.preventDefault(); mw.reset(); } };
     document.addEventListener('keydown',onKey);
-    mw.reset(); return ()=>{ clearInterval(timer); document.removeEventListener('keydown',onKey); };
+    mw.reset(); sizeWin(); return ()=>{ clearInterval(timer); if(ro) ro.disconnect(); document.removeEventListener('keydown',onKey); };
   }};
 
 /* ---------- Solitaire (Klondike, draw 1) ---------- */

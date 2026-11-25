@@ -1,7 +1,7 @@
 // ===== Cookie / ad consent banner and the Privacy & Cookies window =====
 // Rule for any future ad code: only load it inside `if(Consent.allows('ads')){ ... }`
 // and call Consent.onChange(cb) to react when the visitor changes their mind.
-const SITE_KEYS=['candies','eggs98','fs98','wp98','wpmode98','wpimg98','ss98','iconpos98','menuorder98','prof98','lb98','welcome','mine-lv','snake-hi','consent98'];
+const SITE_KEYS=['candies','eggs98','fs98','wp98','wpmode98','wpimg98','ss98','iconpos98','menuorder98','prof98','lb98','welcome','mine-lv','snake-hi','consent98','music98'];
 const Consent={
   key:'consent98', cbs:[],
   get(){ try{ return JSON.parse(store.get(this.key)||'null'); }catch(e){ return null; } },

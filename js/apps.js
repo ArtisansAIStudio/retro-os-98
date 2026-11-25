@@ -75,6 +75,7 @@ function fixedIcons(){ return [
   {n:'Notepad',i:IC.notepad,run:()=>openApp('notepad')},
   {n:'Media Player',i:'🎵',run:()=>openApp('media')},
   {n:'Paint',i:IC.paint,run:()=>openApp('paint')},
+  {n:'Calculator',i:IC.calc,run:()=>openApp('calc')},
   {n:'Minesweeper',i:IC.mines,run:()=>openApp('mines')},
   {n:'Solitaire',i:IC.sol,run:()=>openApp('sol')},
   {n:'FLAMES',i:'🔥',run:()=>openApp('flames')},
