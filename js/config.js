@@ -2,4 +2,4 @@
 // To go global: create a free Supabase project, run supabase/schema.sql, then paste the
 // Project URL and the "anon public" key here. See SETUP-LEADERBOARD.md.
 // The anon key is meant to be public; the table's Row Level Security limits what it can do.
-const CFG={supabaseUrl:'',anonKey:''};
+const CFG={supabaseUrl:'https://wmdgdkvvjlocqyummtzu.supabase.co',anonKey:'sb_publishable_yVeTS_xTP0xviukgM0n2ag_ndhNvOmn'};

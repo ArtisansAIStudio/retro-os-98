@@ -34,3 +34,8 @@ create policy "read scores" on public.scores for select using (true);
 -- Hide the verification columns from the public key:
 revoke select on public.scores from anon, authenticated;
 grant  select (id, game, name, country, score, daily, created_at) on public.scores to anon, authenticated;
+
+-- explicit privileges (safe whether or not "grant API access to new tables automatically" is on)
+revoke insert, update, delete, truncate on public.scores from anon, authenticated;
+grant all on public.scores to service_role;
+grant usage, select on all sequences in schema public to service_role;

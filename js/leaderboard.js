@@ -35,9 +35,11 @@ function openDaily(game){
   DAILY.game=game; openApp(app);
 }
 
+// legacy anon keys are JWTs (send as Bearer too); new sb_publishable_ keys go in the apikey header only
+const keyHeaders=()=>CFG.anonKey.startsWith('eyJ')?{apikey:CFG.anonKey,Authorization:'Bearer '+CFG.anonKey}:{apikey:CFG.anonKey};
 /* verified runs: the server signs a token when a game starts and checks it when a score arrives */
 async function fnCall(name,body){
-  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/functions/v1/'+name,{method:'POST',headers:{apikey:CFG.anonKey,Authorization:'Bearer '+CFG.anonKey,'Content-Type':'application/json'},body:JSON.stringify(body)});
+  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/functions/v1/'+name,{method:'POST',headers:{...keyHeaders(),'Content-Type':'application/json'},body:JSON.stringify(body)});
   let j={}; try{ j=await r.json(); }catch(e){}
   if(!r.ok){ const e=new Error(j.error||('HTTP '+r.status)); e.status=r.status; throw e; }
   return j;
@@ -47,7 +49,7 @@ const Run={ begin(game){ const r={game,token:null,seed:(Math.random()*4294967296
 
 /* backend: Supabase REST when configured, browser storage otherwise */
 async function sb(path,opts={}){
-  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/rest/v1/'+path,{...opts,headers:{apikey:CFG.anonKey,Authorization:'Bearer '+CFG.anonKey,'Content-Type':'application/json',...(opts.headers||{})}});
+  const r=await fetch(CFG.supabaseUrl.replace(/\/$/,'')+'/rest/v1/'+path,{...opts,headers:{...keyHeaders(),'Content-Type':'application/json',...(opts.headers||{})}});
   if(!r.ok) throw new Error('HTTP '+r.status); return r;
 }
 const dedupe=rows=>{ const seen=new Set(); return rows.filter(r=>{ const k=r.name+'|'+r.country; if(seen.has(k)) return false; seen.add(k); return true; }); };

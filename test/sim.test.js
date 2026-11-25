@@ -6,7 +6,7 @@ const NOW=1_800_000_000_000, TODAY=new Date(NOW).toISOString().slice(0,10);
 const tok=(g,age,seed=12345)=>({g,s:seed,t:NOW-age,n:'x'});
 const V=(game,age,body,seed)=>S.verify({tok:tok(game,age,seed),body:{game,...body},now:NOW,today:TODAY});
 
-t('server and browser copies of sim.js are identical',()=>assert.strictEqual(fs.readFileSync('js/sim.js','utf8'),fs.readFileSync('supabase/functions/_shared/sim.js','utf8')));
+t('both Edge Functions embed the current sim.js (run node scripts/build-functions.js if this fails)',()=>{ const sim=fs.readFileSync('js/sim.js','utf8'); for(const n of ['start-run','submit-score']) assert(fs.readFileSync(`supabase/functions/${n}/index.ts`,'utf8').includes(sim),n); });
 
 /* ---- snake: a simple legal run (loop around, eat what it can, then hit the wall) ---- */
 function playSnake(seed){
