@@ -23,6 +23,14 @@ keep the license text in `credit` / `license`. Examples of places to look: itch.
 "Free" and read the license), NESdev Compo entries, and authors who publish their games for free.
 When in doubt, ask the author.
 
+## 1b. Visitors bring their own games (Retro Console)
+
+The Retro Console plays game files that **visitors supply themselves**: NES (built-in emulator) and
+Super Nintendo, Sega Genesis, Master System, Game Boy / Color / Advance, PC Engine and arcade ROM sets
+(through EmulatorJS, loaded from `cdn.emulatorjs.org` in an isolated frame). Files are read in the
+visitor's browser and never uploaded. The site hosts no games. This is the legally cleanest way to
+support commercial classics, because the visitor provides the copy they own.
+
 ## 2. Add a new original game written in JavaScript
 
 Every game is one function that draws into a window. Copy `mountBreakout` in `js/arcade2.js` and

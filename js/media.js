@@ -60,7 +60,7 @@ APPS.media={icon:'🎵',wh:[400,400],single:true,col:true,title:'Media Player',
       async add(files){
         let first=-1, bad=0;
         for(const file of files){ try{ const b=await ac().decodeAudioData(await file.arrayBuffer()); list.push({n:file.name,buf:b}); if(first<0) first=list.length-1; }catch(e){ bad++; } }
-        if(bad) alertBox(`Retro OS cannot play ${bad} of the files.\n\nThey are not a supported audio format (WAV, MP3, OGG, M4A and FLAC usually work), or they are corrupt.`,'err','Media Player');
+        if(bad) alertBox(`Basement cannot play ${bad} of the files.\n\nThey are not a supported audio format (WAV, MP3, OGG, M4A and FLAC usually work), or they are corrupt.`,'err','Media Player');
         renderList(); if(first>=0){ await load(first); play(); }
       },
       open(){ const f=document.createElement('input'); f.type='file'; f.multiple=true; f.accept='audio/*,.wav,.mp3,.ogg,.m4a,.flac'; f.onchange=()=>{ if(f.files.length) mp.add([...f.files]); }; f.click(); }

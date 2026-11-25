@@ -32,7 +32,7 @@ APPS.privacy={icon:'🔒',fit:true,single:true,title:'Privacy & Cookies',mount(w
   w.body.innerHTML=`<div style="width:420px;padding:12px;line-height:1.5">
     <p style="margin:0 0 8px"><b>Your choice:</b><br><span class="consent-status">${Consent.label()}</span></p>
     <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px"><button id="pv-all" style="min-width:0">Accept all</button><button id="pv-ess" style="min-width:0">Essential only</button></div>
-    <p style="margin:0 0 10px;font-size:12px">Retro OS 98 keeps your progress in your own browser. If you post a score, your arcade tag, country and score are public. Ads only load if you accept them.</p>
+    <p style="margin:0 0 10px;font-size:12px">Basement 98 keeps your progress in your own browser. If you post a score, your arcade tag, country and score are public. Ads only load if you accept them.</p>
     <div style="display:flex;gap:6px;flex-wrap:wrap"><button id="pv-pol" style="min-width:0">Read the full policy</button><button id="pv-clr" style="min-width:0">Clear my data on this device</button></div>
     <div class="dbtn" style="justify-content:flex-end;padding:10px 0 0"><button id="pv-ok" class="def">Close</button></div></div>`;
   $('#pv-all',w.body).onclick=()=>{ Consent.set('all'); const b=$('#cookiebar'); if(b) b.remove(); };

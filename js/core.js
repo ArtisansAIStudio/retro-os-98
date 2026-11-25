@@ -102,7 +102,7 @@ function buildMenubar(w,getMenus){
 }
 
 /* ---------- dialogs ---------- */
-function dialog({title='Retro OS',body='',icon,buttons=['OK'],width=340,cancel=null}){
+function dialog({title='Basement',body='',icon,buttons=['OK'],width=340,cancel=null}){
   let dEl, fin;
   const p=new Promise(resolve=>{
     const ov=mk('div','modal'), d=mk('div','win dlg active'); dEl=d;
@@ -124,8 +124,8 @@ function dialog({title='Retro OS',body='',icon,buttons=['OK'],width=340,cancel=n
   p.el=dEl; p.close=()=>fin(null);
   return p;
 }
-const alertBox=(text,icon='info',title='Retro OS')=>dialog({title,icon,body:esc(text).replace(/\n/g,'<br>')});
-const FOLD_ERR='This control panel item is not available in this version of Retro OS 98.\n\n(It never really worked anyway.)';
+const alertBox=(text,icon='info',title='Basement')=>dialog({title,icon,body:esc(text).replace(/\n/g,'<br>')});
+const FOLD_ERR='This control panel item is not available in this version of Basement 98.\n\n(It never really worked anyway.)';
 
 /* ---------- menu trees (start menu, context menu) ---------- */
 function closeMenus(){ $('#smenu').hidden=true; $('#ctx').hidden=true; $('#start').classList.remove('on'); }
@@ -195,13 +195,13 @@ function startItems(){
 function toggleStart(){
   const sm=$('#smenu');
   if(!sm.hidden){ closeMenus(); return; }
-  closeMenus(); sm.innerHTML='<div class="strip"><span>Retro OS<b>98</b></span></div>'; sm.appendChild(menuTree(startItems(),null,true));
+  closeMenus(); sm.innerHTML='<div class="strip"><span>Basement<b>98</b></span></div>'; sm.appendChild(menuTree(startItems(),null,true));
   sm.hidden=false; $('#start').classList.add('on');
 }
 
 /* ---------- Run, shutdown ---------- */
 async function runDialog(){
-  const r=await dialog({title:'Run',buttons:['OK','Cancel'],width:380,body:'Type the name of a program, folder, or document, and Retro OS will open it for you.<br><br>Open: <input type="text" id="runin" autocomplete="off" spellcheck="false">'});
+  const r=await dialog({title:'Run',buttons:['OK','Cancel'],width:380,body:'Type the name of a program, folder, or document, and Basement will open it for you.<br><br>Open: <input type="text" id="runin" autocomplete="off" spellcheck="false">'});
   if(r.btn==='OK') runCommand($('#runin',r.el).value.trim());
 }
 function runCommand(v){
@@ -226,7 +226,7 @@ function overlay(html){ const b=$('#boot'); b.hidden=false; b.innerHTML=html; re
 function standby(){ const b=overlay(''); const wake=()=>{ b.hidden=true; document.removeEventListener('keydown',wake); b.onclick=null; }; b.onclick=wake; setTimeout(()=>document.addEventListener('keydown',wake),300); }
 async function shutdown(){
   closeMenus();
-  overlay('<div class="splash" style="background:linear-gradient(#1060c0,#6ab0f0)"><div class="logo"><small>Retro OS is shutting down.</small></div></div>');
+  overlay('<div class="splash" style="background:linear-gradient(#1060c0,#6ab0f0)"><div class="logo"><small>Basement is shutting down.</small></div></div>');
   await sleep(1800);
   const b=overlay('<div class="safe">It\'s now safe to turn off<br>your computer.<br><small style="font-size:14px;color:#888;font-weight:400">(click anywhere to power back on)</small></div>');
   b.onclick=()=>boot(true);
@@ -256,7 +256,7 @@ Press DEL to enter SETUP  (don't)
     await wait(1700);
   }
   if(token!==bootToken) return;
-  b.innerHTML=`<div class="splash"><div class="logo"><svg class="flag" width="64" height="64" viewBox="0 0 16 16"><polygon points="8,1 1,8 8,8" fill="#ff4d6d"/><polygon points="8,1 15,8 8,8" fill="#ffd23f"/><polygon points="1,8 8,15 8,8" fill="#3ec5ff"/><polygon points="15,8 8,15 8,8" fill="#7bd88f"/></svg><div>Retro OS<small> 98</small></div></div><div class="pb"><i></i></div></div>`;
+  b.innerHTML=`<div class="splash"><div class="logo"><svg class="flag" width="64" height="64" viewBox="0 0 16 16"><polygon points="8,1 1,8 8,8" fill="#ff4d6d"/><polygon points="8,1 15,8 8,8" fill="#ffd23f"/><polygon points="1,8 8,15 8,8" fill="#3ec5ff"/><polygon points="15,8 8,15 8,8" fill="#7bd88f"/></svg><div>Basement<small> 98</small></div></div><div style="color:#fff;font:italic 22px Arial,sans-serif;text-shadow:2px 2px 0 #0a2a60">No windows down here.</div><div class="pb"><i></i></div></div>`;
   await wait(2800);
   if(token!==bootToken) return;
   b.hidden=true; b.onclick=null; b.innerHTML='';

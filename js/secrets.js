@@ -30,7 +30,7 @@ function jingle(notes,step=.12,type='square'){
 /* hidden programs (run, no window of their own) */
 APPS.bsod={icon:'💀',run(){
   egg('bsod');
-  const b=mk('div','',`<pre style="margin:0;font:22px/1.25 var(--pix)">Retro OS
+  const b=mk('div','',`<pre style="margin:0;font:22px/1.25 var(--pix)">Basement
 
 A fatal exception 0E has occurred at 0028:C0011E36. The current
 application will be terminated.

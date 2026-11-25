@@ -1,6 +1,6 @@
 // ===== Filesystem, desktop, Explorer, Notepad, DOS, IE, Control Panel =====
 const DEF={'C:':{
-  'RetroOS':{'Desktop':{},'Help':{},'System32':{'CRASH.EXE':'#exe:bsod','HELPER.EXE':'#exe:helper','LOVECALC.EXE':'#exe:lovecalc','readme_first.txt':'You were not supposed to find this folder.\r\n\r\nSince you did:\r\n  CRASH.EXE     - do not run (run it)\r\n  HELPER.EXE    - a helpful assistant\r\n  LOVECALC.EXE  - results may vary\r\n\r\nThere are more things like this on the disk.\r\nLook in the places people hide things.'},'notepad.exe':'#exe:notepad','calc.exe':'#exe:calc','paint.exe':'#exe:paint','mines.exe':'#exe:mines','sol.exe':'#exe:sol','explorer.exe':'#exe:explorer','retro.com':'#exe:welcome','mplayer2.exe':'#exe:media'},
+  'Basement':{'Desktop':{},'Help':{},'System32':{'CRASH.EXE':'#exe:bsod','HELPER.EXE':'#exe:helper','LOVECALC.EXE':'#exe:lovecalc','readme_first.txt':'You were not supposed to find this folder.\r\n\r\nSince you did:\r\n  CRASH.EXE     - do not run (run it)\r\n  HELPER.EXE    - a helpful assistant\r\n  LOVECALC.EXE  - results may vary\r\n\r\nThere are more things like this on the disk.\r\nLook in the places people hide things.'},'notepad.exe':'#exe:notepad','calc.exe':'#exe:calc','paint.exe':'#exe:paint','mines.exe':'#exe:mines','sol.exe':'#exe:sol','explorer.exe':'#exe:explorer','upstairs.com':'#exe:welcome','mplayer2.exe':'#exe:media'},
   'My Documents':{
     'Love Letter.txt':'Dear Rani,\r\n\r\nI have calculated our FLAMES 47 times.\r\nIt says F every time.\r\nI am choosing to ignore that.\r\n\r\n- Raj',
     'Mixtape Tracklist.txt':'SIDE A\r\n1. Chaiyya Chaiyya\r\n2. Pehla Nasha\r\n3. Wannabe\r\n4. I Want It That Way\r\n\r\nSIDE B\r\n1. Macarena (do NOT tell anyone)\r\n2. Mmmbop\r\n3. Baby One More Time\r\n4. Tujhe Dekha Toh\r\n\r\n(recorded off the radio, the first 4 seconds of every song are missing)',
@@ -11,10 +11,10 @@ const DEF={'C:':{
   'Program Files':{'NetSurfer':{'netsurf.exe':'#exe:ie'},'Accessories':{'paint.exe':'#exe:paint','textpad.exe':'#exe:notepad'}},
   'Games':{},
   'Recycled':{'Ex Number.txt':'Deleted.\r\nUn-deleted.\r\nDeleted again.\r\n\r\n(I know it by heart anyway.)','Myspace Password.txt':'password123\r\n\r\nTom is still my friend, if you were wondering.','Resignation Letter v14.txt':'Dear Sir,\r\n\r\nI would like to quit.\r\n\r\nSorry, draft 14. Never sent. Do not send.','Copy of Copy of Homework.doc':'x','Floppy Disk 1 of 47.zip':'x'},
-  'autoexec.bat':'@echo off\r\nPATH C:\\RETROOS;C:\\RETROOS\\COMMAND\r\nSET SOUND=A220 I5 D1 T4\r\nLH C:\\RETROOS\\COMMAND\\CDROM.EXE /D:CD001',
-  'config.sys':'DEVICE=C:\\RETROOS\\MEMORY.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
+  'autoexec.bat':'@echo off\r\nPATH C:\\BASEMENT;C:\\BASEMENT\\COMMAND\r\nSET SOUND=A220 I5 D1 T4\r\nLH C:\\BASEMENT\\COMMAND\\CDROM.EXE /D:CD001',
+  'config.sys':'DEVICE=C:\\BASEMENT\\MEMORY.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
   'command.com':'#exe:dos',
-  'README.TXT':'RETRO OS 98 - THE FAN-MADE ONE\r\n=============================\r\n\r\nThis is a tribute built from scratch in JavaScript,\r\ninspired by the desktops of the late 90s.\r\nAll code, icons and sounds are original.\r\nNot affiliated with any company.\r\n\r\nThe games in C:\\GAMES are original lookalikes of the\r\nclassics we all played. Win some, collect the sweets.\r\n\r\nSome things on this disk are hidden. Explorer: View > Show Hidden Files. DOS: DIR /A.\r\nCurious people find things.\r\n\r\nEverything runs in your browser. Close the tab and it\'s gone.\r\nExcept your Notepad files and sweets, those stay on this\r\ncomputer (localStorage).'
+  'README.TXT':'BASEMENT 98 - THE FAN-MADE ONE\r\n=============================\r\n\r\nThis is a tribute built from scratch in JavaScript,\r\ninspired by the desktops of the late 90s.\r\nAll code, icons and sounds are original.\r\nNot affiliated with any company.\r\n\r\nThe games in C:\\GAMES are original lookalikes of the\r\nclassics we all played. Win some, collect the sweets.\r\n\r\nSome things on this disk are hidden. Explorer: View > Show Hidden Files. DOS: DIR /A.\r\nCurious people find things.\r\n\r\nEverything runs in your browser. Close the tab and it\'s gone.\r\nExcept your Notepad files and sweets, those stay on this\r\ncomputer (localStorage).'
  },'A:':null,'D:':null};
 let FS, USER;
 const DRIVES=[['A:','3½ Floppy (A:)',IC.floppy],['C:','(C:)',IC.hdd],['D:','(D:)',IC.cd]];
@@ -51,19 +51,19 @@ const joinP=(p,n)=>p+'\\'+n;
 function openPath(path){
   const {v,real}=fsLookup(path), p=real||path, name=p.split('\\').pop();
   if(v===null){ alertBox(`${p}\\ is not accessible.\n\nThe device is not ready.`,'err',p+'\\'); return; }
-  if(v===undefined){ alertBox(`Cannot find '${path}'.`,'err','Retro OS'); return; }
+  if(v===undefined){ alertBox(`Cannot find '${path}'.`,'err','Basement'); return; }
   if(/^c:\\recycled/i.test(p)&&typeof v==='string') egg('bin');
   if(typeof v==='object'){ openApp('explorer',{path:p}); return; }
   if(v.startsWith('#exe:')){ openApp(v.slice(5)); return; }
   if(/\.(txt|bat|sys|ini|log|md|cfg)$/i.test(name)){ openApp('notepad',{path:p}); return; }
-  alertBox(`Retro OS cannot open this file:\n\nFile: ${name}\n\nTo open this file, Retro OS needs to know what program created it.`,'info','Open With');
+  alertBox(`Basement cannot open this file:\n\nFile: ${name}\n\nTo open this file, Basement needs to know what program created it.`,'info','Open With');
 }
-const HIDDEN=new Set(['c:\\retroos\\system32','c:\\my documents\\private']);
+const HIDDEN=new Set(['c:\\basement\\system32','c:\\my documents\\private']);
 const isHidden=p=>HIDDEN.has(p.toLowerCase());
 const iconFor=(name,v)=>v&&typeof v==='object'?IC.folder:typeof v==='string'&&v.startsWith('#exe:')?(APPS[v.slice(5)]?.icon||'⚙️'):/\.(bat|sys|com)$/i.test(name)?'⚙️':IC.doc;
 
 /* ---------- desktop ---------- */
-const DESK_DIR='C:\\RetroOS\\Desktop';
+const DESK_DIR='C:\\Basement\\Desktop';
 function fixedIcons(){ return [
   {n:'My Computer',i:IC.computer,run:()=>openApp('explorer',{path:''})},
   {n:'My Documents',i:IC.folder,run:()=>openApp('explorer',{path:'C:\\My Documents'})},
@@ -191,7 +191,7 @@ APPS.explorer={icon:IC.folder,wh:[580,400],col:true,status:true,
     {label:'File',items:[['New Folder',()=>w.ex.newFolder()],'-',['Close',()=>w.close()]]},
     {label:'View',items:[['Show Hidden Files',()=>{ w.ex.hid=!w.ex.hid; w.ex.render(); },{check:w.ex&&w.ex.hid}],'-',['Large Icons',()=>w.ex.view('large'),{check:w.ex&&w.ex.v==='large'}],['List',()=>w.ex.view('list'),{check:w.ex&&w.ex.v==='list'}],'-',['Refresh',()=>w.ex.render()]]},
     {label:'Go',items:[['Back',()=>w.ex.go(-1)],['Forward',()=>w.ex.go(1)],['Up One Level',()=>w.ex.up()]]},
-    {label:'Help',items:[['About Retro OS 98',()=>openApp('sysprops')]]}],
+    {label:'Help',items:[['About Basement 98',()=>openApp('sysprops')]]}],
   mount(w,a){
     const ex=w.ex={path:a.path??'',hist:[a.path??''],hi:0,v:'large',hid:false};
     w.body.innerHTML=`<div class="etool"><button data-a="b">⬅ Back</button><button data-a="f">Forward ➡</button><button data-a="u">⬆ Up</button></div><div class="eaddr"><span>Address</span><input type="text" spellcheck="false"></div><div class="fl"></div>`;
@@ -266,15 +266,15 @@ APPS.notepad={icon:IC.notepad,wh:[520,380],col:true,
 
 /* ---------- DOS prompt ---------- */
 function dosMount(el,opt={}){
-  let cwd='C:\\RETROOS';
+  let cwd='C:\\BASEMENT';
   el.innerHTML=''; const out=mk('span'), line=mk('div'), pr=mk('span'), inp=mk('input'); inp.spellcheck=false; inp.autocomplete='off'; inp.autocapitalize='off';
   line.append(pr,inp); el.append(out,line);
   const print=t=>{ out.append(document.createTextNode(t+'\n')); };
   const setPrompt=()=>{ pr.textContent=cwd.toUpperCase()+'>'; setTimeout(()=>{ el.scrollTop=el.scrollHeight; inp.focus({preventScroll:true}); },0); };
   const resolve=a=>{ a=a.replace(/\//g,'\\'); if(/^[a-z]:/i.test(a)) return a.replace(/\\$/,''); if(a==='\\') return 'C:'; if(a==='..') return cwd.includes('\\')?cwd.slice(0,cwd.lastIndexOf('\\')):cwd; return cwd+'\\'+a; };
-  const HELP='Supported commands:\nCD  CLS  COPY  DATE  DEL  DIR [/A]  ECHO  EXIT  FORMAT  HELP  MD  MEM  RETRO  TIME  TYPE  VER  VOL\nOr just type a program name: SNAKE, FLAMES, NOTEPAD, CALC, WINMINE, SOL ...';
+  const HELP='Supported commands:\nCD  CLS  COPY  DATE  DEL  DIR [/A]  ECHO  EXIT  FORMAT  HELP  MD  MEM  TIME  TYPE  UPSTAIRS  VER  VOL\nOr just type a program name: SNAKE, FLAMES, NOTEPAD, CALC, WINMINE, SOL ...';
   const hist=[]; let hi=0;
-  print(opt.real?'Starting DOS...\n\nRetro OS 98 [Version 1.0]\nType RETRO to return to Retro OS.\n':'Retro OS 98 [Version 1.0]\n(Fan-made tribute. Nothing here is real. Type HELP.)\n');
+  print(opt.real?'Starting DOS...\n\nBasement 98 [Version 1.0]\nType UPSTAIRS to return to Basement.\n':'Basement 98 [Version 1.0]\n(Fan-made tribute. Nothing here is real. Type HELP.)\n');
   function run(raw){
     print(pr.textContent+raw); const [c0,...r]=raw.trim().split(/\s+/), cmd=(c0||'').toLowerCase(), arg=r.join(' ');
     if(/^[a-z]:$/.test(cmd)){ print(cmd==='c:'?'':`Not ready reading drive ${cmd.toUpperCase()}\nAbort, Retry, Fail?`); if(cmd==='c:') cwd='C:'; return; }
@@ -282,7 +282,7 @@ function dosMount(el,opt={}){
       case '': break;
       case 'help': print(HELP); break;
       case 'cls': out.textContent=''; break;
-      case 'ver': print('\nRetro OS 98 [Version 1.0]\n'); break;
+      case 'ver': print('\nBasement 98 [Version 1.0]\n'); break;
       case 'vol': print(' Volume in drive C is WIN98\n Volume Serial Number is 1998-0A1B'); break;
       case 'date': print('Current date is '+new Date().toLocaleDateString()); break;
       case 'time': print('Current time is '+new Date().toLocaleTimeString()); break;
@@ -299,12 +299,12 @@ function dosMount(el,opt={}){
       case 'del': case 'erase': case 'deltree': { const p=resolve(arg); if(arg&&fsGet(p)!==undefined&&USER[p]!==undefined){ fsDel(p); } else print(arg?'Access denied - '+arg.toUpperCase()+'\n(It was not yours to delete.)':'Required parameter missing'); break; }
       case 'copy': print('        0 file(s) copied\n(Piracy is not cool. Also, the floppy is full.)'); break;
       case 'format': print('WARNING, ALL DATA ON NON-REMOVABLE DISK\nDRIVE C: WILL BE LOST!\nProceed with Format (Y/N)? Y\n\nFormatting 1,536.00M ... 100%\n\n...just kidding. Nothing was harmed.'); break;
-      case 'win': case 'retro': opt.real?opt.onWin():print('You are already running Retro OS 98.'); break;
-      case 'exit': opt.real?print('Type RETRO to return to Retro OS.'):opt.close&&opt.close(); break;
+      case 'win': case 'upstairs': opt.real?opt.onWin():print('You are already running Basement 98.'); break;
+      case 'exit': opt.real?print('Type UPSTAIRS to return to Basement.'):opt.close&&opt.close(); break;
       case 'start': run2(arg); break;
       default: run2(raw.trim());
     }
-    function run2(v){ const key=v.toLowerCase().replace(/\.exe$|\.com$/,''); if(RUNMAP[key]&&!opt.real){ const t=RUNMAP[key]; typeof t==='string'?openApp(t):t(); print('Starting '+v.toUpperCase()+'...'); } else if(RUNMAP[key]) print('This program requires Retro OS.\nType RETRO to start it.'); else print('Bad command or file name'); }
+    function run2(v){ const key=v.toLowerCase().replace(/\.exe$|\.com$/,''); if(RUNMAP[key]&&!opt.real){ const t=RUNMAP[key]; typeof t==='string'?openApp(t):t(); print('Starting '+v.toUpperCase()+'...'); } else if(RUNMAP[key]) print('This program requires Basement.\nType UPSTAIRS to start it.'); else print('Bad command or file name'); }
   }
   inp.onkeydown=e=>{
     if(e.key==='Enter'){ const v=inp.value; inp.value=''; if(v.trim()){ hist.push(v); hi=hist.length; } run(v); setPrompt(); }
@@ -375,7 +375,7 @@ APPS.display={icon:IC.display,fit:true,single:true,title:'Display Properties',mo
         img.onload=()=>{ const sc=Math.min(1,1600/img.width), c=document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc); c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
           const data=c.toDataURL('image/jpeg',.82); store.set('wpimg98',data);
           if(store.get('wpimg98')!==data){ alertBox('That picture is too big to keep in this browser.\n\nTry a smaller image.','warn','Display Properties'); return; } sel='custom'; draw(); };
-        img.onerror=()=>alertBox('Retro OS cannot read that picture.','err','Display Properties'); img.src=url; }; f.click(); };
+        img.onerror=()=>alertBox('Basement cannot read that picture.','err','Display Properties'); img.src=url; }; f.click(); };
     }
     if(tab===1){ $('#ssk',w.body).onchange=e=>ss.k=e.target.value; $('#ssm',w.body).onchange=e=>ss.m=+e.target.value; $('#ssp',w.body).onclick=startSaver; }
     const apply=()=>{ applyWallpaper(sel,mode); store.set('ss98',JSON.stringify(ss)); };
@@ -394,7 +394,7 @@ APPS.datetime={icon:IC.clock,fit:true,single:true,title:'Date/Time Properties',m
   $('#ok',w.body).onclick=$('#cn',w.body).onclick=()=>w.close(); return ()=>clearInterval(t);
 }};
 APPS.sysprops={icon:IC.sys,fit:true,single:true,title:'System Properties',mount(w){
-  w.body.innerHTML=`<div style="width:400px">${tabsHTML(['General'],0)}<div class="tabbody" style="line-height:1.5;font-size:13px"><b>System:</b><br>&nbsp;&nbsp;Retro OS 98<br>&nbsp;&nbsp;Special Edition 1.0<br><br><b>Registered to:</b><br>&nbsp;&nbsp;You<br>&nbsp;&nbsp;Boredom Industries<br><br><b>Computer:</b><br>&nbsp;&nbsp;233MHz processor<br>&nbsp;&nbsp;64.0MB RAM<br><br><i style="color:#555;font-size:11px">Fan-made tribute. Not affiliated with any company.</i></div><div class="dbtn" style="justify-content:flex-end"><button class="def" id="ok">OK</button><button id="cn">Cancel</button></div></div>`;
+  w.body.innerHTML=`<div style="width:400px">${tabsHTML(['General'],0)}<div class="tabbody" style="line-height:1.5;font-size:13px"><b>System:</b><br>&nbsp;&nbsp;Basement 98<br>&nbsp;&nbsp;Special Edition 1.0<br><br><b>Registered to:</b><br>&nbsp;&nbsp;You<br>&nbsp;&nbsp;Boredom Industries<br><br><b>Computer:</b><br>&nbsp;&nbsp;233MHz processor<br>&nbsp;&nbsp;64.0MB RAM<br><br><i style="color:#555;font-size:11px">Fan-made tribute. Not affiliated with any company.</i></div><div class="dbtn" style="justify-content:flex-end"><button class="def" id="ok">OK</button><button id="cn">Cancel</button></div></div>`;
   $('#ok',w.body).onclick=$('#cn',w.body).onclick=()=>w.close();
 }};
 
@@ -410,11 +410,11 @@ APPS.help={icon:IC.help,wh:[520,420],col:true,single:true,title:'Help',mount(w){
 APPS.sweets={icon:IC.sweets,wh:[500,400],col:true,status:true,single:true,title:'My Sweets (C:)',mount(w){
   w.body.innerHTML='<div class="shelf"></div>'; $$('.status span',w.el)[0].classList.add('tcnt'); $$('.status span',w.el)[1].classList.add('eggcnt'); renderTuck(); updateEggUI();
 }};
-APPS.welcome={icon:IC.home,wh:[500,310],single:true,title:'Welcome to Retro OS 98',mount(w){
-  w.body.innerHTML=`<div style="display:flex;height:100%"><div style="width:130px;background:linear-gradient(#000080,#1084d0);color:#fff;font:italic 700 24px Arial;padding:14px 10px;flex:none">Retro OS<br><small style="font-size:20px;color:#c0c0c0">98</small></div>
+APPS.welcome={icon:IC.home,wh:[500,310],single:true,title:'Welcome to Basement 98',mount(w){
+  w.body.innerHTML=`<div style="display:flex;height:100%"><div style="width:130px;background:linear-gradient(#000080,#1084d0);color:#fff;font:italic 700 24px Arial;padding:14px 10px;flex:none">Basement<br><small style="font-size:20px;color:#c0c0c0">98</small></div>
     <div style="padding:14px 16px;flex:1;display:flex;flex-direction:column"><h3 style="font-family:Arial;color:#000080;font-size:18px;margin:0 0 8px">Did you know?</h3>
-    <p style="margin:0 0 8px;line-height:1.5">Win a game, get a sweet. Post your score to the <b>Hall of Fame</b> and see who in the world beats you. A new <b>Daily Challenge</b> drops at midnight UTC: same game for everyone.<br><br>Press <b>Start</b> for the games.</p>
-    <label style="margin-top:auto"><input type="checkbox" id="sw" checked> Show this screen each time Retro OS 98 starts</label>
+    <p style="margin:0 0 8px;line-height:1.5"><i>No windows down here. Just games.</i><br><br>Win a game, get a sweet. Post your score to the <b>Hall of Fame</b> and see who in the world beats you. A new <b>Daily Challenge</b> drops at midnight UTC: same game for everyone.<br><br>Press <b>Start</b> for the games.</p>
+    <label style="margin-top:auto"><input type="checkbox" id="sw" checked> Show this screen each time Basement 98 starts</label>
     <div style="display:flex;gap:6px;margin-top:10px"><button id="rnd" style="min-width:0;padding:4px 8px">🎲 Surprise me</button><button id="hf" style="min-width:0;padding:4px 8px">🏆 Hall of Fame</button><button id="cl" class="def" style="margin-left:auto">Close</button></div></div></div>`;
   $('#sw',w.body).onchange=e=>store.set('welcome',e.target.checked?'1':'0');
   $('#cl',w.body).onclick=()=>w.close(); $('#hf',w.body).onclick=()=>{ w.close(); openApp('halloffame'); };
