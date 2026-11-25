@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Terms of use - Basement 98</title>
+<meta name="description" content="The rules for using Basement 98: free hobby site, acceptable use of leaderboard tags, no warranty, and how ads and content are handled.">
+<link rel="canonical" href="https://artisansmedia.com/nostalgia/terms.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpolygon points='8,1 1,8 8,8' fill='%23ff4d6d'/%3E%3Cpolygon points='8,1 15,8 8,8' fill='%23ffd23f'/%3E%3Cpolygon points='1,8 8,15 8,8' fill='%233ec5ff'/%3E%3Cpolygon points='15,8 8,15 8,8' fill='%237bd88f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="win">
+  <div class="tb"><span>Terms of use</span><a href="./">Back to Basement 98</a></div>
+  <nav class="menu" aria-label="Site"><a href="./">Play</a><a href="about.html">About</a><a href="guides.html">Game guides</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html" aria-current="page">Terms</a></nav>
+  <main>
+
+    <h1>Terms of use</h1>
+    <p class="muted">Last updated: 25 November 2026</p>
+    <p>By using Basement 98 (the "site") you agree to these terms. If you do not agree, please do not use the site.</p>
+
+    <h2>1. What the site is</h2>
+    <p>Basement 98 is a free, fan-made entertainment site run by the owner of artisansmedia.com. It is a hobby project and is provided as it is.</p>
+
+    <h2>2. Your use of the site</h2>
+    <ul>
+      <li>You may play the games and use the programs for personal, non-commercial purposes.</li>
+      <li>Do not try to break, overload or scrape the site, bypass its protections, or submit fake scores by tampering with the game or the server.</li>
+      <li>Do not use the site to do anything illegal.</li>
+    </ul>
+
+    <h2>3. Leaderboard names</h2>
+    <p>The arcade tag you choose is shown publicly. Do not use offensive, hateful or misleading tags, other people's names, or personal information such as phone numbers or addresses. We may remove any score or tag, at any time and without notice, including scores that look fake.</p>
+
+    <h2>4. Our content</h2>
+    <p>The code, artwork, sounds and text on this site are original work made for the project. You may not copy and redistribute them as your own. All third-party names mentioned are the property of their owners, and the site is not affiliated with or endorsed by any company.</p>
+
+    <h2>5. Your files</h2>
+    <p>Files you create or open, such as Notepad notes, drawings or music files, stay on your own device. You are responsible for what you create and for keeping your own copies.</p>
+
+    <h2>6. Advertising and links</h2>
+    <p>The site may show ads and may link to other websites. We do not control third-party sites and are not responsible for them. Ads only load after you accept them, as described in the <a href="privacy.html">privacy policy</a>.</p>
+
+    <h2>7. No warranty</h2>
+    <p>The site is provided "as is" and "as available". We do not promise that it will always work, be free of errors, keep your data forever, or be available at all times. To the fullest extent the law allows, we are not liable for any loss arising from your use of the site.</p>
+
+    <h2>8. Changes</h2>
+    <p>We may update the site or these terms. The date at the top shows when the terms last changed. Continuing to use the site after a change means you accept it.</p>
+
+    <h2>9. Contact</h2>
+    <p>Questions about these terms: <span data-contact></span>.</p>
+
+  </main>
+</div>
+<footer><p>Basement 98 is a fan-made tribute inspired by the desktops of the late 1990s. It is not affiliated with any company. &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="contact.html">Contact</a></p></footer>
+<script src="js/config.js"></script>
+<script>
+  document.querySelectorAll('[data-contact]').forEach(function(el){
+    var mail=(typeof CFG!=='undefined'&&CFG.contactEmail)||'';
+    if(mail){ var a=document.createElement('a'); a.href='mailto:'+mail; a.textContent=mail; el.appendChild(a); }
+    else { el.textContent='(contact email coming soon)'; }
+  });
+</script>
+</body>
+</html>

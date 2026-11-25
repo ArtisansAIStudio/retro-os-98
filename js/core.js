@@ -187,6 +187,7 @@ function startItems(){
       {label:'Taskbar & Start Menu...',icon:IC.display,run:async()=>{ const r=await dialog({title:'Taskbar Properties',icon:'info',width:380,buttons:['Reset menu order','Close'],cancel:'Close',body:'The taskbar is staying at the bottom, where it belongs.<br><br><b>Tip:</b> drag items inside the Programs, Accessories and Games menus to put them in your own order.'}); if(r.btn==='Reset menu order'){ store.set('menuorder98','{}'); alertBox('Start menu order reset.','info','Taskbar Properties'); } }}]},
     {label:'Find',icon:IC.find,sub:[{label:'Files or Folders...',icon:IC.find,run:()=>alertBox('Find is not available right now.\n\nTry the last place you left it.','info','Find: All Files')}]},
     {label:'Help',icon:IC.help,run:()=>openApp('help')},
+    {label:'Guides & FAQ',icon:'📖',run:()=>window.open('guides.html','_blank','noopener')},
     {label:'Run...',icon:IC.run,run:runDialog},
     {sep:1},
     {label:'Shut Down...',icon:IC.power,run:shutdownDialog}

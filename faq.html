@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FAQ - Basement 98</title>
+<meta name="description" content="Answers about Basement 98: is it free, where progress is saved, how the leaderboard and daily challenge work, cheating, cookies, ads and your data.">
+<link rel="canonical" href="https://artisansmedia.com/nostalgia/faq.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpolygon points='8,1 1,8 8,8' fill='%23ff4d6d'/%3E%3Cpolygon points='8,1 15,8 8,8' fill='%23ffd23f'/%3E%3Cpolygon points='1,8 8,15 8,8' fill='%233ec5ff'/%3E%3Cpolygon points='15,8 8,15 8,8' fill='%237bd88f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="win">
+  <div class="tb"><span>FAQ</span><a href="./">Back to Basement 98</a></div>
+  <nav class="menu" aria-label="Site"><a href="./">Play</a><a href="about.html">About</a><a href="guides.html">Game guides</a><a href="faq.html" aria-current="page">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+  <main>
+    <h1>Frequently asked questions</h1>
+    <dl>
+      <dt>Is Basement 98 free?</dt>
+      <dd>Yes. It is free to play, with no account and no purchases. It may show ads to cover hosting costs, and ads only load if you choose Accept all in the cookie notice.</dd>
+      <dt>Do I need to install anything?</dt>
+      <dd>No. It runs in your web browser on a computer, phone or tablet. A recent version of Chrome, Edge, Firefox or Safari works. Blockcraft Classic needs a computer with a mouse.</dd>
+      <dt>Is this a real old operating system?</dt>
+      <dd>No. It is a tribute written from scratch in JavaScript, inspired by the desktops of the late 1990s. All the code, art and sounds are original, and it is not affiliated with any company.</dd>
+      <dt>Where is my progress saved?</dt>
+      <dd>In your own browser, on your device. That includes your sweets, saved Notepad files, wallpaper and settings. We cannot see any of it. If you clear your browser data or switch device, it will not follow you.</dd>
+      <dt>How do I erase my data?</dt>
+      <dd>Open Start &gt; Settings &gt; Privacy &amp; Cookies and press <b>Clear my data on this device</b>. You can also clear site data in your browser settings.</dd>
+      <dt>How do leaderboards work?</dt>
+      <dd>When a game with a score ends you can enter an arcade tag (up to 12 characters) and pick your country. The game, score, tag and country become public on the Hall of Fame. There are no accounts, so please use a nickname and nothing personal.</dd>
+      <dt>Can people cheat?</dt>
+      <dd>It is hard. Each game run gets a one-time token from the server. Some games, such as Snake and Minesweeper, also send a replay of your moves that the server replays to confirm the score. The server also checks that times and scores are humanly possible. No online game is perfectly cheat-proof, and suspicious scores can be removed.</dd>
+      <dt>What is the daily challenge?</dt>
+      <dd>One shared game per day that is identical for everyone: the same Snake food pattern, the same Block Drop pieces and the same Minesweeper board. It resets at midnight UTC.</dd>
+      <dt>What are the sweets?</dt>
+      <dd>Collectibles for winning games. There are 14 and one of them is hidden. Open My Sweets on the desktop to see what you have.</dd>
+      <dt>Why is there a cookie notice?</dt>
+      <dd>Because ads, if they are enabled, may use cookies. You can choose Accept all or Essential only. Essential only means no ads and no ad cookies. You can change your choice any time in Privacy &amp; Cookies.</dd>
+      <dt>Can I use my own music?</dt>
+      <dd>Yes. Open Media Player and choose File &gt; Open, or drag audio files onto it. They play on your device and are never uploaded.</dd>
+      <dt>It is not working. What should I do?</dt>
+      <dd>Reload the page first. If it is still broken, tell us which browser and device you use and what happened, at <span data-contact></span>.</dd>
+      <dt>How do I remove a score from the leaderboard?</dt>
+      <dd>Write to <span data-contact></span> with the game, your arcade tag, your country and roughly when you played, and we will remove it.</dd>
+      <dt>Can I suggest a game?</dt>
+      <dd>Please do. Send ideas to <span data-contact></span>. We like games from the notebook-and-playground era as well as the arcade.</dd>
+    </dl>
+    <p>More questions? Visit the <a href="contact.html">contact page</a>.</p>
+
+  </main>
+</div>
+<footer><p>Basement 98 is a fan-made tribute inspired by the desktops of the late 1990s. It is not affiliated with any company. &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="contact.html">Contact</a></p></footer>
+<script src="js/config.js"></script>
+<script>
+  document.querySelectorAll('[data-contact]').forEach(function(el){
+    var mail=(typeof CFG!=='undefined'&&CFG.contactEmail)||'';
+    if(mail){ var a=document.createElement('a'); a.href='mailto:'+mail; a.textContent=mail; el.appendChild(a); }
+    else { el.textContent='(contact email coming soon)'; }
+  });
+</script>
+</body>
+</html>

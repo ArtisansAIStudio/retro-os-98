@@ -1,4 +1,4 @@
-// ===== Console-era classics: two original games + a Retro Console that runs YOUR own NES game files =====
+// ===== Console-era classics: original games =====
 
 /* ================= BRICK BREAKER ================= */
 function mountBreakout(w){
@@ -70,69 +70,6 @@ function mountInvaders(w){
   return ()=>{ stop(); K.off(); };
 }
 
-/* ================= RETRO CONSOLE: runs NES games the player owns (nothing is included) ================= */
-function loadJsnes(){ return window.jsnes?Promise.resolve():new Promise((res,rej)=>{ const s=document.createElement('script'); s.src='https://cdnjs.cloudflare.com/ajax/libs/jsnes/1.1.0/jsnes.min.js'; s.onload=res; s.onerror=()=>rej(new Error('offline')); document.head.appendChild(s); }); }
-const SYSTEMS={nes:'jsnes',sfc:'snes',smc:'snes',md:'segaMD',gen:'segaMD',smd:'segaMD',gb:'gb',gbc:'gb',gba:'gba',sms:'segaMS',gg:'segaGG',pce:'pce',zip:'ask',bin:'ask','7z':'ask'};
-const SYSTEM_CHOICES=[['arcade','Arcade (FinalBurn Neo)'],['mame2003','Arcade (MAME 2003)'],['segaMD','Sega Genesis / Mega Drive'],['snes','Super Nintendo'],['nes','NES'],['gb','Game Boy / Color'],['gba','Game Boy Advance'],['segaMS','Sega Master System'],['pce','PC Engine']];
-function buildEjsDoc(core,url,name){
-  const j=v=>JSON.stringify(String(v)).replace(/</g,'\\u003c');
-  return `<!doctype html><html><head><meta charset="utf-8"><style>html,body{margin:0;height:100%;background:#000;overflow:hidden}#game{width:100%;height:100%}</style></head><body><div id="game"></div><script>EJS_player='#game';EJS_core=${j(core)};EJS_gameUrl=${j(url)};EJS_gameName=${j(String(name).replace(/\.[^.]+$/,''))};EJS_pathtodata='https://cdn.emulatorjs.org/stable/data/';EJS_startOnLoaded=true;EJS_color='#000080';<\/script><script src="https://cdn.emulatorjs.org/stable/data/loader.js"><\/script></body></html>`;
-}
-async function askSystem(name){
-  const r=await dialog({title:'Which console?',icon:'q',buttons:['Play','Cancel'],cancel:'Cancel',width:370,body:`What system is <b>${esc(name)}</b> for?<br><br><select>${SYSTEM_CHOICES.map(([v,l])=>`<option value="${v}">${l}</option>`).join('')}</select><br><br><small>Arcade games need a ROM set (.zip) that matches the emulator.</small>`});
-  return r.btn==='Play'?$('select',r.el).value:null;
-}
-function mountNES(w){
-  w.body.innerHTML=`<div class="arcbar"><span id="hint">NES keys: Arrows · Z = B · X = A · Enter = Start · Shift = Select</span><button id="ins" style="min-width:0;padding:2px 10px">📼 Insert game...</button></div>
-    <div style="position:relative;background:#000"><canvas class="arc" width="256" height="240" style="image-rendering:pixelated;aspect-ratio:256/240"></canvas>
-    <iframe id="ejs" title="Emulator" allow="autoplay; gamepad; fullscreen" sandbox="allow-scripts allow-same-origin allow-pointer-lock allow-downloads" style="display:none;position:absolute;inset:0;width:100%;height:100%;border:0;background:#000"></iframe>
-    <div id="nm" style="position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#ccc;padding:24px;font:14px/1.5 Arial"><div><div style="font-size:42px">🎮</div><b style="font-size:17px;color:#fff">Retro Console</b><br>No games are included.<br>Insert a game file that you own and it runs here:<br><b>NES, Super Nintendo, Sega Genesis, Master System,<br>Game Boy / Color / Advance, PC Engine, arcade ROM sets</b><br>Drag a file onto this window, or press Insert game.<br><br><small style="color:#999">Runs in your browser. Your files never leave your computer.</small></div></div></div>`;
-  const cv=$('canvas',w.body), g=cv.getContext('2d'), nm=$('#nm',w.body); let nes=null, ctx=null, node=null, acc=0, gen=0;
-  const BTN=()=>({x:jsnes.Controller.BUTTON_A,z:jsnes.Controller.BUTTON_B,shift:jsnes.Controller.BUTTON_SELECT,enter:jsnes.Controller.BUTTON_START,arrowup:jsnes.Controller.BUTTON_UP,arrowdown:jsnes.Controller.BUTTON_DOWN,arrowleft:jsnes.Controller.BUTTON_LEFT,arrowright:jsnes.Controller.BUTTON_RIGHT});
-  let shelf=null; const say=h=>{ nm.style.display='grid'; nm.firstElementChild.innerHTML=h; if(shelf) nm.firstElementChild.appendChild(shelf); };
-  const kd=e=>{ if(!nes||active!==w) return; const b=BTN()[e.key.toLowerCase()]; if(b===undefined) return; e.preventDefault(); nes.buttonDown(1,b); };
-  const ku=e=>{ if(!nes) return; const b=BTN()[e.key.toLowerCase()]; if(b!==undefined) nes.buttonUp(1,b); };
-  document.addEventListener('keydown',kd); document.addEventListener('keyup',ku);
-  const halt=()=>{ gen++; nes=null; if(node){ node.disconnect(); node=null; } if(ctx){ ctx.close(); ctx=null; } };
-  let ejsUrl=null;
-  const stopEJS=()=>{ const f=$('#ejs',w.body); if(f){ f.removeAttribute('srcdoc'); f.src='about:blank'; f.style.display='none'; } if(ejsUrl){ URL.revokeObjectURL(ejsUrl); ejsUrl=null; } };
-  async function insert(file){
-    const ext=(file.name.split('.').pop()||'').toLowerCase(), sys=SYSTEMS[ext];
-    if(!sys){ say('<b style="color:#f88">Not a game file this console knows.</b><br>Try .nes .sfc .smc .md .gen .gb .gbc .gba .sms .gg .pce or an arcade .zip'); return; }
-    if(sys==='jsnes') return insertNES(file);
-    let core=sys; if(sys==='ask'){ core=await askSystem(file.name); if(!core) return; }
-    halt(); stopEJS(); nm.style.display='none'; ejsUrl=URL.createObjectURL(file);
-    $('#ejs',w.body).srcdoc=buildEjsDoc(core,ejsUrl,file.name); $('#ejs',w.body).style.display='block';
-    $('#hint',w.body).textContent='Click the game, then use the keyboard or a gamepad. Open the emulator menu (gear icon) to see controls.'; w.setTitle?.('Retro Console - '+file.name);
-  }
-  async function insertNES(file){
-    stopEJS(); $('#hint',w.body).textContent='NES keys: Arrows · Z = B · X = A · Enter = Start · Shift = Select';
-    say('Loading emulator...');
-    try{ await loadJsnes(); }catch(e){ say('<b style="color:#f88">The emulator needs an internet connection to load.</b>'); return; }
-    halt(); const my=gen;
-    const bytes=new Uint8Array(await file.arrayBuffer()); let bin=''; for(let i=0;i<bytes.length;i+=8192) bin+=String.fromCharCode.apply(null,bytes.subarray(i,i+8192));
-    const AC=window.AudioContext||window.webkitAudioContext; ctx=new AC(); const M=8191, L=new Float32Array(M+1), R=new Float32Array(M+1); let wr=0, rd=0;
-    node=ctx.createScriptProcessor(1024,0,2); node.onaudioprocess=e=>{ const a=e.outputBuffer.getChannelData(0), b=e.outputBuffer.getChannelData(1); for(let i=0;i<a.length;i++){ if(rd<wr){ a[i]=L[rd&M]; b[i]=R[rd&M]; rd++; } else { a[i]=0; b[i]=0; } } if(wr-rd>4096) rd=wr-2048; }; node.connect(ctx.destination);
-    const img=g.getImageData(0,0,256,240), b32=new Uint32Array(img.data.buffer);
-    const n=new jsnes.NES({onFrame:fb=>{ for(let i=0;i<fb.length;i++) b32[i]=0xFF000000|fb[i]; g.putImageData(img,0,0); },onAudioSample:(l,r)=>{ L[wr&M]=l; R[wr&M]=r; wr++; },sampleRate:ctx.sampleRate});
-    try{ n.loadROM(bin); }catch(e){ halt(); say('<b style="color:#f88">This cartridge could not be read.</b><br>It may be corrupt, or use hardware this console does not support.'); return; }
-    if(my!==gen) return; nes=n; nm.style.display='none'; w.setTitle?.('Retro Console - '+file.name);
-  }
-  const pickFile=()=>{ const f=document.createElement('input'); f.type='file'; f.accept='.nes,.sfc,.smc,.md,.gen,.smd,.gb,.gbc,.gba,.sms,.gg,.pce,.zip,.bin,.7z'; f.onchange=()=>{ if(f.files[0]) insert(f.files[0]); }; f.click(); };
-  $('#ins',w.body).onclick=pickFile;
-  fetch('roms/roms.json').then(r=>r.ok?r.json():[]).then(list=>{
-    if(!Array.isArray(list)||!list.length) return;
-    shelf=document.createElement('div'); shelf.style.cssText='margin-top:16px;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:420px';
-    shelf.innerHTML='<div style="width:100%;color:#fff;font-weight:700">Cartridge shelf</div>';
-    list.forEach(c=>{ if(!c||!c.name||!/^roms\/[\w .\-]+\.nes$/i.test(c.file||'')) return; const b=document.createElement('button'); b.style.minWidth='0'; b.title=(c.credit||'')+(c.license?' - '+c.license:''); b.textContent='📼 '+c.name;
-      b.onclick=async()=>{ try{ const r=await fetch(c.file); if(!r.ok) throw 0; insert(new File([await r.arrayBuffer()],c.file.split('/').pop())); }catch(e){ say('<b style="color:#f88">Could not load that cartridge.</b>'); } }; shelf.appendChild(b); });
-    nm.firstElementChild.appendChild(shelf);
-  }).catch(()=>{});
-  w.body.ondragover=e=>e.preventDefault(); w.body.ondrop=e=>{ e.preventDefault(); const f=e.dataTransfer.files[0]; if(f) insert(f); };
-  const stop=loop(w,dt=>{ if(!nes) return; acc=Math.min(acc+dt,.2); while(acc>=1/60){ try{ nes.frame(); }catch(e){ halt(); say('<b style="color:#f88">The game crashed.</b><br>Some cartridges are not supported.'); return; } acc-=1/60; } });
-  return ()=>{ stop(); halt(); stopEJS(); document.removeEventListener('keydown',kd); document.removeEventListener('keyup',ku); };
-}
-
 /* ================= JUNGLE COMMANDO: run-and-gun, 1 or 2 player co-op ================= */
 function mountCommando(w){
   w.body.innerHTML=`<div class="arcbar"><span>P1: A D move · W jump · F fire</span><span id="md"><button data-m="1" class="on" style="min-width:0">1 Player</button> <button data-m="2" style="min-width:0">2 Player Co-op</button></span><span>P2: ← → move · ↑ jump · / fire</span></div><canvas class="arc" width="480" height="270"></canvas>`;
@@ -191,5 +128,4 @@ function mountCommando(w){
 ARCADE.push(
   {id:'commando',f:'JUNGLE.EXE',n:'Jungle Commando (2-Player Co-op)',e:'💥',wh:[640,480],m:mountCommando},
   {id:'breakout',f:'BRICKS.EXE',n:'Brick Breaker',e:'🧱',wh:[520,440],m:mountBreakout},
-  {id:'invaders',f:'ALIENS.EXE',n:'Alien Invaders',e:'👾',wh:[520,480],m:mountInvaders},
-  {id:'nes',f:'RETRO.EXE',n:'Retro Console (bring your own games)',e:'🎮',wh:[560,560],m:mountNES});
+  {id:'invaders',f:'ALIENS.EXE',n:'Alien Invaders',e:'👾',wh:[520,480],m:mountInvaders});

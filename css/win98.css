@@ -69,7 +69,9 @@ hr{border:0;border-top:1px solid #808080;border-bottom:1px solid #fff;margin:3px
 #tasks{flex:1;display:flex;gap:3px;overflow:hidden;min-width:0}
 .tk{flex:0 1 160px;min-width:40px;text-align:left;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:2px 6px;min-height:24px}
 .tk.on{box-shadow:var(--press);font-weight:700;background:repeating-conic-gradient(#fff 0 25%,var(--face) 0 50%) 0 0/2px 2px}
-#privlink{font-size:11px;color:#000;text-decoration:underline;padding:0 8px;white-space:nowrap}
+#footlinks{display:flex;align-items:center;white-space:nowrap}
+#footlinks a{font-size:11px;color:#000;text-decoration:underline;padding:0 6px}
+@media(max-width:760px){#footlinks a:not(#privlink){display:none}}
 .trayr{display:flex;gap:8px;align-items:center;padding:3px 8px;box-shadow:inset 1px 1px #808080,inset -1px -1px #fff;height:24px}
 /* start + context menus */
 #smenu,#ctx{position:fixed;z-index:9100;background:var(--face);box-shadow:var(--raised);padding:3px}

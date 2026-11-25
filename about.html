@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About Basement 98 - Basement 98</title>
+<meta name="description" content="Basement 98 is a free, fan-made 90s desktop that runs in your browser, with 20+ original games, leaderboards and hidden secrets. No install, no sign-up.">
+<link rel="canonical" href="https://artisansmedia.com/nostalgia/about.html">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpolygon points='8,1 1,8 8,8' fill='%23ff4d6d'/%3E%3Cpolygon points='8,1 15,8 8,8' fill='%23ffd23f'/%3E%3Cpolygon points='1,8 8,15 8,8' fill='%233ec5ff'/%3E%3Cpolygon points='15,8 8,15 8,8' fill='%237bd88f'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+<div class="win">
+  <div class="tb"><span>About Basement 98</span><a href="./">Back to Basement 98</a></div>
+  <nav class="menu" aria-label="Site"><a href="./">Play</a><a href="about.html" aria-current="page">About</a><a href="guides.html">Game guides</a><a href="faq.html">FAQ</a><a href="contact.html">Contact</a><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></nav>
+  <main>
+
+    <h1>About Basement 98</h1>
+    <p class="lead">Remember the last bench, the back page of your rough copy, a phone with one game and forty minutes of battery? Basement 98 is a small love letter to all of that, running in a web page.</p>
+    <p><a class="cta" href="./">Open Basement 98</a></p>
+
+    <h2>What it is</h2>
+    <p>Basement 98 looks and behaves like a computer desktop from the late 1990s. You get a boot screen, a Start menu, windows you can drag and resize, a taskbar with a clock, and icons on the desktop. Inside it there are about two dozen games, a handful of small programs, and a few things we are not going to tell you about.</p>
+    <p>There is nothing to install and no account to make. Open the page, wait for the boot screen, and start playing.</p>
+    <p>The name is a joke. There are no windows down here.</p>
+
+    <h2>What is inside</h2>
+    <ul>
+      <li><b>Notebook classics</b> we all played at school: FLAMES, Book Cricket, Name Place Animal Thing, Hangman, Stone Paper Scissors, Dots and Boxes and Tic-Tac-Toe.</li>
+      <li><b>Desktop classics:</b> Minesweeper and Solitaire.</li>
+      <li><b>Arcade-style games</b> written from scratch: a split-screen racer, a first-person maze shooter, a block-building sandbox, falling blocks, Pong, a run-and-gun, a brick breaker, an alien shooter, a maze chase, a road-crossing game, an asteroid blaster and a motorbike race-and-fight game.</li>
+      <li><b>Small programs:</b> Notepad (your files are saved on your device), Paint, a calculator, a DOS-style prompt, a media player that can play your own music files, and a web browser that dials up the 1998 internet.</li>
+      <li><b>Sweets.</b> Win games and you collect sweets in My Sweets. There are 14 to find, and one of them is hidden.</li>
+      <li><b>A worldwide Hall of Fame</b> with leaderboards, a daily challenge that is the same for everyone on Earth, and a live feed of scores.</li>
+    </ul>
+    <p>See the <a href="guides.html">game guides</a> for controls and tips for every game.</p>
+
+    <h2>Everything is original</h2>
+    <p>All the code, artwork and sounds were written for this project. The games are our own versions of classic ideas, such as a car race, a maze shooter and a block puzzle. They are inspired by the era but are not copies of any commercial game, and the site does not host anyone else's games.</p>
+
+    <h2>Fair play</h2>
+    <p>Scores on the leaderboard are checked by a server. When a game starts the server issues a one-time token, and for some games it replays the moves you made to confirm the score is real. It is not perfect, but it keeps the boards honest.</p>
+
+    <h2>Who makes it</h2>
+    <p>Basement 98 is a hobby project from the owner of artisansmedia.com. It is free to play and may show ads to cover its costs, only if you allow them. Read the <a href="privacy.html">privacy policy</a> for exactly what is stored and why.</p>
+
+    <h2>Say hello</h2>
+    <p>Found a bug, have an idea for a game, or want a score removed? Write to <span data-contact></span> or see the <a href="contact.html">contact page</a>.</p>
+
+  </main>
+</div>
+<footer><p>Basement 98 is a fan-made tribute inspired by the desktops of the late 1990s. It is not affiliated with any company. &middot; <a href="privacy.html">Privacy</a> &middot; <a href="terms.html">Terms</a> &middot; <a href="contact.html">Contact</a></p></footer>
+<script src="js/config.js"></script>
+<script>
+  document.querySelectorAll('[data-contact]').forEach(function(el){
+    var mail=(typeof CFG!=='undefined'&&CFG.contactEmail)||'';
+    if(mail){ var a=document.createElement('a'); a.href='mailto:'+mail; a.textContent=mail; el.appendChild(a); }
+    else { el.textContent='(contact email coming soon)'; }
+  });
+</script>
+</body>
+</html>
