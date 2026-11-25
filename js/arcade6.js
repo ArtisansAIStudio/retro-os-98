@@ -38,7 +38,7 @@ function mountHighway(w){
       cars.forEach(c=>{ c.pos+=c.v*dt; if(c.kind==='weaver') c.fl=Math.sin(c.ph+el*1.3)*1.4; });
       const sy=p=>(p-me.pos)*SC;
       cars.forEach(c=>{ const cx=lx(Math.max(0,Math.min(LN-1,c.lane+c.fl))), dy=sy(c.pos), hl=c.kind==='truck'?14:9;
-        if(racing&&me.spin<=0&&Math.abs(dy)<hl+8&&Math.abs(cx-me.x)<9){ me.spin=.9; me.v*=.3; fuel=Math.max(0,fuel-7); me.x+=me.x<cx?-7:7; c.pos+=30; say('CRASH!'); } });
+        if(racing&&me.spin<=0&&Math.abs(dy)<hl+8&&Math.abs(cx-me.x)<9){ me.spin=.9; me.v*=.3; fuel=Math.max(0,fuel-7); me.x+=me.x<cx?-7:7; c.pos+=30; say('CRASH!'); Death.play(w,{kind:'crash',x:me.x,y:PY}); } });
       cans.forEach(c=>{ if(!c.got&&racing&&Math.abs(sy(c.pos))<9&&Math.abs(lx(c.lane)-me.x)<10){ c.got=true; fuel=Math.min(100,fuel+30); say('FUEL +30'); } });
       if(racing&&me.pos>=DIST){ state='done'; if(!best||el<best){ best=el; store.set('hway-best',String(el)); newBest=true; } celebrate(); }
       if(state==='out'&&me.v<=0){ state='over'; }

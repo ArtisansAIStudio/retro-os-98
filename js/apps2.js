@@ -104,7 +104,7 @@ APPS.mines={icon:IC.mines,wh:[230,330],single:true,title:'Minesweeper',
     const paint=i=>{ const c=cells[i], el=g.children[i]; el.className='cl'; el.textContent='';
       if(c.o){ el.classList.add('op'); if(c.m){ el.textContent='💣'; } else if(c.n){ el.textContent=c.n; el.classList.add('n'+c.n); } }
       else if(c.f) el.textContent='🚩'; };
-    const lose=i=>{ over=true; clearInterval(timer); face.textContent='😵'; cells.forEach((c,k)=>{ if(c.m&&!c.f){ c.o=1; paint(k); } else if(!c.m&&c.f){ g.children[k].textContent='❌'; } }); g.children[i].classList.add('bm'); };
+    const lose=i=>{ over=true; clearInterval(timer); face.textContent='😵'; Death.play(w,{kind:'boom',el:g.children[i],col:'#555'}); cells.forEach((c,k)=>{ if(c.m&&!c.f){ c.o=1; paint(k); } else if(!c.m&&c.f){ g.children[k].textContent='❌'; } }); g.children[i].classList.add('bm'); };
     const win=()=>{ over=true; clearInterval(timer); face.textContent='😎'; cells.forEach((c,k)=>{ if(c.m&&!c.f){ c.f=1; paint(k); } }); ml.textContent=pad(0); postScore('mines-'+mw.l,Math.max(1,secs),{daily:dailyOn&&mw.l==='i',reward:true,run,log}); };
     const reveal=i=>{
       const st=[i];

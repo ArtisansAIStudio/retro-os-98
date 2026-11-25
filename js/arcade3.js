@@ -61,7 +61,7 @@ function mountHopper(w){
   const reset=()=>{ lives=3; goals=[0,0,0,0,0]; state='play'; rewarded=false; held={}; msg=''; spawn(); objs=[]; Object.entries(LANES).forEach(([r,L])=>{ const gap=480/L.n; for(let i=0;i<L.n;i++) objs.push({r:+r,x:i*gap+Math.random()*30,L}); }); };
   const spawn=()=>{ f={x:220,y:8*C,r:8}; };
   reset();
-  const die=why=>{ lives--; msg=why; if(lives<=0) state='over'; else spawn(); };
+  const die=why=>{ Death.play(w,{kind:/drown|Swept/i.test(why)?'splash':'splat',x:f.x+C/2,y:f.y+C/2}); lives--; msg=why; if(lives<=0) state='over'; else spawn(); };
   const hop=(dx,dy)=>{ if(state!=='play') return; f.x=Math.max(0,Math.min(440,f.x+dx*C)); f.r=Math.max(0,Math.min(8,f.r+dy)); f.y=f.r*C; if(f.r===0){ const slot=Math.round(f.x/96); const sx=slot*96+20; if(slot>=0&&slot<5&&!goals[slot]&&Math.abs(f.x-sx)<44){ goals[slot]=1; score_(); spawn(); if(goals.every(Boolean)){ state='win'; if(!rewarded){ rewarded=true; celebrate(); } } } else die('Splash! Missed the lily pad.'); } };
   const score_=()=>{ msg='Made it!'; };
   const stop=loop(w,dt=>{
@@ -108,7 +108,7 @@ function mountRocks(w){
       shots.forEach(b=>{ b.x+=b.vx*dt; b.y+=b.vy*dt; b.life-=dt; wrap(b); }); shots=shots.filter(b=>b.life>0);
       rocks.forEach(r=>{ r.x+=r.vx*dt; r.y+=r.vy*dt; r.a+=r.va*dt; wrap(r); });
       for(const b of shots){ const i=rocks.findIndex(r=>Math.hypot(r.x-b.x,r.y-b.y)<r.sz*9); if(i>=0){ const r=rocks[i]; b.life=0; score+=[0,100,50,20][r.sz]; rocks.splice(i,1); if(r.sz>1) for(let n=0;n<2;n++){ const c=mkRock(r.x,r.y,r.sz-1); c.vx*=1.6; c.vy*=1.6; rocks.push(c); } } }
-      if(s.inv<=0&&rocks.some(r=>Math.hypot(r.x-s.x,r.y-s.y)<r.sz*9+6)){ lives--; if(lives<=0) state='over'; else respawn(); }
+      if(s.inv<=0&&rocks.some(r=>Math.hypot(r.x-s.x,r.y-s.y)<r.sz*9+6)){ Death.play(w,{kind:'boom',x:s.x,y:s.y,col:'#9ad0ff',text:lives<=1?'GAME OVER':''}); lives--; if(lives<=0) state='over'; else respawn(); }
       if(!rocks.length){ if(!rewarded){ rewarded=true; celebrate(); } wave++; waveUp(); }
     }
     g.fillStyle='#000'; g.fillRect(0,0,480,360); g.strokeStyle='#fff'; g.lineWidth=1.5;

@@ -40,12 +40,25 @@ const Music=(()=>{
     const a=active&&GAMEIDS.has(active.id)?active:(open.find(w=>w.id===cur)||open[open.length-1]);
     if(a&&a.id!==cur) play(a.id);
   }
-  function paint(){ const el=$('.trayr span[title]'); if(el){ el.textContent=on?'🔊':'🔇'; el.title=on?'Game music: on (click to mute)':'Game music: off (click to turn on)'; el.style.cursor='pointer'; } }
+  /* short sound effects for deaths (follow the same on/off switch as the music) */
+  function sfx(kind){
+    if(!on) return; const c=ensure(); if(!c||!master) return; const t=c.currentTime, out=c.createGain(); out.gain.value=.5; out.connect(c.destination);
+    const noiseBurst=(len,f0,f1,vol)=>{ const s=c.createBufferSource(), fl=c.createBiquadFilter(), g=c.createGain(); s.buffer=noise; s.loop=true; fl.type='lowpass'; fl.frequency.setValueAtTime(f0,t); fl.frequency.exponentialRampToValueAtTime(f1,t+len); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+len); s.connect(fl); fl.connect(g); g.connect(out); s.start(t); s.stop(t+len+.05); };
+    const sweep=(type,f0,f1,len,vol)=>{ const o=c.createOscillator(), g=c.createGain(); o.type=type; o.frequency.setValueAtTime(f0,t); o.frequency.exponentialRampToValueAtTime(f1,t+len); g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+len); o.connect(g); g.connect(out); o.start(t); o.stop(t+len+.05); };
+    if(kind==='boom'){ noiseBurst(.6,2400,60,.9); sweep('sine',160,35,.5,.8); }
+    else if(kind==='crash'){ noiseBurst(.4,1800,120,.7); sweep('square',200,50,.3,.25); }
+    else if(kind==='splat'){ sweep('sine',320,50,.22,.8); noiseBurst(.12,900,200,.3); }
+    else if(kind==='splash'){ noiseBurst(.35,5000,900,.4); }
+    else if(kind==='pop'){ sweep('square',700,180,.12,.3); }
+    else if(kind==='flash'){ sweep('sawtooth',260,40,.9,.35); noiseBurst(.5,1200,80,.5); }
+    else if(kind==='shatter'){ noiseBurst(.7,6000,300,.6); sweep('triangle',500,70,.6,.3); }
+  }
+  function paint(){ const el=$('.trayr span[title]'); if(el){ el.textContent=on?'🔊':'🔇'; el.title=on?'Game sound: on (click to mute)':'Game sound: off (click to turn on)'; el.style.cursor='pointer'; } }
   function toggle(){ on=!on; store.set('music98',on?'1':'0'); if(!on) stop(); else { ensure(); follow(); } paint(); }
   const unlock=()=>{ ensure(); };
   document.addEventListener('pointerdown',unlock,{once:false,passive:true}); document.addEventListener('keydown',unlock,{passive:true});
   document.addEventListener('visibilitychange',()=>{ if(document.hidden){ stop(); if(ctx) ctx.suspend().catch(()=>{}); } else { ensure(); follow(); } });
   setInterval(follow,500); paint();
   const sp=$('.trayr span[title]'); if(sp) sp.onclick=toggle;
-  return {toggle,play,stop,get on(){return on;},get info(){return (ctx?ctx.state:'no-ctx')+':'+cur;}};
+  return {toggle,play,stop,sfx,get on(){return on;},get info(){return (ctx?ctx.state:'no-ctx')+':'+cur;}};
 })();

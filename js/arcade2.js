@@ -20,7 +20,7 @@ function mountBreakout(w){
         if(ball.x<5){ ball.x=5; ball.vx=Math.abs(ball.vx); } if(ball.x>475){ ball.x=475; ball.vx=-Math.abs(ball.vx); } if(ball.y<5){ ball.y=5; ball.vy=Math.abs(ball.vy); }
         if(ball.vy>0&&ball.y>=290&&ball.y<=302&&ball.x>px-4&&ball.x<px+84){ ball.vy=-Math.abs(ball.vy); ball.vx=(ball.x-(px+40))*5.5; }
         for(const b of bricks){ if(b.hit) continue; if(ball.x+5>b.x&&ball.x-5<b.x+b.w&&ball.y+5>b.y&&ball.y-5<b.y+b.h){ b.hit=true; score+=10; const fromSide=Math.min(ball.x+5-b.x,b.x+b.w-(ball.x-5))<Math.min(ball.y+5-b.y,b.y+b.h-(ball.y-5)); if(fromSide) ball.vx*=-1; else ball.vy*=-1; const sp=Math.hypot(ball.vx,ball.vy); if(sp<430){ ball.vx*=1.015; ball.vy*=1.015; } break; } }
-        if(ball.y>330){ lives--; ball.on=true; if(lives<=0) state='over'; }
+        if(ball.y>330){ lives--; ball.on=true; Death.play(w,{kind:lives<=0?'boom':'pop',x:Math.max(10,Math.min(470,ball.x)),y:316,col:'#ffd23f',text:lives<=0?'GAME OVER':''}); if(lives<=0) state='over'; }
         if(bricks.every(b=>b.hit)){ state='win'; if(!rewarded){ rewarded=true; celebrate(); } }
       }
     }
@@ -54,8 +54,8 @@ function mountInvaders(w){
       if(Math.random()<dt*(.7+wave*.25)&&al.length){ const cols={}; al.forEach(a=>{ const c=Math.round(a.x/44); if(!cols[c]||a.y>cols[c].y) cols[c]=a; }); const a=pick(Object.values(cols)); bombs.push({x:a.x,y:a.y+10}); }
       bombs.forEach(b=>b.y+=170*dt); bombs=bombs.filter(b=>b.y<370);
       for(const s of shots){ const i=al.findIndex(a=>Math.abs(a.x-s.x)<16&&Math.abs(a.y-s.y)<13); if(i>=0){ score+=(5-al[i].r)*10; al.splice(i,1); s.y=-99; } }
-      for(const b of bombs){ if(b.y>318&&b.y<340&&Math.abs(b.x-px)<16){ b.y=999; lives--; if(lives<=0) state='over'; } }
-      if(al.some(a=>a.y>310)) state='over';
+      for(const b of bombs){ if(b.y>318&&b.y<340&&Math.abs(b.x-px)<16){ b.y=999; lives--; Death.play(w,{kind:'boom',x:px,y:326,col:'#4cff4c',text:lives<=0?'GAME OVER':''}); if(lives<=0) state='over'; } }
+      if(al.some(a=>a.y>310)&&state==='play'){ state='over'; Death.play(w,{kind:'flash',text:'INVADED!',tcol:'#ff6b6b'}); }
       if(!al.length){ wave++; spawn(); if(!rewarded){ rewarded=true; celebrate(); } }
     }
     g.fillStyle='#000'; g.fillRect(0,0,480,360);
@@ -84,7 +84,7 @@ function mountCommando(w){
   $('#md',w.body).onclick=e=>{ const m=e.target.dataset.m; if(!m) return; mode=+m; $$('#md button',w.body).forEach(b=>b.classList.toggle('on',b.dataset.m===m)); reset(); };
   const inPit=x=>PITS.some(p=>x>p[0]+6&&x<p[1]-6);
   const keys=i=>{ const k=K.k; return i===0?{l:k.has('a'),r:k.has('d'),j:k.has('w'),f:k.has('f')}:{l:k.has('arrowleft'),r:k.has('arrowright'),j:k.has('arrowup'),f:k.has('/')}; };
-  const kill=p=>{ if(p.inv>0||!p.alive) return; p.lives--; if(p.lives<=0){ p.alive=false; } else { p.x=camX+30; p.y=40; p.vy=0; p.inv=2.2; } };
+  const kill=p=>{ if(p.inv>0||!p.alive) return; p.lives--; Death.play(w,{kind:p.lives<=0?'boom':'crash',x:p.x-camX,y:p.y,col:'#ff8a00'}); if(p.lives<=0){ p.alive=false; } else { p.x=camX+30; p.y=40; p.vy=0; p.inv=2.2; } };
   const stop=loop(w,dt=>{
     if(active!==w) K.k.clear();
     if(state!=='play'){ if(K.k.has('enter')||K.k.has(' ')) reset(); }

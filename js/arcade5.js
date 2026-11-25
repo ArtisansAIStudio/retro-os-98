@@ -21,7 +21,7 @@ function mountDirt(w){
   reset(); w.dd={get me(){return me;},get cpus(){return cpus;},get obs(){return obs;},get state(){return state;},get el(){return el;},get rank(){return rank;}};
   const say=t=>{ msg=t; msgT=1.2; };
   const rampAt=b=>obs.find(o=>o.t==='ramp'&&o.lane===Math.round(b.ly)&&b.x>=o.x&&b.x<o.x+o.w);
-  const crash=(b,t)=>{ b.down=1.1; b.v=0; b.z=0; b.pitch=0; b.vz=0; b.air=0; b.ramp=null; if(!b.cpu) say(t||'CRASH!'); };
+  const crash=(b,t)=>{ b.down=1.1; b.v=0; b.z=0; b.pitch=0; b.vz=0; b.air=0; b.ramp=null; if(!b.cpu){ say(t||'CRASH!'); Death.play(w,{kind:'crash',x:b.x-Math.max(0,Math.min(TLEN-120,me.x-60)),y:LY[Math.round(b.ly)]}); } };
   const stop=loop(w,dt=>{
     const k=K.k; if(active!==w) k.clear(); msgT-=dt;
     const gas=true, turbo=k.has('x')||k.has('shift')||k.has(' ')||k.has('z'), up=k.has('arrowup')||k.has('w'), dn=k.has('arrowdown')||k.has('s'), tl=k.has('arrowleft')||k.has('a'), tr=k.has('arrowright')||k.has('d');

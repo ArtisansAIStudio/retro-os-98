@@ -176,7 +176,7 @@ function mountSnake(root){
     draw();
   }
   function over(){
-    clearInterval(timer); running=false;
+    clearInterval(timer); running=false; Death.play(root,{kind:'boom',x:snake[0][0]*S+S/2,y:snake[0][1]*S+S/2,col:'#2a9d3a'});
     if(score>hi){ hi=score; store.set('snake-hi',hi); $('#hi',root).textContent='Best '+hi; }
     $('#m',root).textContent=`Game over! Score ${score}. Press a key to retry.`; reset0=true;
     if(score>0) postScore('snake',score,{daily,reward:score>=5,run,log});

@@ -49,7 +49,7 @@ function mountBrawl(w){
         if(racing&&r.down<=0&&r.cd<=0&&Math.abs(r.pos-me.pos)<7&&Math.abs(r.x-me.x)<.4){ r.cd=1.3+Math.random()*1.6; me.hp-=7; me.speed*=.88; me.x+=(me.x>r.x?.18:-.18); say('Ouch!'); }
       });
       riders.forEach(r=>{ if(!r.fin&&r.pos>=L) r.fin=true; });
-      if(racing){ if(me.hp<=0){ me.hp=0; state='busted'; } else if(me.pos>=L){ state='done'; rank=1+riders.filter(r=>r.pos>me.pos).length; if(rank===1&&!rewarded){ rewarded=true; celebrate(); } } }
+      if(racing){ if(me.hp<=0){ me.hp=0; state='busted'; Death.play(w,{kind:'crash',x:W/2,y:H-70,text:'BUSTED!',tcol:'#ff6b6b'}); } else if(me.pos>=L){ state='done'; rank=1+riders.filter(r=>r.pos>me.pos).length; if(rank===1&&!rewarded){ rewarded=true; celebrate(); } } }
     } else if(k.has('enter')||k.has(' ')) reset();
     if(state==='done'&&(k.has('enter'))) reset();
     msgT-=dt;

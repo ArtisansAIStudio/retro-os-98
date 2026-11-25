@@ -125,7 +125,7 @@ function mountMaze(w){
       en.forEach(e=>{ if(!e.alive) return; const d=Math.hypot(p.x-e.x,p.y-e.y), see=d<9&&los(e,p); if(see) e.alert=true; e.cd-=dt;
         if(e.alert&&d>1){ const sx=(p.x-e.x)/d*1.1*dt, sy=(p.y-e.y)/d*1.1*dt; if(free(e.x+sx*3,e.y)) e.x+=sx; if(free(e.x,e.y+sy*3)) e.y+=sy; }
         if(see&&d<7&&e.cd<=0){ e.cd=.9+Math.random()*.7; if(Math.random()<.5){ hp-=5+rnd(7); hurtT=.25; } } });
-      if(hp<=0){ hp=0; state='dead'; }
+      if(hp<=0){ hp=0; state='dead'; Death.play(w,{kind:'flash',text:'YOU DIED',tcol:'#ff4d4d',size:30}); }
       else if(en.every(e=>!e.alive)){ state='win'; if(!rewarded){ rewarded=true; postScore('maze3d',Math.max(15,Math.round(tt)),{reward:true,run}); } }
     } else if(k.has('r')) reset();
     // render
@@ -245,7 +245,7 @@ function mountDrop(w){
   const ok=(m,x,y)=>m.every((r,j)=>r.every((v,i)=>!v||(x+i>=0&&x+i<10&&y+j<20&&(y+j<0||!b[y+j][x+i]))));
   const reset=()=>{ rng=mk(); run=Run.begin('drop'); b=Array.from({length:20},()=>Array(10).fill(0)); cur=piece(); nxt=piece(); score=0; lines=0; over=false; acc=0; rewarded=false; };
   reset();
-  const lock=()=>{ cur.m.forEach((r,j)=>r.forEach((v,i)=>{ if(v&&cur.y+j>=0) b[cur.y+j][cur.x+i]=cur.c; })); let n=0; for(let j=19;j>=0;j--) if(b[j].every(Boolean)){ b.splice(j,1); b.unshift(Array(10).fill(0)); n++; j++; } lines+=n; score+=[0,100,300,500,800][n]; cur=nxt; nxt=piece(); if(!ok(cur.m,cur.x,cur.y)){ over=true; postScore('drop',score,{daily,reward:score>=500,run}); } };
+  const lock=()=>{ cur.m.forEach((r,j)=>r.forEach((v,i)=>{ if(v&&cur.y+j>=0) b[cur.y+j][cur.x+i]=cur.c; })); let n=0; for(let j=19;j>=0;j--) if(b[j].every(Boolean)){ b.splice(j,1); b.unshift(Array(10).fill(0)); n++; j++; } lines+=n; score+=[0,100,300,500,800][n]; cur=nxt; nxt=piece(); if(!ok(cur.m,cur.x,cur.y)){ over=true; Death.play(w,{kind:'shatter',text:'GAME OVER'}); postScore('drop',score,{daily,reward:score>=500,run}); } };
   const act=k=>{ if(over){ if(k==='enter') reset(); return; }
     if(k==='arrowleft'&&ok(cur.m,cur.x-1,cur.y)) cur.x--; else if(k==='arrowright'&&ok(cur.m,cur.x+1,cur.y)) cur.x++;
     else if(k==='arrowup'){ const r=rot(cur.m); for(const dx of [0,-1,1,-2,2]) if(ok(r,cur.x+dx,cur.y)){ cur.m=r; cur.x+=dx; break; } }
