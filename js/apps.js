@@ -1,6 +1,6 @@
 // ===== Filesystem, desktop, Explorer, Notepad, DOS, IE, Control Panel =====
 const DEF={'C:':{
-  'Windows':{'Desktop':{},'Help':{},'System32':{'CRASH.EXE':'#exe:bsod','HELPER.EXE':'#exe:helper','LOVECALC.EXE':'#exe:lovecalc','readme_first.txt':'You were not supposed to find this folder.\r\n\r\nSince you did:\r\n  CRASH.EXE     - do not run (run it)\r\n  HELPER.EXE    - a helpful assistant\r\n  LOVECALC.EXE  - results may vary\r\n\r\nThere are more things like this on the disk.\r\nLook in the places people hide things.'},'notepad.exe':'#exe:notepad','calc.exe':'#exe:calc','mspaint.exe':'#exe:paint','winmine.exe':'#exe:mines','sol.exe':'#exe:sol','explorer.exe':'#exe:explorer','win.com':'#exe:welcome','mplayer2.exe':'#exe:media'},
+  'RetroOS':{'Desktop':{},'Help':{},'System32':{'CRASH.EXE':'#exe:bsod','HELPER.EXE':'#exe:helper','LOVECALC.EXE':'#exe:lovecalc','readme_first.txt':'You were not supposed to find this folder.\r\n\r\nSince you did:\r\n  CRASH.EXE     - do not run (run it)\r\n  HELPER.EXE    - a helpful assistant\r\n  LOVECALC.EXE  - results may vary\r\n\r\nThere are more things like this on the disk.\r\nLook in the places people hide things.'},'notepad.exe':'#exe:notepad','calc.exe':'#exe:calc','paint.exe':'#exe:paint','mines.exe':'#exe:mines','sol.exe':'#exe:sol','explorer.exe':'#exe:explorer','retro.com':'#exe:welcome','mplayer2.exe':'#exe:media'},
   'My Documents':{
     'Love Letter.txt':'Dear Rani,\r\n\r\nI have calculated our FLAMES 47 times.\r\nIt says F every time.\r\nI am choosing to ignore that.\r\n\r\n- Raj',
     'Mixtape Tracklist.txt':'SIDE A\r\n1. Chaiyya Chaiyya\r\n2. Pehla Nasha\r\n3. Wannabe\r\n4. I Want It That Way\r\n\r\nSIDE B\r\n1. Macarena (do NOT tell anyone)\r\n2. Mmmbop\r\n3. Baby One More Time\r\n4. Tujhe Dekha Toh\r\n\r\n(recorded off the radio, the first 4 seconds of every song are missing)',
@@ -8,22 +8,22 @@ const DEF={'C:':{
     'Pocket Money.txt':'Mon  Rs 5   Eclairs x2, Melody x1\r\nTue  Rs 2   Orange candy\r\nWed  Rs 0   (spent on Tuesday)\r\nThu  Rs 10  cricket cards\r\nFri  Rs 5   Parle-G, the good kind',
     'Private':{'Secret Crush List.txt':'MY SECRET CRUSH LIST (1998)\r\n\r\n1. [REDACTED]\r\n2. [REDACTED]\r\n3. The girl from tuition. [REDACTED]\r\n4. Whoever is on the cover of this month\'s cricket magazine\r\n\r\nNote to self: do NOT leave this on the family computer.','Time Capsule.txt':'TIME CAPSULE\r\nWritten: 14 March 1999\r\nTo be opened: {{year}}\r\n\r\nDear me from {{year}},\r\n\r\nI hope there are flying cars. I hope you still play cricket in the lane.\r\nI hope you remember Sunday mornings and the sound of the shutters.\r\nI hope you did not become boring.\r\n\r\nIt is {{date}} where you are.\r\nIf you are reading this, you still have time to call your old friends.\r\n\r\n- You, aged 12','secret_mixtape.wav':'#exe:secretmix','PARTY.EXE':'#exe:party'},
     'To Do.txt':'1. Return Rohan\'s cassette\r\n2. Finish Mario level 8\r\n3. Be home before the streetlights come on'},
-  'Program Files':{'Internet Explorer':{'iexplore.exe':'#exe:ie'},'Accessories':{'mspaint.exe':'#exe:paint','wordpad.exe':'#exe:notepad'}},
+  'Program Files':{'NetSurfer':{'netsurf.exe':'#exe:ie'},'Accessories':{'paint.exe':'#exe:paint','textpad.exe':'#exe:notepad'}},
   'Games':{},
   'Recycled':{'Ex Number.txt':'Deleted.\r\nUn-deleted.\r\nDeleted again.\r\n\r\n(I know it by heart anyway.)','Myspace Password.txt':'password123\r\n\r\nTom is still my friend, if you were wondering.','Resignation Letter v14.txt':'Dear Sir,\r\n\r\nI would like to quit.\r\n\r\nSorry, draft 14. Never sent. Do not send.','Copy of Copy of Homework.doc':'x','Floppy Disk 1 of 47.zip':'x'},
-  'autoexec.bat':'@echo off\r\nPATH C:\\WINDOWS;C:\\WINDOWS\\COMMAND\r\nSET BLASTER=A220 I5 D1 T4\r\nLH C:\\WINDOWS\\COMMAND\\MSCDEX.EXE /D:MSCD001',
-  'config.sys':'DEVICE=C:\\WINDOWS\\HIMEM.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
+  'autoexec.bat':'@echo off\r\nPATH C:\\RETROOS;C:\\RETROOS\\COMMAND\r\nSET BLASTER=A220 I5 D1 T4\r\nLH C:\\RETROOS\\COMMAND\\MSCDEX.EXE /D:MSCD001',
+  'config.sys':'DEVICE=C:\\RETROOS\\HIMEM.SYS\r\nDOS=HIGH,UMB\r\nFILES=40',
   'command.com':'#exe:dos',
-  'README.TXT':'WINDOWS 98 - THE FAN-MADE ONE\r\n=============================\r\n\r\nThis is a tribute built from scratch in JavaScript.\r\nNo Microsoft code, icons or sounds are used.\r\nNot affiliated with or endorsed by Microsoft.\r\n\r\nThe games in C:\\GAMES are original lookalikes of the\r\nclassics we all played. Win some, collect the sweets.\r\n\r\nSome things on this disk are hidden. Explorer: View > Show Hidden Files. DOS: DIR /A.\r\nCurious people find things.\r\n\r\nEverything runs in your browser. Close the tab and it\'s gone.\r\nExcept your Notepad files and sweets, those stay on this\r\ncomputer (localStorage).'
+  'README.TXT':'RETRO OS 98 - THE FAN-MADE ONE\r\n=============================\r\n\r\nThis is a tribute built from scratch in JavaScript,\r\ninspired by the desktops of the late 90s.\r\nAll code, icons and sounds are original.\r\nNot affiliated with any company.\r\n\r\nThe games in C:\\GAMES are original lookalikes of the\r\nclassics we all played. Win some, collect the sweets.\r\n\r\nSome things on this disk are hidden. Explorer: View > Show Hidden Files. DOS: DIR /A.\r\nCurious people find things.\r\n\r\nEverything runs in your browser. Close the tab and it\'s gone.\r\nExcept your Notepad files and sweets, those stay on this\r\ncomputer (localStorage).'
  },'A:':null,'D:':null};
 let FS, USER;
 const DRIVES=[['A:','3½ Floppy (A:)',IC.floppy],['C:','(C:)',IC.hdd],['D:','(D:)',IC.cd]];
-const RUNMAP={notepad:'notepad',mplayer:'media',mplayer2:'media',wmplayer:'media',winamp:'media',mspaint:'paint',paint:'paint',calc:'calc',winmine:'mines',minesweeper:'mines',sol:'sol',solitaire:'sol',command:'dos',cmd:'dos',iexplore:'ie',welcome:'welcome',winver:'sysprops',
+const RUNMAP={notepad:'notepad',mplayer:'media',mplayer2:'media',wmplayer:'media',winamp:'media',mspaint:'paint',paint:'paint',calc:'calc',winmine:'mines',mines:'mines',minesweeper:'mines',sol:'sol',solitaire:'sol',command:'dos',cmd:'dos',netsurf:'ie',welcome:'welcome',winver:'sysprops',
   explorer:()=>openApp('explorer',{path:'C:'}),control:()=>openApp('explorer',{path:'CONTROL'}),desk:'display'};
 function initFS(){
   const games={};
   [...GAMES,...ARCADE].forEach(g=>{ games[g.f]='#exe:'+g.id; RUNMAP[g.id]=g.id; RUNMAP[g.f.toLowerCase().replace(/\.exe$/,'')]=g.id; });
-  games['WINMINE.EXE']='#exe:mines'; games['SOL.EXE']='#exe:sol';
+  games['MINES.EXE']='#exe:mines'; games['SOL.EXE']='#exe:sol';
   DEF['C:']['Games']=games;
   FS=JSON.parse(JSON.stringify(DEF)); USER=JSON.parse(store.get('fs98')||'{}');
   for(const [p,v] of Object.entries(USER)) fsApply(p,v);
@@ -51,27 +51,27 @@ const joinP=(p,n)=>p+'\\'+n;
 function openPath(path){
   const {v,real}=fsLookup(path), p=real||path, name=p.split('\\').pop();
   if(v===null){ alertBox(`${p}\\ is not accessible.\n\nThe device is not ready.`,'err',p+'\\'); return; }
-  if(v===undefined){ alertBox(`Cannot find '${path}'.`,'err','Windows'); return; }
+  if(v===undefined){ alertBox(`Cannot find '${path}'.`,'err','Retro OS'); return; }
   if(/^c:\\recycled/i.test(p)&&typeof v==='string') egg('bin');
   if(typeof v==='object'){ openApp('explorer',{path:p}); return; }
   if(v.startsWith('#exe:')){ openApp(v.slice(5)); return; }
   if(/\.(txt|bat|sys|ini|log|md|cfg)$/i.test(name)){ openApp('notepad',{path:p}); return; }
-  alertBox(`Windows cannot open this file:\n\nFile: ${name}\n\nTo open this file, Windows needs to know what program created it.`,'info','Open With');
+  alertBox(`Retro OS cannot open this file:\n\nFile: ${name}\n\nTo open this file, Retro OS needs to know what program created it.`,'info','Open With');
 }
-const HIDDEN=new Set(['c:\\windows\\system32','c:\\my documents\\private']);
+const HIDDEN=new Set(['c:\\retroos\\system32','c:\\my documents\\private']);
 const isHidden=p=>HIDDEN.has(p.toLowerCase());
 const iconFor=(name,v)=>v&&typeof v==='object'?IC.folder:typeof v==='string'&&v.startsWith('#exe:')?(APPS[v.slice(5)]?.icon||'⚙️'):/\.(bat|sys|com)$/i.test(name)?'⚙️':IC.doc;
 
 /* ---------- desktop ---------- */
-const DESK_DIR='C:\\Windows\\Desktop';
+const DESK_DIR='C:\\RetroOS\\Desktop';
 function fixedIcons(){ return [
   {n:'My Computer',i:IC.computer,run:()=>openApp('explorer',{path:''})},
   {n:'My Documents',i:IC.folder,run:()=>openApp('explorer',{path:'C:\\My Documents'})},
-  {n:'Internet Explorer',i:IC.ie,run:()=>openApp('ie')},
+  {n:'NetSurfer',i:IC.ie,run:()=>openApp('ie')},
   {n:'Recycle Bin',i:IC.bin,run:()=>openApp('explorer',{path:'BIN'})},
   {n:'Hall of Fame',i:'🏆',run:()=>openApp('halloffame')},
   {n:'My Sweets',i:IC.sweets,run:()=>openApp('sweets')},
-  {n:'MS-DOS Prompt',i:IC.dos,run:()=>openApp('dos')},
+  {n:'DOS Prompt',i:IC.dos,run:()=>openApp('dos')},
   {n:'Notepad',i:IC.notepad,run:()=>openApp('notepad')},
   {n:'Media Player',i:'🎵',run:()=>openApp('media')},
   {n:'Paint',i:IC.paint,run:()=>openApp('paint')},
@@ -191,7 +191,7 @@ APPS.explorer={icon:IC.folder,wh:[580,400],col:true,status:true,
     {label:'File',items:[['New Folder',()=>w.ex.newFolder()],'-',['Close',()=>w.close()]]},
     {label:'View',items:[['Show Hidden Files',()=>{ w.ex.hid=!w.ex.hid; w.ex.render(); },{check:w.ex&&w.ex.hid}],'-',['Large Icons',()=>w.ex.view('large'),{check:w.ex&&w.ex.v==='large'}],['List',()=>w.ex.view('list'),{check:w.ex&&w.ex.v==='list'}],'-',['Refresh',()=>w.ex.render()]]},
     {label:'Go',items:[['Back',()=>w.ex.go(-1)],['Forward',()=>w.ex.go(1)],['Up One Level',()=>w.ex.up()]]},
-    {label:'Help',items:[['About Windows 98',()=>openApp('sysprops')]]}],
+    {label:'Help',items:[['About Retro OS 98',()=>openApp('sysprops')]]}],
   mount(w,a){
     const ex=w.ex={path:a.path??'',hist:[a.path??''],hi:0,v:'large',hid:false};
     w.body.innerHTML=`<div class="etool"><button data-a="b">⬅ Back</button><button data-a="f">Forward ➡</button><button data-a="u">⬆ Up</button></div><div class="eaddr"><span>Address</span><input type="text" spellcheck="false"></div><div class="fl"></div>`;
@@ -264,17 +264,17 @@ APPS.notepad={icon:IC.notepad,wh:[520,380],col:true,
     setTimeout(()=>ta.focus(),50);
   }};
 
-/* ---------- MS-DOS prompt ---------- */
+/* ---------- DOS prompt ---------- */
 function dosMount(el,opt={}){
-  let cwd='C:\\WINDOWS';
+  let cwd='C:\\RETROOS';
   el.innerHTML=''; const out=mk('span'), line=mk('div'), pr=mk('span'), inp=mk('input'); inp.spellcheck=false; inp.autocomplete='off'; inp.autocapitalize='off';
   line.append(pr,inp); el.append(out,line);
   const print=t=>{ out.append(document.createTextNode(t+'\n')); };
   const setPrompt=()=>{ pr.textContent=cwd.toUpperCase()+'>'; setTimeout(()=>{ el.scrollTop=el.scrollHeight; inp.focus({preventScroll:true}); },0); };
   const resolve=a=>{ a=a.replace(/\//g,'\\'); if(/^[a-z]:/i.test(a)) return a.replace(/\\$/,''); if(a==='\\') return 'C:'; if(a==='..') return cwd.includes('\\')?cwd.slice(0,cwd.lastIndexOf('\\')):cwd; return cwd+'\\'+a; };
-  const HELP='Supported commands:\nCD  CLS  COPY  DATE  DEL  DIR [/A]  ECHO  EXIT  FORMAT  HELP  MD  MEM  TIME  TYPE  VER  VOL  WIN\nOr just type a program name: SNAKE, FLAMES, NOTEPAD, CALC, WINMINE, SOL ...';
+  const HELP='Supported commands:\nCD  CLS  COPY  DATE  DEL  DIR [/A]  ECHO  EXIT  FORMAT  HELP  MD  MEM  RETRO  TIME  TYPE  VER  VOL\nOr just type a program name: SNAKE, FLAMES, NOTEPAD, CALC, WINMINE, SOL ...';
   const hist=[]; let hi=0;
-  print(opt.real?'Starting MS-DOS...\n\nWindows 98 [Version 4.10.2222]\nType WIN to return to Windows.\n':'Windows 98 [Version 4.10.2222]\n(Fan-made tribute. Nothing here is real. Type HELP.)\n');
+  print(opt.real?'Starting DOS...\n\nRetro OS 98 [Version 1.0]\nType RETRO to return to Retro OS.\n':'Retro OS 98 [Version 1.0]\n(Fan-made tribute. Nothing here is real. Type HELP.)\n');
   function run(raw){
     print(pr.textContent+raw); const [c0,...r]=raw.trim().split(/\s+/), cmd=(c0||'').toLowerCase(), arg=r.join(' ');
     if(/^[a-z]:$/.test(cmd)){ print(cmd==='c:'?'':`Not ready reading drive ${cmd.toUpperCase()}\nAbort, Retry, Fail?`); if(cmd==='c:') cwd='C:'; return; }
@@ -282,7 +282,7 @@ function dosMount(el,opt={}){
       case '': break;
       case 'help': print(HELP); break;
       case 'cls': out.textContent=''; break;
-      case 'ver': print('\nWindows 98 [Version 4.10.2222]\n'); break;
+      case 'ver': print('\nRetro OS 98 [Version 1.0]\n'); break;
       case 'vol': print(' Volume in drive C is WIN98\n Volume Serial Number is 1998-0A1B'); break;
       case 'date': print('Current date is '+new Date().toLocaleDateString()); break;
       case 'time': print('Current time is '+new Date().toLocaleTimeString()); break;
@@ -299,12 +299,12 @@ function dosMount(el,opt={}){
       case 'del': case 'erase': case 'deltree': { const p=resolve(arg); if(arg&&fsGet(p)!==undefined&&USER[p]!==undefined){ fsDel(p); } else print(arg?'Access denied - '+arg.toUpperCase()+'\n(It was not yours to delete.)':'Required parameter missing'); break; }
       case 'copy': print('        0 file(s) copied\n(Piracy is not cool. Also, the floppy is full.)'); break;
       case 'format': print('WARNING, ALL DATA ON NON-REMOVABLE DISK\nDRIVE C: WILL BE LOST!\nProceed with Format (Y/N)? Y\n\nFormatting 1,536.00M ... 100%\n\n...just kidding. Nothing was harmed.'); break;
-      case 'win': opt.real?opt.onWin():print('You are already running Windows 98.'); break;
-      case 'exit': opt.real?print('Type WIN to return to Windows.'):opt.close&&opt.close(); break;
+      case 'win': case 'retro': opt.real?opt.onWin():print('You are already running Retro OS 98.'); break;
+      case 'exit': opt.real?print('Type RETRO to return to Retro OS.'):opt.close&&opt.close(); break;
       case 'start': run2(arg); break;
       default: run2(raw.trim());
     }
-    function run2(v){ const key=v.toLowerCase().replace(/\.exe$|\.com$/,''); if(RUNMAP[key]&&!opt.real){ const t=RUNMAP[key]; typeof t==='string'?openApp(t):t(); print('Starting '+v.toUpperCase()+'...'); } else if(RUNMAP[key]) print('This program requires Microsoft Windows.\nType WIN to start it.'); else print('Bad command or file name'); }
+    function run2(v){ const key=v.toLowerCase().replace(/\.exe$|\.com$/,''); if(RUNMAP[key]&&!opt.real){ const t=RUNMAP[key]; typeof t==='string'?openApp(t):t(); print('Starting '+v.toUpperCase()+'...'); } else if(RUNMAP[key]) print('This program requires Retro OS.\nType RETRO to start it.'); else print('Bad command or file name'); }
   }
   inp.onkeydown=e=>{
     if(e.key==='Enter'){ const v=inp.value; inp.value=''; if(v.trim()){ hist.push(v); hi=hist.length; } run(v); setPrompt(); }
@@ -314,18 +314,18 @@ function dosMount(el,opt={}){
   el.addEventListener('pointerdown',()=>setTimeout(()=>inp.focus({preventScroll:true}),0));
   setPrompt();
 }
-APPS.dos={icon:IC.dos,wh:[580,380],title:'MS-DOS Prompt',mount(w){ w.body.classList.add('dos'); dosMount(w.body,{close:()=>w.close()}); }};
+APPS.dos={icon:IC.dos,wh:[580,380],title:'DOS Prompt',mount(w){ w.body.classList.add('dos'); dosMount(w.body,{close:()=>w.close()}); }};
 
-/* ---------- Internet Explorer ---------- */
+/* ---------- NetSurfer ---------- */
 const IE_HOME=`<h1>🌍 Welcome to Rohan's Homepage!!</h1>
 <p class="blink">★ ★ UNDER CONSTRUCTION ★ ★</p>
-<div class="mq"><span>Welcome, visitor! Sign my guestbook! Cricket scores updated whenever I remember! Best viewed in Internet Explorer 4.0 at 800x600!</span></div>
+<div class="mq"><span>Welcome, visitor! Sign my guestbook! Cricket scores updated whenever I remember! Best viewed in NetSurfer 4.0 at 800x600!</span></div>
 <p style="text-align:center">You are visitor number <b style="font-family:'Courier New';background:#000;color:#0f0;padding:1px 6px">004217</b></p><hr>
 <ul>
- <li><a data-u="http://www.geocities.com/Area51/1998/cricket.html">My Cricket Page (Sachin photos!!)</a></li>
- <li><a data-u="http://www.geocities.com/Area51/1998/links.html">My Favourite Links</a></li>
- <li><a data-u="http://www.geocities.com/Area51/1998/guestbook.html">Sign my Guestbook!!</a></li>
- <li><a data-u="http://www.geocities.com/Area51/1998/mp3.html">Download MP3s (28 min per song)</a></li>
+ <li><a data-u="http://homepages.example.com/~rohan/cricket.html">My Cricket Page (Sachin photos!!)</a></li>
+ <li><a data-u="http://homepages.example.com/~rohan/links.html">My Favourite Links</a></li>
+ <li><a data-u="http://homepages.example.com/~rohan/guestbook.html">Sign my Guestbook!!</a></li>
+ <li><a data-u="http://homepages.example.com/~rohan/mp3.html">Download MP3s (28 min per song)</a></li>
 </ul>
 <p>Email me: <a data-u="mailto:rohan_cool_98@example.com">rohan_cool_98@example.com</a></p>
 <p style="text-align:center;font-size:13px">[ <a data-u="http://www.webring.example/prev">&lt;&lt; Prev</a> | Cricket Fans WebRing | <a data-u="http://www.webring.example/next">Next &gt;&gt;</a> ]</p>
@@ -337,12 +337,12 @@ async function dialUp(url){
     if(off) return; const st=$('.st',d.el); if(st) st.textContent=s; await sleep(1100);
   }
   if(off) return; d.close();
-  alertBox(`Internet Explorer cannot open the Internet site ${url}.\n\nA connection with the server could not be established.`,'err','Internet Explorer');
+  alertBox(`NetSurfer cannot open the Internet site ${url}.\n\nA connection with the server could not be established.`,'err','NetSurfer');
 }
-APPS.ie={icon:IC.ie,wh:[640,440],col:true,status:true,single:true,title:'Rohan\'s Homepage - Internet Explorer',
-  menu:w=>[{label:'File',items:[['Close',()=>w.close()]]},{label:'Favorites',items:[['Classic Games',()=>openApp('explorer',{path:'C:\\Games'})]]},{label:'Help',items:[['About Internet Explorer',()=>alertBox('Internet Explorer\nBrowsing the 1998 web at 28.8 kbps.','info','About')]]}],
+APPS.ie={icon:IC.ie,wh:[640,440],col:true,status:true,single:true,title:'Rohan\'s Homepage - NetSurfer',
+  menu:w=>[{label:'File',items:[['Close',()=>w.close()]]},{label:'Favorites',items:[['Classic Games',()=>openApp('explorer',{path:'C:\\Games'})]]},{label:'Help',items:[['About NetSurfer',()=>alertBox('NetSurfer\nBrowsing the 1998 web at 28.8 kbps.','info','About')]]}],
   mount(w){
-    w.body.innerHTML=`<div class="iebar"><button data-a="x">⬅ Back</button><button data-a="x">➡ Forward</button><button data-a="x">⛔ Stop</button><button data-a="r">🔄 Refresh</button><button data-a="h">🏠 Home</button></div><div class="eaddr"><span>Address</span><input type="text" value="http://www.geocities.com/Area51/1998/" spellcheck="false"><button style="min-width:0">Go</button></div><div class="ie-page">${IE_HOME}</div>`;
+    w.body.innerHTML=`<div class="iebar"><button data-a="x">⬅ Back</button><button data-a="x">➡ Forward</button><button data-a="x">⛔ Stop</button><button data-a="r">🔄 Refresh</button><button data-a="h">🏠 Home</button></div><div class="eaddr"><span>Address</span><input type="text" value="http://homepages.example.com/~rohan/" spellcheck="false"><button style="min-width:0">Go</button></div><div class="ie-page">${IE_HOME}</div>`;
     w.setStatus('Done'); w.setStatus('🌐 Internet zone',1);
     const go=u=>{ w.setStatus('Opening page '+u+'...'); dialUp(u).then(()=>w.setStatus('Done')); };
     $('.ie-page',w.body).onclick=e=>{ const a=e.target.closest('a'); if(a) go(a.dataset.u); };
@@ -375,7 +375,7 @@ APPS.display={icon:IC.display,fit:true,single:true,title:'Display Properties',mo
         img.onload=()=>{ const sc=Math.min(1,1600/img.width), c=document.createElement('canvas'); c.width=Math.round(img.width*sc); c.height=Math.round(img.height*sc); c.getContext('2d').drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url);
           const data=c.toDataURL('image/jpeg',.82); store.set('wpimg98',data);
           if(store.get('wpimg98')!==data){ alertBox('That picture is too big to keep in this browser.\n\nTry a smaller image.','warn','Display Properties'); return; } sel='custom'; draw(); };
-        img.onerror=()=>alertBox('Windows cannot read that picture.','err','Display Properties'); img.src=url; }; f.click(); };
+        img.onerror=()=>alertBox('Retro OS cannot read that picture.','err','Display Properties'); img.src=url; }; f.click(); };
     }
     if(tab===1){ $('#ssk',w.body).onchange=e=>ss.k=e.target.value; $('#ssm',w.body).onchange=e=>ss.m=+e.target.value; $('#ssp',w.body).onclick=startSaver; }
     const apply=()=>{ applyWallpaper(sel,mode); store.set('ss98',JSON.stringify(ss)); };
@@ -394,27 +394,27 @@ APPS.datetime={icon:IC.clock,fit:true,single:true,title:'Date/Time Properties',m
   $('#ok',w.body).onclick=$('#cn',w.body).onclick=()=>w.close(); return ()=>clearInterval(t);
 }};
 APPS.sysprops={icon:IC.sys,fit:true,single:true,title:'System Properties',mount(w){
-  w.body.innerHTML=`<div style="width:400px">${tabsHTML(['General'],0)}<div class="tabbody" style="line-height:1.5;font-size:13px"><b>System:</b><br>&nbsp;&nbsp;Windows 98 Second Edition<br>&nbsp;&nbsp;4.10.2222 A<br><br><b>Registered to:</b><br>&nbsp;&nbsp;You<br>&nbsp;&nbsp;Boredom Industries<br><br><b>Computer:</b><br>&nbsp;&nbsp;Pentium(r) II processor<br>&nbsp;&nbsp;233MHz<br>&nbsp;&nbsp;64.0MB RAM<br><br><i style="color:#555;font-size:11px">Fan-made tribute. Not affiliated with Microsoft.</i></div><div class="dbtn" style="justify-content:flex-end"><button class="def" id="ok">OK</button><button id="cn">Cancel</button></div></div>`;
+  w.body.innerHTML=`<div style="width:400px">${tabsHTML(['General'],0)}<div class="tabbody" style="line-height:1.5;font-size:13px"><b>System:</b><br>&nbsp;&nbsp;Retro OS 98<br>&nbsp;&nbsp;Special Edition 1.0<br><br><b>Registered to:</b><br>&nbsp;&nbsp;You<br>&nbsp;&nbsp;Boredom Industries<br><br><b>Computer:</b><br>&nbsp;&nbsp;233MHz processor<br>&nbsp;&nbsp;64.0MB RAM<br><br><i style="color:#555;font-size:11px">Fan-made tribute. Not affiliated with any company.</i></div><div class="dbtn" style="justify-content:flex-end"><button class="def" id="ok">OK</button><button id="cn">Cancel</button></div></div>`;
   $('#ok',w.body).onclick=$('#cn',w.body).onclick=()=>w.close();
 }};
 
 /* ---------- Help, Sweets, Welcome ---------- */
-APPS.help={icon:IC.help,wh:[520,420],col:true,single:true,title:'Windows Help',mount(w){
+APPS.help={icon:IC.help,wh:[520,420],col:true,single:true,title:'Help',mount(w){
   w.body.innerHTML=`<div class="helpbox"><h3>Getting started</h3>Double-click an icon (a single tap works on phones). Drag windows by their title bars. Resize from the bottom-right corner. Drag desktop icons to rearrange them, and drag items inside Start > Programs to reorder the menu. Right-click the desktop for Arrange Icons, New and Properties (wallpaper, your own picture, colours).
 <h3>The games</h3>Open <b>C:\\Games</b> or Start &gt; Programs &gt; Games. There's Minesweeper, Solitaire, our own 3D maze shooter, a split-screen racer, a block-building sandbox, falling blocks, Paddle Wars (Pong), and the notebook classics: FLAMES, Book Cricket, Name Place Animal Thing...
 <h3>Sweets</h3>Win a game and a sweet lands in <b>My Sweets</b>. There are 14 to collect, and one is hidden.
-<h3>MS-DOS Prompt</h3>Type <b>HELP</b>. Try <b>DIR</b>, <b>TYPE</b> a file in My Documents, or just type a game's name.
-<h3>Tips</h3>Start &gt; Settings &gt; Control Panel &gt; Display lets you change the wallpaper and switch on the Starfield screen saver. Start &gt; Shut Down &gt; Restart in MS-DOS mode is as authentic as it gets.
-<h3>About</h3>A fan-made tribute, written from scratch. No Microsoft code, icons or sounds. Not affiliated with Microsoft.</div>`;
+<h3>DOS Prompt</h3>Type <b>HELP</b>. Try <b>DIR</b>, <b>TYPE</b> a file in My Documents, or just type a game's name.
+<h3>Tips</h3>Start &gt; Settings &gt; Control Panel &gt; Display lets you change the wallpaper and switch on the Starfield screen saver. Start &gt; Shut Down &gt; Restart in DOS mode is as authentic as it gets.
+<h3>About</h3>A fan-made tribute, written from scratch and inspired by the desktops of the late 90s. All code, icons and sounds are original. Not affiliated with any company.</div>`;
 }};
 APPS.sweets={icon:IC.sweets,wh:[500,400],col:true,status:true,single:true,title:'My Sweets (C:)',mount(w){
   w.body.innerHTML='<div class="shelf"></div>'; $$('.status span',w.el)[0].classList.add('tcnt'); $$('.status span',w.el)[1].classList.add('eggcnt'); renderTuck(); updateEggUI();
 }};
-APPS.welcome={icon:IC.home,wh:[500,310],single:true,title:'Welcome to Windows 98',mount(w){
-  w.body.innerHTML=`<div style="display:flex;height:100%"><div style="width:130px;background:linear-gradient(#000080,#1084d0);color:#fff;font:italic 700 24px Arial;padding:14px 10px;flex:none">Windows<br><small style="font-size:20px;color:#c0c0c0">98</small></div>
+APPS.welcome={icon:IC.home,wh:[500,310],single:true,title:'Welcome to Retro OS 98',mount(w){
+  w.body.innerHTML=`<div style="display:flex;height:100%"><div style="width:130px;background:linear-gradient(#000080,#1084d0);color:#fff;font:italic 700 24px Arial;padding:14px 10px;flex:none">Retro OS<br><small style="font-size:20px;color:#c0c0c0">98</small></div>
     <div style="padding:14px 16px;flex:1;display:flex;flex-direction:column"><h3 style="font-family:Arial;color:#000080;font-size:18px;margin:0 0 8px">Did you know?</h3>
     <p style="margin:0 0 8px;line-height:1.5">Win a game, get a sweet. Post your score to the <b>Hall of Fame</b> and see who in the world beats you. A new <b>Daily Challenge</b> drops at midnight UTC: same game for everyone.<br><br>Press <b>Start</b> for the games.</p>
-    <label style="margin-top:auto"><input type="checkbox" id="sw" checked> Show this screen each time Windows 98 starts</label>
+    <label style="margin-top:auto"><input type="checkbox" id="sw" checked> Show this screen each time Retro OS 98 starts</label>
     <div style="display:flex;gap:6px;margin-top:10px"><button id="rnd" style="min-width:0;padding:4px 8px">🎲 Surprise me</button><button id="hf" style="min-width:0;padding:4px 8px">🏆 Hall of Fame</button><button id="cl" class="def" style="margin-left:auto">Close</button></div></div></div>`;
   $('#sw',w.body).onchange=e=>store.set('welcome',e.target.checked?'1':'0');
   $('#cl',w.body).onclick=()=>w.close(); $('#hf',w.body).onclick=()=>{ w.close(); openApp('halloffame'); };

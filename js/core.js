@@ -102,7 +102,7 @@ function buildMenubar(w,getMenus){
 }
 
 /* ---------- dialogs ---------- */
-function dialog({title='Windows',body='',icon,buttons=['OK'],width=340,cancel=null}){
+function dialog({title='Retro OS',body='',icon,buttons=['OK'],width=340,cancel=null}){
   let dEl, fin;
   const p=new Promise(resolve=>{
     const ov=mk('div','modal'), d=mk('div','win dlg active'); dEl=d;
@@ -124,8 +124,8 @@ function dialog({title='Windows',body='',icon,buttons=['OK'],width=340,cancel=nu
   p.el=dEl; p.close=()=>fin(null);
   return p;
 }
-const alertBox=(text,icon='info',title='Windows')=>dialog({title,icon,body:esc(text).replace(/\n/g,'<br>')});
-const FOLD_ERR='This control panel item is not available in this version of Windows 98.\n\n(It never really worked anyway.)';
+const alertBox=(text,icon='info',title='Retro OS')=>dialog({title,icon,body:esc(text).replace(/\n/g,'<br>')});
+const FOLD_ERR='This control panel item is not available in this version of Retro OS 98.\n\n(It never really worked anyway.)';
 
 /* ---------- menu trees (start menu, context menu) ---------- */
 function closeMenus(){ $('#smenu').hidden=true; $('#ctx').hidden=true; $('#start').classList.remove('on'); }
@@ -169,13 +169,13 @@ function startItems(){
   return [
     {label:'Programs',icon:IC.folder,sub:[
       {label:'Accessories',icon:IC.folder,sub:[
-        {label:'Calculator',icon:IC.calc,run:()=>openApp('calc')},{label:'MS-DOS Prompt',icon:IC.dos,run:()=>openApp('dos')},
+        {label:'Calculator',icon:IC.calc,run:()=>openApp('calc')},{label:'DOS Prompt',icon:IC.dos,run:()=>openApp('dos')},
         {label:'Notepad',icon:IC.notepad,run:()=>openApp('notepad')},{label:'Media Player',icon:'🎵',run:()=>openApp('media')},{label:'Paint',icon:IC.paint,run:()=>openApp('paint')}]},
       {label:'Games',icon:IC.folder,sub:[
         {label:'Minesweeper',icon:IC.mines,run:()=>openApp('mines')},{label:'Solitaire',icon:IC.sol,run:()=>openApp('sol')},{sep:1},...arcade,{sep:1},...games]},
-      {label:'Internet Explorer',icon:IC.ie,run:()=>openApp('ie')},
-      {label:'MS-DOS Prompt',icon:IC.dos,run:()=>openApp('dos')},
-      {label:'Windows Explorer',icon:IC.folder,run:()=>openApp('explorer',{path:'C:'})},
+      {label:'NetSurfer',icon:IC.ie,run:()=>openApp('ie')},
+      {label:'DOS Prompt',icon:IC.dos,run:()=>openApp('dos')},
+      {label:'File Explorer',icon:IC.folder,run:()=>openApp('explorer',{path:'C:'})},
       {label:'My Sweets',icon:IC.sweets,run:()=>openApp('sweets')},
       {label:'Hall of Fame',icon:'🏆',run:()=>openApp('halloffame')}]},
     {label:'Favorites',icon:IC.star,sub:[{label:'Classic Games',icon:IC.folder,run:()=>openApp('explorer',{path:'C:\\Games'})}]},
@@ -194,13 +194,13 @@ function startItems(){
 function toggleStart(){
   const sm=$('#smenu');
   if(!sm.hidden){ closeMenus(); return; }
-  closeMenus(); sm.innerHTML='<div class="strip"><span>Windows<b>98</b></span></div>'; sm.appendChild(menuTree(startItems(),null,true));
+  closeMenus(); sm.innerHTML='<div class="strip"><span>Retro OS<b>98</b></span></div>'; sm.appendChild(menuTree(startItems(),null,true));
   sm.hidden=false; $('#start').classList.add('on');
 }
 
 /* ---------- Run, shutdown ---------- */
 async function runDialog(){
-  const r=await dialog({title:'Run',buttons:['OK','Cancel'],width:380,body:'Type the name of a program, folder, or document, and Windows will open it for you.<br><br>Open: <input type="text" id="runin" autocomplete="off" spellcheck="false">'});
+  const r=await dialog({title:'Run',buttons:['OK','Cancel'],width:380,body:'Type the name of a program, folder, or document, and Retro OS will open it for you.<br><br>Open: <input type="text" id="runin" autocomplete="off" spellcheck="false">'});
   if(r.btn==='OK') runCommand($('#runin',r.el).value.trim());
 }
 function runCommand(v){
@@ -212,11 +212,11 @@ function runCommand(v){
   return false;
 }
 async function shutdownDialog(){
-  const r=await dialog({title:'Shut Down Windows',icon:'q',buttons:['OK','Cancel'],width:360,body:`What do you want the computer to do?<br><br>
+  const r=await dialog({title:'Shut Down',icon:'q',buttons:['OK','Cancel'],width:360,body:`What do you want the computer to do?<br><br>
     <label><input type="radio" name="sd" value="standby"> Stand by</label><br>
     <label><input type="radio" name="sd" value="off" checked> Shut down</label><br>
     <label><input type="radio" name="sd" value="restart"> Restart</label><br>
-    <label><input type="radio" name="sd" value="dos"> Restart in MS-DOS mode</label>`});
+    <label><input type="radio" name="sd" value="dos"> Restart in DOS mode</label>`});
   if(r.btn!=='OK') return;
   const v=$('input[name=sd]:checked',r.el).value;
   if(v==='standby') standby(); else if(v==='off') shutdown(); else if(v==='restart') boot(false); else dosMode();
@@ -225,7 +225,7 @@ function overlay(html){ const b=$('#boot'); b.hidden=false; b.innerHTML=html; re
 function standby(){ const b=overlay(''); const wake=()=>{ b.hidden=true; document.removeEventListener('keydown',wake); b.onclick=null; }; b.onclick=wake; setTimeout(()=>document.addEventListener('keydown',wake),300); }
 async function shutdown(){
   closeMenus();
-  overlay('<div class="splash" style="background:linear-gradient(#1060c0,#6ab0f0)"><div class="logo"><small>Windows is shutting down.</small></div></div>');
+  overlay('<div class="splash" style="background:linear-gradient(#1060c0,#6ab0f0)"><div class="logo"><small>Retro OS is shutting down.</small></div></div>');
   await sleep(1800);
   const b=overlay('<div class="safe">It\'s now safe to turn off<br>your computer.<br><small style="font-size:14px;color:#888;font-weight:400">(click anywhere to power back on)</small></div>');
   b.onclick=()=>boot(true);
@@ -243,10 +243,10 @@ async function boot(first){
   let skip=false; const wait=async ms=>{ const t=Date.now(); while(Date.now()-t<ms&&!skip&&token===bootToken) await sleep(40); };
   const b=overlay(''); b.onclick=()=>{ skip=true; };
   if(first){
-    b.innerHTML=`<pre class="bios">BIOS v4.51PG  Pentium(R) II 233MHz
+    b.innerHTML=`<pre class="bios">BIOS v4.51PG  CPU 233MHz
 Memory Test : 65536K OK
 
-Detecting IDE Primary Master ... WDC AC31600H
+Detecting IDE Primary Master ... Hard Disk 1.6GB
 Detecting IDE Primary Slave  ... None
 Detecting IDE Secondary Master .. CD-ROM 40X
 
@@ -255,7 +255,7 @@ Press DEL to enter SETUP  (don't)
     await wait(1700);
   }
   if(token!==bootToken) return;
-  b.innerHTML=`<div class="splash"><div class="logo"><div class="flag"><i style="background:#e63946"></i><i style="background:#2a9d3a"></i><i style="background:#1d6fe0"></i><i style="background:#f5c400"></i></div><div>Windows<small> 98</small></div></div><div class="pb"><i></i></div></div>`;
+  b.innerHTML=`<div class="splash"><div class="logo"><svg class="flag" width="64" height="64" viewBox="0 0 16 16"><polygon points="8,1 1,8 8,8" fill="#ff4d6d"/><polygon points="8,1 15,8 8,8" fill="#ffd23f"/><polygon points="1,8 8,15 8,8" fill="#3ec5ff"/><polygon points="15,8 8,15 8,8" fill="#7bd88f"/></svg><div>Retro OS<small> 98</small></div></div><div class="pb"><i></i></div></div>`;
   await wait(2800);
   if(token!==bootToken) return;
   b.hidden=true; b.onclick=null; b.innerHTML='';

@@ -33,7 +33,7 @@ const fmtT=s=>`${Math.floor(s/60)}:${String(Math.floor(s%60)).padStart(2,'0')}`;
 APPS.media={icon:'🎵',wh:[400,400],single:true,col:true,title:'Media Player',
   menu:w=>[{label:'File',items:[['Open...',()=>w.mp.open()],'-',['Exit',()=>w.close()]]},
     {label:'Play',items:[['Play/Pause',()=>w.mp.toggle()],['Stop',()=>w.mp.stop()],['Next',()=>w.mp.next(1)],['Previous',()=>w.mp.next(-1)]]},
-    aboutMenu('Media Player','Media Player\nPlays three original tunes and your own music: File > Open (pick several), or drag audio files onto this window. Your files never leave your computer.\n\nNo copyrighted startup chimes were harmed.')],
+    aboutMenu('Media Player','Media Player\nPlays three original tunes and your own music: File > Open (pick several), or drag audio files onto this window. Your files never leave your computer.\n\nNo startup chimes were harmed.')],
   mount(w,a={}){
     w.body.innerHTML=`<div style="padding:6px;display:flex;flex-direction:column;gap:6px;height:100%"><canvas width="380" height="80" style="width:100%;height:80px;background:#000;box-shadow:var(--sunk)"></canvas>
       <div style="display:flex;justify-content:space-between"><b id="tt">Ready</b><span id="tm">0:00 / 0:00</span></div>
@@ -60,7 +60,7 @@ APPS.media={icon:'🎵',wh:[400,400],single:true,col:true,title:'Media Player',
       async add(files){
         let first=-1, bad=0;
         for(const file of files){ try{ const b=await ac().decodeAudioData(await file.arrayBuffer()); list.push({n:file.name,buf:b}); if(first<0) first=list.length-1; }catch(e){ bad++; } }
-        if(bad) alertBox(`Windows cannot play ${bad} of the files.\n\nThey are not a supported audio format (WAV, MP3, OGG, M4A and FLAC usually work), or they are corrupt.`,'err','Media Player');
+        if(bad) alertBox(`Retro OS cannot play ${bad} of the files.\n\nThey are not a supported audio format (WAV, MP3, OGG, M4A and FLAC usually work), or they are corrupt.`,'err','Media Player');
         renderList(); if(first>=0){ await load(first); play(); }
       },
       open(){ const f=document.createElement('input'); f.type='file'; f.multiple=true; f.accept='audio/*,.wav,.mp3,.ogg,.m4a,.flac'; f.onchange=()=>{ if(f.files.length) mp.add([...f.files]); }; f.click(); }

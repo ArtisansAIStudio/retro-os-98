@@ -108,11 +108,11 @@ async function postScore(game,score,opt={}){
 }
 const shareURL=(game,daily)=>location.origin==='null'||location.protocol==='file:'?location.href.split('#')[0]:location.origin+location.pathname+'#'+(daily?'daily:'+game:GAME_APP[game]);
 async function shareDialog({game,score,name,country,rank,daily}){
-  const m=GAME_META[game], fm=m.fmt(score), url=shareURL(game,daily), text=`I scored ${fm} in ${m.n}${daily?' (Daily Challenge)':''} on Windows 98, running in my browser. Beat me:`;
+  const m=GAME_META[game], fm=m.fmt(score), url=shareURL(game,daily), text=`I scored ${fm} in ${m.n}${daily?' (Daily Challenge)':''} on Retro OS 98, running in my browser. Beat me:`;
   const btns=[navigator.share?'Share':'Copy link','Save image','Hall of Fame','Close'];
   const r=await dialog({title:'Score submitted',icon:'info',width:400,buttons:btns,cancel:'Close',
     body:`${flag(country)} <b>${esc(name)}</b>, ${m.e} ${m.n}: <b>${fm}</b>${rank?`<br><br>🏆 You are <b>#${rank}</b> ${daily?'today':'in the world'}${REMOTE()?'':' (on this computer)'}.`:''}<br><br>Dare your friends to beat it.`});
-  if(r.btn==='Share') navigator.share({title:'Windows 98 in your browser',text,url}).catch(()=>{});
+  if(r.btn==='Share') navigator.share({title:'Retro OS 98 in your browser',text,url}).catch(()=>{});
   else if(r.btn==='Copy link'){ try{ await navigator.clipboard.writeText(text+' '+url); alertBox('Link copied. Paste it anywhere.','info','Share'); }catch(e){ prompt('Copy this link:',text+' '+url); } }
   else if(r.btn==='Save image') shareImage({game,score,name,country,rank,daily,url});
   else if(r.btn==='Hall of Fame') openApp('halloffame',{game});
@@ -127,8 +127,8 @@ function shareImage({game,score,name,country,rank,daily,url}){
   g.textAlign='center'; g.fillStyle='#000080'; g.font='140px VT323,monospace'; g.fillText(m.fmt(score),600,320);
   g.fillStyle='#000'; g.font='bold 40px Tahoma,Arial'; g.fillText(`${flag(country)} ${name}${rank?`  ·  #${rank} ${daily?'today':'worldwide'}`:''}`,600,395);
   g.fillStyle='#b00000'; g.font='bold 34px Tahoma,Arial'; g.fillText('Can you beat it?',600,468);
-  g.fillStyle='#444'; g.font='26px Tahoma,Arial'; g.fillText('Windows 98, running in your browser. No install.',600,510); g.font='22px Tahoma,Arial'; g.fillText(url.replace(/^https?:\/\//,''),600,540);
-  const a=document.createElement('a'); a.download=`windows98-${game}-score.png`; a.href=c.toDataURL('image/png'); a.click();
+  g.fillStyle='#444'; g.font='26px Tahoma,Arial'; g.fillText('Retro OS 98, running in your browser. No install.',600,510); g.font='22px Tahoma,Arial'; g.fillText(url.replace(/^https?:\/\//,''),600,540);
+  const a=document.createElement('a'); a.download=`retro-os-98-${game}-score.png`; a.href=c.toDataURL('image/png'); a.click();
 }
 async function editProfile(){
   const pf=profile.get()||{name:'',country:guessCountry()};

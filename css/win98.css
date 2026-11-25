@@ -93,8 +93,7 @@ li.sep{height:2px;margin:3px 2px;box-shadow:inset 0 1px #808080,inset 0 -1px #ff
   background:radial-gradient(ellipse 30% 14% at 20% 18%,#fff8 0,#fff0 100%),radial-gradient(ellipse 34% 16% at 78% 30%,#fff8 0,#fff0 100%),radial-gradient(ellipse 40% 14% at 40% 80%,#fff6 0,#fff0 100%),linear-gradient(#1060c0,#6ab0f0)}
 .logo{display:flex;align-items:center;gap:16px;color:#fff;font:italic 700 56px Arial,sans-serif;text-shadow:3px 3px 0 #0a2a60}
 .logo small{font-size:30px}
-.flag{display:grid;grid-template-columns:34px 34px;gap:3px;transform:skew(-4deg,-4deg)}
-.flag i{height:30px}
+svg.flag{filter:drop-shadow(3px 3px 0 #0a2a60)}
 .splash .pb{width:min(360px,80vw);height:14px;background:#0a2a60;padding:2px;box-shadow:none}
 .safe{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#ff8c00;font:700 26px Arial;line-height:1.5}
 .dosfull{position:absolute;inset:0;padding:8px;cursor:text}
