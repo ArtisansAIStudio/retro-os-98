@@ -3,4 +3,4 @@
 // Project URL and the "anon public" key here. See SETUP-LEADERBOARD.md.
 // The anon key is meant to be public; the table's Row Level Security limits what it can do.
 // Contact email shown on the privacy page (required for ad programs). Fill this in.
-const CFG={cabinet:true,contactEmail:'depp349@gmail.com',supabaseUrl:'https://wmdgdkvvjlocqyummtzu.supabase.co',anonKey:'sb_publishable_yVeTS_xTP0xviukgM0n2ag_ndhNvOmn'};
+const CFG={contactEmail:'depp349@gmail.com',supabaseUrl:'https://wmdgdkvvjlocqyummtzu.supabase.co',anonKey:'sb_publishable_yVeTS_xTP0xviukgM0n2ag_ndhNvOmn'};
