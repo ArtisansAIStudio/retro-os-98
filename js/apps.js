@@ -78,9 +78,8 @@ function fixedIcons(){ return [
   {n:'Calculator',i:IC.calc,run:()=>openApp('calc')},
   {n:'Minesweeper',i:IC.mines,run:()=>openApp('mines')},
   {n:'Solitaire',i:IC.sol,run:()=>openApp('sol')},
-  {n:'FLAMES',i:'🔥',run:()=>openApp('flames')},
-  ...ARCADE.map(g=>({n:g.n,i:g.e,run:()=>openApp(g.id)})),
-  {n:'Classic Games',i:IC.folder,run:()=>openApp('explorer',{path:'C:\\Games'})}]; }
+  ...GAMES.map(g=>({n:g.n,i:g.e,run:()=>openApp(g.id)})),
+  ...ARCADE.map(g=>({n:g.n,i:g.e,run:()=>openApp(g.id)}))]; }
 const coarse=matchMedia('(pointer:coarse)').matches;
 const IW=80, IH=78, IPAD=6; let ICON_CELLS={}, justDragged=false;
 const iconPos=()=>{ try{ return JSON.parse(store.get('iconpos98')||'{}'); }catch(e){ return {}; } };
