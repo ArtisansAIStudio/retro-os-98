@@ -130,6 +130,18 @@ function shareImage({game,score,name,country,rank,daily,url}){
   g.fillStyle='#444'; g.font='26px Tahoma,Arial'; g.fillText('Basement 98, running in your browser. No install.',600,510); g.font='22px Tahoma,Arial'; g.fillText(url.replace(/^https?:\/\//,''),600,540);
   const a=document.createElement('a'); a.download=`basement-98-${game}-score.png`; a.href=c.toDataURL('image/png'); a.click();
 }
+/* first visit: everyone picks an arcade tag and country before playing (no account needed) */
+async function askName(){
+  if((profile.get()||{}).name) return;
+  const pf0={name:'',country:guessCountry()};
+  for(;;){
+    const r=await dialog({title:'Welcome to Basement 98',icon:'info',buttons:['Start playing'],width:380,
+      body:`<b>Who's playing?</b><br>Pick a name for the leaderboard. No sign-up needed.<br><br>Your name (arcade tag):<br><input type="text" id="wn" maxlength="12" placeholder="e.g. ROHAN" autocomplete="off" style="width:100%"><br><br>Country:<br><select id="wc">${countryOpts(pf0.country)}</select><br><br><small>Saved on this device. It is only shown publicly if you post a score.</small>`});
+    const name=($('#wn',r.el).value.trim().toUpperCase().replace(/[^A-Z0-9 _.-]/g,'')).slice(0,12);
+    if(name){ profile.set({name,country:$('#wc',r.el).value}); return; }
+    await alertBox('Please type a name to continue. Letters and numbers only, up to 12 characters.','warn','Basement 98');
+  }
+}
 async function editProfile(){
   const pf=profile.get()||{name:'',country:guessCountry()};
   const r=await dialog({title:'My Profile',buttons:['OK','Cancel'],cancel:'Cancel',width:360,body:`Initials (arcade tag):<br><input type="text" id="pn" maxlength="12" value="${esc(pf.name)}" autocomplete="off"><br><br>Country:<br><select id="pc">${countryOpts(pf.country)}</select>`});
