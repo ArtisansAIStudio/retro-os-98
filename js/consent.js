@@ -26,6 +26,7 @@ async function clearMyData(){
   const r=await dialog({title:'Clear my data',icon:'q',buttons:['Clear everything','Cancel'],cancel:'Cancel',width:380,body:'This erases everything this site stored on <b>this device</b>: sweets, secrets, saved files, settings, local scores, your arcade tag and your cookie choice.<br><br>Scores you already posted to the public leaderboard are not affected (ask us to remove those).'});
   if(r.btn!=='Clear everything') return;
   SITE_KEYS.forEach(k=>{ try{ localStorage.removeItem(k); }catch(e){} });
+  try{ indexedDB.deleteDatabase('b98cab'); }catch(e){}   // game files added to the Game Cabinet
   await alertBox('Done. The page will reload.','info','Clear my data'); location.reload();
 }
 APPS.privacy={icon:'🔒',fit:true,single:true,title:'Privacy & Cookies',mount(w){

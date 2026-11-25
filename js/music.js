@@ -34,6 +34,7 @@ const Music=(()=>{
   function play(id){ if(!on||cur===id) return; const c=ensure(); if(!c) return; stop(); cur=id; seq=compose(id); step=0; next=c.currentTime+.08; timer=setInterval(tick,90); tick(); }
   function stop(){ clearInterval(timer); timer=null; cur=null; seq=null; }
   const GAMEIDS=new Set([...GAMES.map(g=>g.id),...ARCADE.map(g=>g.id),'mines','sol']);
+  GAMEIDS.delete('cabinet');
   function follow(){
     const open=wins.filter(w=>GAMEIDS.has(w.id)&&!w.closed);
     if(!on||wins.some(w=>w.id==='media')||!open.length||document.hidden){ if(cur) stop(); return; }
