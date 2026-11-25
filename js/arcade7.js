@@ -1,7 +1,7 @@
 /* ===== Game Cabinet: play old arcade and console games from files the player owns =====
    Nothing is included or hosted. The player drops in a game file; it is kept in THEIR browser (IndexedDB) so they
-   can pick it from a shelf next time. Emulation is done by EmulatorJS, loaded from its CDN only when a game starts.
-   Switched off by default: set emulator:true in js/config.js to show it (see ADDING-GAMES.md). */
+   can pick it from a shelf next time. A third-party player library is loaded only when a game starts.
+   Set cabinet:false in js/config.js to hide it. */
 const CAB_SYS={nes:['nes','NES'],sfc:['snes','Super NES'],smc:['snes','Super NES'],gb:['gb','Game Boy'],gbc:['gb','Game Boy Color'],gba:['gba','Game Boy Advance'],md:['segaMD','Mega Drive'],gen:['segaMD','Mega Drive'],smd:['segaMD','Mega Drive'],sms:['segaMS','Master System'],gg:['segaGG','Game Gear'],pce:['pce','PC Engine'],n64:['n64','Nintendo 64'],z64:['n64','Nintendo 64'],v64:['n64','Nintendo 64'],a26:['atari2600','Atari 2600'],zip:['arcade','Arcade']};
 const cabDB=()=>new Promise((res,rej)=>{ const r=indexedDB.open('b98cab',1); r.onupgradeneeded=()=>r.result.createObjectStore('g',{keyPath:'id',autoIncrement:true}); r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error); });
 const cabTx=async(mode,fn)=>{ const db=await cabDB(); return new Promise((res,rej)=>{ const t=db.transaction('g',mode), s=t.objectStore('g'), r=fn(s); t.oncomplete=()=>res(r&&r.result); t.onerror=()=>rej(t.error); }); };
@@ -44,4 +44,4 @@ function mountCabinet(w){
   home();
   return ()=>{ dead=true; if(url) URL.revokeObjectURL(url); if(frame) frame.src='about:blank'; };
 }
-if(CFG.emulator) ARCADE.push({id:'cabinet',f:'CABINET.EXE',n:'Game Cabinet (bring your own games)',e:'🕹️',wh:[760,620],m:mountCabinet});
+if(CFG.cabinet) ARCADE.push({id:'cabinet',f:'CABINET.EXE',n:'Game Cabinet (bring your own games)',e:'🕹️',wh:[760,620],m:mountCabinet});

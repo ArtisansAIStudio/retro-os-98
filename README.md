@@ -1,6 +1,6 @@
 # Basement 98, in your browser
 
-A fan-made tribute to Basement 98, written from scratch in plain JavaScript. No install, no emulator.
+A fan-made tribute to Basement 98, written from scratch in plain JavaScript. No install.
 
 - A working desktop: boot screen, Start menu, draggable windows, taskbar, Explorer, Notepad, Paint,
   Calculator, DOS Prompt, NetSurfer (dial-up included), Control Panel, Media Player.
