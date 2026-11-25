@@ -81,7 +81,7 @@ function mountFlames(root){
     m.textContent=`${r.n} letter${r.n>1?'s':''} left. Counting ${r.n} on F-L-A-M-E-S…`;
     const fl=$('#fl',out); fl.innerHTML=[...'FLAMES'].map(c=>`<div data-c="${c}">${c}</div>`).join('');
     await sleep(900);
-    for(const c of r.order.slice(0,-1)){ if(!alive)return; $(`[data-c="${c}"]`,fl).classList.add('gone'); await sleep(700); }
+    for(const c of r.order){ if(!alive)return; $(`[data-c="${c}"]`,fl).classList.add('gone'); await sleep(700); }
     if(!alive)return;
     $(`[data-c="${r.result}"]`,fl).classList.add('win');
     const [word,emo]=MEAN[r.result];
