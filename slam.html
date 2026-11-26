@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Slam Book Online - Make Your Own Free Slam Book</title>
+<meta name="description" content="Make your own online slam book in 10 seconds. Share the link, friends leave anonymous scraps, answers and ratings. Only you can read them. Free, no sign-up.">
+<meta name="theme-color" content="#e58bb9">
+<link rel="canonical" href="https://artisansmedia.com/nostalgia/slam">
+<meta property="og:url" content="https://artisansmedia.com/nostalgia/slam">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Make your own online slam book">
+<meta property="og:description" content="Remember slam books? Make one, send the link, and see what your friends really think. Free, private, no sign-up.">
+<meta property="og:image" content="https://artisansmedia.com/nostalgia/launch-assets/cover-630x500.png">
+<meta name="twitter:card" content="summary">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Crect x='3' y='1' width='10' height='14' rx='1' fill='%23e58bb9'/%3E%3Crect x='5' y='4' width='6' height='1' fill='%23fff'/%3E%3Crect x='5' y='7' width='6' height='1' fill='%23fff'/%3E%3C/svg%3E">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Online Slam Book","description":"Make a free online slam book, share the link with friends and read their anonymous notes, answers and ratings. Private to the owner.","url":"https://artisansmedia.com/nostalgia/slam","applicationCategory":"Game","operatingSystem":"Any","browserRequirements":"Requires JavaScript","inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"Artisans Media"}}</script>
+<style>
+:root{--pink:#e58bb9;--pink2:#f6c9df;--blue:#6d97d1;--bg:#d9e4f5;--ink:#2b2b3a;--line:#c7d3ea}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 Verdana,Tahoma,sans-serif}
+a{color:#2a5db0}
+header{background:linear-gradient(#f3a9cc,var(--pink));padding:10px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;border-bottom:3px solid #c9669a}
+header b{font:700 22px Georgia,serif;color:#fff;text-shadow:1px 1px 0 #b0467f}
+header a{color:#fff;font-size:13px;margin-left:auto}
+main{max-width:720px;margin:14px auto;padding:0 12px 40px}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin-bottom:14px;box-shadow:0 1px 0 #fff inset}
+.card h2{margin:0 0 8px;font-size:18px;color:#8a3b66}
+label{display:block;margin:10px 0 3px;font-weight:700;font-size:13px}
+input[type=text],select,textarea{width:100%;padding:8px;border:1px solid #aab8d6;border-radius:5px;font:inherit;background:#fbfcff}
+textarea{min-height:70px;resize:vertical}
+button{background:linear-gradient(#f6a6cb,#e0709f);color:#fff;border:1px solid #b9577f;border-radius:6px;padding:9px 18px;font:700 14px Verdana;cursor:pointer}
+button.alt{background:linear-gradient(#fff,#e4ecf8);color:#2a5db0;border-color:#9db2d8}
+button:disabled{opacity:.6;cursor:default}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.small{font-size:12px;color:#5a6280}
+.err{color:#b00020;font-weight:700;margin-top:8px}
+.rate{display:flex;align-items:center;gap:8px;margin:6px 0}.rate span.n{width:70px;font-weight:700;font-size:13px}
+.rate button.s{background:#fff;border:1px solid #aab8d6;border-radius:6px;padding:3px 7px;font-size:20px;color:#000;filter:grayscale(1);opacity:.45;cursor:pointer}
+.rate button.s.on{filter:none;opacity:1;border-color:#e0709f;background:#fff0f7}
+.scrap{border-left:5px solid var(--pink);background:#fff8fc}
+.scrap .who{font-weight:700;color:#8a3b66}.scrap .when{font-size:11px;color:#7a819c}
+.scrap dl{margin:8px 0 0}.scrap dt{font-size:12px;color:#5a6280;margin-top:6px}.scrap dd{margin:0 0 0 0;font-weight:700}
+.linkbox{display:flex;gap:6px}.linkbox input{flex:1}
+article{font-size:14px}article h2{font-size:17px;color:#8a3b66;margin:16px 0 4px}
+footer{text-align:center;font-size:12px;color:#5a6280;padding:6px 0 24px}
+</style>
+</head>
+<body>
+<header><b>Slam Book</b><span class="small" style="color:#fff">the notebook your whole class passed around</span><a href="./">More 90s games</a></header>
+<main>
+  <div id="app"></div>
+  <article class="card" id="about">
+    <h2>What is a slam book?</h2>
+    <p>If you grew up in the 90s or 2000s you probably had one: a notebook that went around the class. Everyone wrote a nickname for you, their first impression, one thing you should change, and a message that was a little too honest. This is that notebook, online, free and private.</p>
+    <h2>How it works</h2>
+    <ol>
+      <li>Type your name and make your slam book. It takes 10 seconds.</li>
+      <li>Share the link on WhatsApp, Instagram or anywhere. Friends fill it in. They can leave their name or stay anonymous.</li>
+      <li>Open your private link to read every entry as scrapbook cards. Nobody else can see them, not even people who have the share link.</li>
+    </ol>
+    <h2>Privacy and being kind</h2>
+    <p>Entries are readable only with your private link. Keep that link to yourself: it is saved in this browser so you can come back. Be kind, and share only with people you trust. We do not ask for an email or any sign-up. See the <a href="privacy">privacy policy</a>.</p>
+    <p class="small">More classic games: <a href="play/flames">FLAMES</a> &middot; <a href="./">all 20+ games in Basement 98</a></p>
+  </article>
+</main>
+<footer><a href="about">About</a> &middot; <a href="privacy">Privacy</a> &middot; <a href="terms">Terms</a> &middot; <a href="contact">Contact</a></footer>
+<script src="js/config.js"></script>
+<script>
+(()=>{
+const $=(s,r=document)=>r.querySelector(s), app=$('#app');
+const BASE=location.origin+location.pathname.replace(/\/$/,'');
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const mine=()=>{ try{ return JSON.parse(store.get('slam98')||'[]'); }catch(e){ return []; } };
+const saveMine=l=>store.set('slam98',JSON.stringify(l.slice(0,30)));
+const rpc=async(fn,body)=>{ const r=await fetch(CFG.supabaseUrl+'/rest/v1/rpc/'+fn,{method:'POST',headers:{apikey:CFG.anonKey,Authorization:'Bearer '+CFG.anonKey,'Content-Type':'application/json'},body:JSON.stringify(body)}); const j=await r.json().catch(()=>({})); if(!r.ok) throw new Error(j.message||'Something went wrong'); return j; };
+const el=(t,c,h)=>{ const e=document.createElement(t); if(c) e.className=c; if(h!=null) e.textContent=h; return e; };
+const QS=[['nick','My nickname for you'],['first','My first impression of you'],['best','You are best at'],['change','One thing you should change'],['memory','Our funniest memory'],['word','You in one word'],['char','Which cartoon or film character are you?']];
+const RT=[['trusty','Trusty','😊'],['cool','Cool','🧊'],['sweet','Sweet','💖']];
+const FL=['Friends','Love','Affection','Marriage','Enemies','Siblings'];
+function share(link,owner){ const msg=`Fill my slam book! ${link}`; return [
+  ['Copy link',async b=>{ try{ await navigator.clipboard.writeText(link); b.textContent='Copied!'; }catch(e){ prompt('Copy this link',link); } }],
+  ['WhatsApp',()=>window.open('https://wa.me/?text='+encodeURIComponent(msg),'_blank','noopener')],
+  ...(navigator.share?[['Share…',()=>navigator.share({title:owner+"'s Slam Book",text:'Fill my slam book!',url:link}).catch(()=>{})]]:[])]; }
+function btnRow(items){ const r=el('div','row'); items.forEach(([t,f])=>{ const b=el('button','alt',t); b.onclick=()=>f(b); r.appendChild(b); }); return r; }
+
+function home(){
+  app.textContent='';
+  const c=el('div','card'); c.appendChild(el('h2','','Make your slam book'));
+  c.appendChild(el('p','small','Friends leave you notes, answers and ratings. Only you can read them.'));
+  c.appendChild(el('label','','Your name or nickname')); const n=el('input'); n.type='text'; n.maxLength=30; n.placeholder='e.g. Asha'; c.appendChild(n);
+  const b=el('button','','Make my slam book'); b.style.marginTop='12px'; c.appendChild(b); const er=el('div','err'); c.appendChild(er);
+  const go=async()=>{ er.textContent=''; const v=n.value.trim(); if(!v){ er.textContent='Type a name first.'; return; } b.disabled=true;
+    try{ const r=await rpc('slam_create',{p_owner:v}); const l=mine(); l.unshift({id:r.id,secret:r.secret,owner:r.owner}); saveMine(l); location.hash='/'+r.id+'/'+r.secret; }
+    catch(e){ er.textContent=e.message; b.disabled=false; } };
+  b.onclick=go; n.addEventListener('keydown',e=>{ if(e.key==='Enter') go(); });
+  app.appendChild(c);
+  const l=mine(); if(l.length){ const m=el('div','card'); m.appendChild(el('h2','','Your slam books on this device')); l.forEach(x=>{ const a=el('a','',x.owner+"'s slam book"); a.href='#/'+x.id+'/'+x.secret; a.style.display='block'; m.appendChild(a); }); app.appendChild(m); }
+}
+
+async function fill(id){
+  app.textContent=''; let info; try{ info=await rpc('slam_info',{p_id:id}); }catch(e){ info=null; }
+  if(!info){ const c=el('div','card'); c.appendChild(el('h2','','Slam book not found')); c.appendChild(el('p','','This link may be wrong. Ask your friend to send it again, or make your own.')); const a=el('a','','Make my slam book'); a.href='#/'; c.appendChild(a); app.appendChild(c); return; }
+  const done=store.get('slam-done-'+id);
+  const c=el('div','card'); c.appendChild(el('h2','',info.owner+"'s Slam Book"));
+  c.appendChild(el('p','small','Write whatever you like. '+info.owner+' is the only one who can read it. Be kind.'));
+  if(done){ c.appendChild(el('p','','Thanks! Your entry was sent. 💌')); const a=el('a','','Make your own slam book'); a.href='#/'; c.appendChild(a); app.appendChild(c); return; }
+  const f=el('div'); const inputs={};
+  const add=(k,lab,tag)=>{ f.appendChild(el('label','',lab)); const i=tag==='textarea'?el('textarea'):el('input'); if(tag!=='textarea') i.type='text'; i.maxLength=tag==='textarea'?500:120; f.appendChild(i); inputs[k]=i; };
+  add('author','Your name (leave blank to stay anonymous)'); inputs.author.maxLength=30;
+  QS.forEach(([k,q])=>add(k,q));
+  f.appendChild(el('label','','What are we?')); const sel=el('select'); sel.appendChild(new Option('Choose…','')); FL.forEach(x=>sel.appendChild(new Option(x,x))); f.appendChild(sel);
+  f.appendChild(el('label','','Rate '+info.owner)); const rating={};
+  RT.forEach(([k,lab,ic])=>{ const row=el('div','rate'); row.appendChild(el('span','n',lab)); const bs=[1,2,3].map(v=>{ const b=el('button','s',ic); b.type='button'; b.onclick=()=>{ rating[k]=v; bs.forEach((x,i)=>x.classList.toggle('on',i<v)); }; row.appendChild(b); return b; }); f.appendChild(row); });
+  add('scrap','Leave a scrap (a message)','textarea');
+  c.appendChild(f); const b=el('button','','Send to '+info.owner); b.style.marginTop='14px'; c.appendChild(b); const er=el('div','err'); c.appendChild(er);
+  b.onclick=async()=>{ er.textContent=''; const answers={}; QS.forEach(([k])=>{ const v=inputs[k].value.trim(); if(v) answers[k]=v; }); if(sel.value) answers.flames=sel.value;
+    if(!Object.keys(answers).length&&!inputs.scrap.value.trim()){ er.textContent='Write at least one answer or a scrap.'; return; }
+    b.disabled=true; try{ await rpc('slam_add',{p_id:id,p_author:inputs.author.value,p_answers:answers,p_rating:rating,p_scrap:inputs.scrap.value}); store.set('slam-done-'+id,'1'); fill(id); }
+    catch(e){ er.textContent=e.message; b.disabled=false; } };
+  app.appendChild(c);
+}
+
+async function owner(id,secret){
+  app.textContent=''; let d; try{ d=await rpc('slam_read',{p_id:id,p_secret:secret}); }catch(e){ const c=el('div','card'); c.appendChild(el('h2','','Wrong or old link')); c.appendChild(el('p','','This private link does not open a slam book. Use the exact link you got when you made it.')); const a=el('a','','Make a new slam book'); a.href='#/'; c.appendChild(a); app.appendChild(c); return; }
+  const l=mine(); if(!l.some(x=>x.id===id)){ l.unshift({id,secret,owner:d.owner}); saveMine(l); }
+  const link=BASE+'#/'+id;
+  const h=el('div','card'); h.appendChild(el('h2','',d.owner+"'s Slam Book")); h.appendChild(el('p','','Send this link to friends so they can fill it in:'));
+  const lb=el('div','linkbox'); const li=el('input'); li.type='text'; li.readOnly=true; li.value=link; li.onfocus=()=>li.select(); lb.appendChild(li); h.appendChild(lb);
+  h.appendChild(btnRow(share(link,d.owner)));
+  h.appendChild(el('p','small','Your private link is this page\'s address. Do not share it: anyone with it can read your entries. It is saved in this browser.'));
+  const rf=el('button','alt','Refresh entries'); rf.style.marginTop='8px'; rf.onclick=()=>owner(id,secret); h.appendChild(rf);
+  app.appendChild(h);
+  const ent=d.entries||[]; app.appendChild(el('p','small',ent.length?ent.length+' entr'+(ent.length>1?'ies':'y'):'No entries yet. Share the link above!'));
+  ent.forEach(e=>{ const c=el('div','card scrap'); c.appendChild(el('div','who',e.author||'Anonymous')); c.appendChild(el('div','when',new Date(e.at).toLocaleString()));
+    const dl=el('dl'); QS.forEach(([k,q])=>{ if(e.answers&&e.answers[k]){ dl.appendChild(el('dt','',q)); dl.appendChild(el('dd','',e.answers[k])); } });
+    if(e.answers&&e.answers.flames){ dl.appendChild(el('dt','','What are we?')); dl.appendChild(el('dd','',e.answers.flames)); }
+    c.appendChild(dl);
+    if(e.rating&&Object.keys(e.rating).length){ const r=el('div','small',RT.filter(([k])=>e.rating[k]).map(([k,lab,ic])=>lab+' '+ic.repeat(e.rating[k])).join('   ')); r.style.marginTop='8px'; c.appendChild(r); }
+    if(e.scrap){ const s=el('p','',e.scrap); s.style.cssText='margin:10px 0 0;white-space:pre-wrap'; c.appendChild(s); }
+    app.appendChild(c); });
+}
+
+function route(){ const p=location.hash.replace(/^#\/?/,'').split('/').filter(Boolean); window.scrollTo(0,0);
+  if(!p.length) home(); else if(p.length===1) fill(p[0]); else owner(p[0],p[1]); }
+addEventListener('hashchange',route); route();
+})();
+</script>
+</body>
+</html>
